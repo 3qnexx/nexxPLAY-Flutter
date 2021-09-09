@@ -16,6 +16,12 @@ rootProject.allprojects {
     repositories {
         mavenCentral()
         google()
+        maven { url 'https://jitpack.io' }
+        // A lot of player's dependencies are currently being resolved from JCenter, unfortunately
+        //noinspection JcenterRepositoryObsolete,GrDeprecatedAPIUsage
+        jcenter()
+        // 3Q Nexx Player's hosting repository
+        maven { url "https://www.myget.org/F/nexxtv/maven" }
     }
 }
 
@@ -25,6 +31,10 @@ android {
     compileSdkVersion 31
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 22
     }
+}
+
+dependencies {
+    implementation "tv.nexx.android:play:6.0.00-PREVIEW"
 }

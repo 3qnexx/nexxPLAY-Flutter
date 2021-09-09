@@ -1,10 +1,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="tv.nexx.flutter.android_example">
 
+    <!-- TODO: A transitive dependency of the 3Q Nexx Player (thread-poster) includes
+          the `label` attribute, which (for some reason) does not get filtered out by
+          `remove` rule marker in the plugin's Android manifest. -->
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
-        android:label="android_example">
+        android:label="android_example"
+        tools:replace="android:label">
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
