@@ -7,6 +7,7 @@ import io.flutter.embedding.engine.plugins.activity.ActivityAware;
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 import io.flutter.embedding.engine.plugins.lifecycle.FlutterLifecycleAdapter;
 import io.flutter.plugin.common.BinaryMessenger;
+import tv.nexx.flutter.android.platform_view.NexxPlayerConfigurationFactory;
 import tv.nexx.flutter.android.platform_view.NexxPlayerFactory;
 
 public final class AndroidPlugin implements FlutterPlugin, ActivityAware {
@@ -16,7 +17,8 @@ public final class AndroidPlugin implements FlutterPlugin, ActivityAware {
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
         final BinaryMessenger messenger = flutterPluginBinding.getBinaryMessenger();
-        final NexxPlayerFactory factory = NexxPlayerFactory.from(messenger, lifecycleReference);
+        final NexxPlayerFactory factory =
+                NexxPlayerFactory.from(messenger, NexxPlayerConfigurationFactory.create(), lifecycleReference);
         flutterPluginBinding.getPlatformViewRegistry()
                 .registerViewFactory(NexxPluginEnvironment.PLUGIN_IDENTIFIER, factory);
     }

@@ -29,8 +29,8 @@ public class DynamicArguments {
         return derive(key, Integer.class);
     }
 
-    public Float getFloat(Object key) {
-        return derive(key, Float.class);
+    public Double getDouble(Object key) {
+        return derive(key, Double.class);
     }
 
     private <T> T derive(Object key, Class<T> expected) {

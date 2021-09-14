@@ -29,15 +29,12 @@ import tv.nexx.flutter.android.estd.virtual_dispatch.DispatchTable;
 import tv.nexx.flutter.android.estd.virtual_dispatch.UndefinedDispatchTableMethodException;
 import tv.nexx.flutter.android.nexx_player.NexxPlayerConfiguration;
 
-final class NexxPlayerPlatformView implements PlatformView,
-        MethodChannel.MethodCallHandler,
-        LifecycleObserver {
+final class NexxPlayerPlatformView implements PlatformView, MethodChannel.MethodCallHandler, LifecycleObserver {
 
     private static final DispatchTable<String, NexxPlayerPlatformView, NexxPlayerDispatchPayload> DISPATCH_TABLE = DispatchTable.threadConfined();
     private static final DispatchTable<MediaSourceType, INexxPLAY, NexxPlayerConfiguration> PLAYER_DISPATCH_TABLE = DispatchTable.threadConfined();
 
     static {
-        DISPATCH_TABLE.set("test", NexxPlayerPlatformView::test);
         DISPATCH_TABLE.set("start", NexxPlayerPlatformView::start);
         PLAYER_DISPATCH_TABLE.set(MediaSourceType.NORMAL, (player, config) ->
                 player.startPlay(config.getPlayMode(), config.getMediaID(), config.nexxPLAYConfiguration()));
@@ -145,10 +142,6 @@ final class NexxPlayerPlatformView implements PlatformView,
         } catch (UndefinedDispatchTableMethodException unused) {
             result.notImplemented();
         }
-    }
-
-    private void test(NexxPlayerDispatchPayload payload) {
-        payload.result().success(NexxPlayerMethodResult.from(id).put("test", "Heyoo").asMap());
     }
 
     private void start(NexxPlayerDispatchPayload payload) {

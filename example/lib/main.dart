@@ -1,60 +1,41 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:nexx/nexx_player.dart';
+import 'package:nexx/nexx.dart';
 
-void main() {
-  runApp(MyApp());
+void main() => runApp(NexxExampleApp());
+
+class NexxExampleApp extends StatefulWidget {
+  @override
+  _NexxExampleAppState createState() => _NexxExampleAppState();
 }
 
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
-
-  @override
-  void initState() {
-    super.initState();
-    initPlatformState();
-  }
-
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    // We also handle the message potentially returning null.
-    try {
-      platformVersion =
-          await Nexx.platformVersion ?? 'Unknown platform version';
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _platformVersion = platformVersion;
-    });
-  }
-
+class _NexxExampleAppState extends State<NexxExampleApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
-        body: Center(
-          child: Text('Running on: $_platformVersion\n'),
-        ),
+        appBar: AppBar(title: const Text('Nexx Player example app')),
+        body: Center(child: NexxPlayer(configuration: _configuration)),
       ),
     );
   }
+
+  static final _configuration = NexxPlayerConfiguration(
+    provider: '3q',
+    domainID: '484',
+    mediaID: '1472879',
+    playMode: 'video',
+    dataMode: 'API',
+    exitMode: 'load',
+    mediaSourceType: 'NORMAL',
+    streamingFilter: '',
+    adType: 'IMA',
+    autoplay: false,
+    autoNext: true,
+    disableAds: true,
+    hidePrevNext: false,
+    forcePrevNext: false,
+    startFullScreen: false,
+    startPosition: 0,
+    delay: 0.0,
+  );
 }
