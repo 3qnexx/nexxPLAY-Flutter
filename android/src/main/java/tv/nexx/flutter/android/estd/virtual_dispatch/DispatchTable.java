@@ -3,7 +3,6 @@ package tv.nexx.flutter.android.estd.virtual_dispatch;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
 
 // I - identifier
 // R - receiver
@@ -19,22 +18,17 @@ public class DispatchTable<I, R, P> {
         return new DispatchTable<>(new HashMap<>());
     }
 
-    public static <I, R, P> DispatchTable<I, R, P> concurrent() {
-        return new DispatchTable<>(new ConcurrentHashMap<>());
-    }
-
     public void set(I identifier, DispatchTableMethod<R, P> method) {
         table.put(identifier, method);
     }
 
     public void dispatch(I identifier, R receiver, P payload) {
-        final DispatchTableMethod<R, P> method = Objects.requireNonNull(table.get(identifier));
-        method.dispatch(receiver, payload);
-    }
-
-    public void nullAwareDispatch(I identifier, R receiver, P payload) {
         final DispatchTableMethod<R, P> method = table.get(identifier);
-        if (method != null) method.dispatch(receiver, payload);
+        if (method == null) {
+            throw new UndefinedDispatchTableMethodException(identifier);
+        } else {
+            method.dispatch(receiver, payload);
+        }
     }
 
 }
