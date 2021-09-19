@@ -8,12 +8,23 @@ import 'package:nexx/src/controller.dart';
 
 class NexxPlayer extends StatefulWidget {
   final NexxPlayerConfiguration configuration;
+  final ValueSetter<NexxPlayerController> onControllerCreated;
 
-  NexxPlayer({required this.configuration})
-      : super(key: ValueKey(configuration));
+  NexxPlayer({
+    required this.configuration,
+    required this.onControllerCreated,
+  }) : super(key: ValueKey(configuration));
 
   @override
   _NexxPlayerState createState() => _NexxPlayerState();
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('configuration', configuration))
+      ..add(ObjectFlagProperty.has('onControllerCreated', onControllerCreated));
+  }
 }
 
 class _NexxPlayerState extends State<NexxPlayer> {
@@ -36,7 +47,7 @@ class _NexxPlayerState extends State<NexxPlayer> {
           viewType: _viewType,
           layoutDirection: TextDirection.ltr,
           creationParams: widget.configuration.toMap(),
-          creationParamsCodec: StandardMessageCodec(),
+          creationParamsCodec: const StandardMessageCodec(),
         )
           ..addOnPlatformViewCreatedListener((int id) {
             params.onPlatformViewCreated(id);
@@ -49,17 +60,8 @@ class _NexxPlayerState extends State<NexxPlayer> {
 
   void _onPlatformViewCreated(int id) {
     _controller = NexxPlayerControllerFactory().create(_viewType, id);
-    _startPlayer();
+    widget.onControllerCreated(_controller);
   }
 
-  Future<void> _startPlayer() async {
-    try {
-      final result = await _controller.start();
-      if (!result) debugPrint('Nexx: player start was not successful');
-    } on Object catch (e, st) {
-      debugPrint('Nexx: exception occurred during player start: \n$e\n$st');
-    }
-  }
-
-  static final _viewType = 'tv.nexx.flutter.android';
+  static const _viewType = 'tv.nexx.flutter.android';
 }

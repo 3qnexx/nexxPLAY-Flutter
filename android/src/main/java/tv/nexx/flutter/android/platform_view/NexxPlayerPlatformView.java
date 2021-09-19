@@ -14,22 +14,29 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import io.flutter.plugin.common.BinaryMessenger;
+import io.flutter.plugin.common.EventChannel;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.platform.PlatformView;
+import tv.nexx.android.play.Event;
 import tv.nexx.android.play.INexxPLAY;
 import tv.nexx.android.play.MediaSourceType;
 import tv.nexx.android.play.NexxPLAY;
+import tv.nexx.android.play.NexxPLAYNotification;
+import tv.nexx.android.play.PlayerEvent;
+import tv.nexx.android.play.player.Player;
 import tv.nexx.flutter.android.NexxPluginEnvironment;
 import tv.nexx.flutter.android.estd.functional.Supplier;
 import tv.nexx.flutter.android.estd.virtual_dispatch.DispatchTable;
 import tv.nexx.flutter.android.estd.virtual_dispatch.UndefinedDispatchTableMethodException;
 import tv.nexx.flutter.android.nexx_player.NexxPlayerConfiguration;
 
-final class NexxPlayerPlatformView implements PlatformView, MethodChannel.MethodCallHandler, LifecycleObserver {
+final class NexxPlayerPlatformView implements PlatformView, MethodChannel.MethodCallHandler, LifecycleObserver, EventChannel.StreamHandler, NexxPLAYNotification.Listener {
 
     private static final DispatchTable<String, NexxPlayerPlatformView, NexxPlayerDispatchPayload> DISPATCH_TABLE = DispatchTable.threadConfined();
     private static final DispatchTable<MediaSourceType, INexxPLAY, NexxPlayerConfiguration> PLAYER_DISPATCH_TABLE = DispatchTable.threadConfined();
@@ -46,9 +53,12 @@ final class NexxPlayerPlatformView implements PlatformView, MethodChannel.Method
 
     private final int id;
     private final MethodChannel methodChannel;
+    private final EventChannel eventChannel;
     private final Supplier<Lifecycle> lifecycle;
     private final NexxPlayerConfiguration configuration;
     // Mutable due to the PlatformView#dispose contract
+    @Nullable
+    private EventChannel.EventSink sink;
     @Nullable
     private ViewGroup host;
     @Nullable
@@ -59,11 +69,13 @@ final class NexxPlayerPlatformView implements PlatformView, MethodChannel.Method
                                    Supplier<Lifecycle> lifecycle,
                                    ViewGroup host,
                                    INexxPLAY player,
-                                   MethodChannel methodChannel) {
+                                   MethodChannel methodChannel,
+                                   EventChannel eventChannel) {
         this.id = id;
         this.configuration = Objects.requireNonNull(configuration);
         this.lifecycle = Objects.requireNonNull(lifecycle);
         this.methodChannel = Objects.requireNonNull(methodChannel);
+        this.eventChannel = eventChannel;
         this.host = Objects.requireNonNull(host);
         this.player = Objects.requireNonNull(player);
     }
@@ -74,6 +86,7 @@ final class NexxPlayerPlatformView implements PlatformView, MethodChannel.Method
         final Lifecycle lifecycle = this.lifecycle.get();
         Objects.requireNonNull(lifecycle, "Lifecycle is null, normal operation is disrupted.");
         methodChannel.setMethodCallHandler(this);
+        eventChannel.setStreamHandler(this);
         lifecycle.addObserver(this);
     }
 
@@ -82,11 +95,13 @@ final class NexxPlayerPlatformView implements PlatformView, MethodChannel.Method
                                                 Activity activity,
                                                 Supplier<Lifecycle> lifecycle,
                                                 BinaryMessenger messenger) {
+        final String identifier = instanceIdentifier(id);
         final ViewGroup host = createPlayerHostView(activity);
-        final INexxPLAY player = createPlayer(activity, host);
-        final MethodChannel channel = createMethodChannel(messenger, id);
-        final NexxPlayerPlatformView view =
-                new NexxPlayerPlatformView(id, configuration, lifecycle, host, player, channel);
+        final INexxPLAY player = new NexxPLAY(activity, host, activity.getWindow());
+        final MethodChannel methodChannel = new MethodChannel(messenger, identifier + "_methods");
+        final EventChannel eventChannel = new EventChannel(messenger, identifier + "_events");
+        final NexxPlayerPlatformView view = new NexxPlayerPlatformView(id, configuration, lifecycle,
+                host, player, methodChannel, eventChannel);
         view.runBindings();
         return view;
     }
@@ -98,12 +113,8 @@ final class NexxPlayerPlatformView implements PlatformView, MethodChannel.Method
     }
 
     @NonNull
-    private static NexxPLAY createPlayer(Activity activity, ViewGroup host) {
-        return new NexxPLAY(activity, host, activity.getWindow());
-    }
-
-    private static MethodChannel createMethodChannel(BinaryMessenger messenger, int id) {
-        return new MethodChannel(messenger, NexxPluginEnvironment.PLUGIN_IDENTIFIER + "_" + id);
+    private static String instanceIdentifier(int id) {
+        return NexxPluginEnvironment.PLUGIN_IDENTIFIER + "_" + id;
     }
 
     @Override
@@ -131,8 +142,11 @@ final class NexxPlayerPlatformView implements PlatformView, MethodChannel.Method
         final Lifecycle lifecycle = this.lifecycle.get();
         if (lifecycle != null) lifecycle.removeObserver(this);
         methodChannel.setMethodCallHandler(null);
-        host = null;
+        eventChannel.setStreamHandler(null);
+        sink = null;
+        if (player != null) player.removePlaystateListener(this);
         player = null;
+        host = null;
     }
 
     @Override
@@ -151,4 +165,68 @@ final class NexxPlayerPlatformView implements PlatformView, MethodChannel.Method
         payload.result().success(NexxPlayerMethodResult.from(id).put("started", true).asMap());
     }
 
+    @Override
+    public void onListen(Object arguments, EventChannel.EventSink events) {
+        if (player == null) return;
+        this.sink = events;
+        player.addPlaystateListener(this);
+    }
+
+    @Override
+    public void onCancel(Object arguments) {
+        if (player == null) return;
+        player.removePlaystateListener(this);
+        this.sink = null;
+    }
+
+    @Override
+    public void onPlayerStateChanged(boolean playWhenReady, Player.State current) {
+        final EventChannel.EventSink sink = this.sink;
+        if (sink != null) {
+            final Map<String, Object> result = NexxPlayerMethodResult.from(id)
+                    .put("player_event_type", "player_state_changed")
+                    .put("play_when_ready", playWhenReady)
+                    .put("state", current.name())
+                    .asMap();
+            sink.success(result);
+        }
+    }
+
+    @Override
+    public void onPlayerEvent(NexxPLAYNotification.IPlayerEvent e) {
+        final EventChannel.EventSink sink = this.sink;
+        if (sink != null) {
+            final Map<String, Object> body = preprocessEventBody(e);
+            final Map<String, Object> result = NexxPlayerMethodResult.from(id)
+                    .put("properties", body)
+                    .put("player_event_type", "player_event")
+                    .asMap();
+            sink.success(result);
+        }
+    }
+
+    @NonNull
+    private Map<String, Object> preprocessEventBody(NexxPLAYNotification.IPlayerEvent e) {
+        final Map<String, Object> body = new HashMap<>(e.getBody());
+        final Object event = body.get(PlayerEvent.EVENT);
+        if (event != null) {
+            body.put(PlayerEvent.EVENT, ((Event) event).name());
+        }
+        return body;
+    }
+
+    @Override
+    public void onPlayerError(String reason, String details) {
+        // No-op
+    }
+
+    @Override
+    public void onVideoSizeChanged(int width, int height, float pixelWidthAspectRatio) {
+        // No-op
+    }
+
+    @Override
+    public void onFullScreen(boolean fullScreen) {
+        // No-op
+    }
 }

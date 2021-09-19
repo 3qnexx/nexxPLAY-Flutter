@@ -1,9 +1,8 @@
 import 'package:flutter/foundation.dart';
 
+@immutable
 class NexxPlayerConfiguration {
   final Map<String, Object> _arguments;
-
-  const NexxPlayerConfiguration._(this._arguments);
 
   factory NexxPlayerConfiguration({
     required String provider,
@@ -45,6 +44,8 @@ class NexxPlayerConfiguration {
     };
     return NexxPlayerConfiguration._(arguments);
   }
+
+  const NexxPlayerConfiguration._(this._arguments);
 
   Map<String, Object> toMap() => Map.of(_arguments);
 
