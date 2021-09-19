@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:nexx/src/event.dart';
 
 abstract class NexxPlayerControllerFactory {
   factory NexxPlayerControllerFactory() =
@@ -10,6 +13,10 @@ abstract class NexxPlayerControllerFactory {
 
 abstract class NexxPlayerController {
   Future<bool> start();
+
+  Stream<PlayerEvent> events();
+
+  void dispose();
 }
 
 class _MethodChannelNexxPlayerControllerFactory
@@ -18,23 +25,59 @@ class _MethodChannelNexxPlayerControllerFactory
 
   @override
   NexxPlayerController create(String type, int id) {
-    final channel = MethodChannel('${type}_$id');
-    return _MethodChannelNexxPlayerController(channel);
+    final identifier = '${type}_$id';
+    final methodChannel = MethodChannel('${identifier}_methods');
+    final eventChannel = EventChannel('${identifier}_events');
+    return _MethodChannelNexxPlayerController(
+      methodChannel,
+      eventChannel,
+      const _PlayerEventFactory(),
+    );
   }
 }
 
 class _MethodChannelNexxPlayerController implements NexxPlayerController {
-  _MethodChannelNexxPlayerController(this._channel);
+  _MethodChannelNexxPlayerController(
+      this._methodChannel, this._eventChannel, this._eventFactory);
 
   @override
   Future<bool> start() async {
-    final result = await _channel.invokeMapMethod<String, Object>('start');
+    final result =
+        await _methodChannel.invokeMapMethod<String, Object>('start');
     if (result == null) throw ArgumentError.notNull('result');
     final typed = _StartResult(_MethodChannelMapResult(result));
     return typed.isSuccessful();
   }
 
-  final MethodChannel _channel;
+  @override
+  Stream<PlayerEvent> events() {
+    final stream = _events;
+    if (stream != null) {
+      return stream;
+    } else {
+      final newStream = _eventChannel
+          .receiveBroadcastStream()
+          .asBroadcastStream(onCancel: _onSubscriptionCancel)
+          .map(_eventFactory.fromPlatformInterface);
+      _events = newStream;
+      return newStream;
+    }
+  }
+
+  void _onSubscriptionCancel(StreamSubscription<dynamic> subscription) {
+    subscription.cancel();
+    _events = null;
+  }
+
+  @override
+  void dispose() {
+    _events = null;
+  }
+
+  final _PlayerEventFactory _eventFactory;
+  final MethodChannel _methodChannel;
+  final EventChannel _eventChannel;
+  Stream<PlayerEvent>? _events;
 }
 
 class _MethodChannelMapResult {
@@ -52,10 +95,9 @@ class _MethodChannelMapResult {
   String toString() => '_MethodChannelMapResult(_raw: $_raw)';
 }
 
+@immutable
 class _StartResult {
   final Map<String, Object> _raw;
-
-  const _StartResult._(this._raw);
 
   factory _StartResult(_MethodChannelMapResult result) {
     if (!result.isArgumentPresent('id', int)) {
@@ -67,6 +109,8 @@ class _StartResult {
     }
     return _StartResult._(result.raw());
   }
+
+  const _StartResult._(this._raw);
 
   bool isSuccessful() {
     return _raw['started'] as bool;
@@ -83,4 +127,105 @@ class _StartResult {
 
   @override
   String toString() => '_StartResult(_raw: $_raw)';
+}
+
+@immutable
+class _PlayerEventFactory {
+  const _PlayerEventFactory();
+
+  PlayerEvent fromPlatformInterface(dynamic payload) {
+    final typed = payload as Map<dynamic, dynamic>;
+    final casted = typed.cast<String, Object>();
+    final type = casted['player_event_type'];
+    if (type == 'player_state_changed') {
+      return _parseStateChangedEvent(casted);
+    } else if (type == 'player_event') {
+      return _parsePlayerEvent(casted);
+    } else {
+      return _parseUnknownEvent(casted);
+    }
+  }
+
+  PlayerEvent _parseStateChangedEvent(Map<String, Object> event) {
+    return PlayerStateChangeEvent(
+      _stateMapping[event['state']!]!,
+      playWhenReady: event['play_when_ready'] as bool,
+    );
+  }
+
+  PlayerEvent _parsePlayerEvent(Map<String, Object> typed) {
+    final properties = typed['properties'] as Map<dynamic, dynamic>;
+    final casted = properties.cast<String, Object?>();
+    final eventType = casted['event'];
+    if (eventType == null) {
+      return DirectPlayerEvent(casted);
+    } else {
+      final copy = Map.of(casted);
+      copy['event'] = _eventMapping[eventType]!;
+      return DirectPlayerEvent(copy);
+    }
+  }
+
+  PlayerEvent _parseUnknownEvent(Map<String, Object> payload) {
+    throw ArgumentError.value(
+      payload,
+      'payload',
+      'does not contain a valid "type" property '
+          '("player_event_type" or "player_event" are expected)',
+    );
+  }
+
+  static const _stateMapping = {
+    'IDLE': PlayerState.idle,
+    'PREPARING': PlayerState.preparing,
+    'BUFFERING': PlayerState.buffering,
+    'PLAYING': PlayerState.playing,
+    'PAUSED': PlayerState.paused,
+    'RESUMING': PlayerState.resuming,
+    'ENDED': PlayerState.ended,
+  };
+
+  static const _eventMapping = {
+    'playeradded': NexxEventType.playerAdded,
+    'playerready': NexxEventType.playerReady,
+    'changemedia': NexxEventType.changeMedia,
+    'changeplaypos': NexxEventType.changePlayPosition,
+    'changemediaintent': NexxEventType.changeMediaIntent,
+    'metadata': NexxEventType.metadata,
+    'startsession': NexxEventType.startSession,
+    'startplay': NexxEventType.startPlay,
+    'startplayback': NexxEventType.startPlayback,
+    'maininteraction': NexxEventType.mainInteraction,
+    'pause': NexxEventType.pause,
+    'play': NexxEventType.play,
+    'replay': NexxEventType.replay,
+    'second': NexxEventType.second,
+    'quarter': NexxEventType.quarter,
+    'progress25': NexxEventType.progress25,
+    'progress50': NexxEventType.progress50,
+    'progress75': NexxEventType.progress75,
+    'progress95': NexxEventType.progress95,
+    'showhotspot': NexxEventType.showHotSpot,
+    'hidehotspot': NexxEventType.hideHotSpot,
+    'showoverlay': NexxEventType.showOverlay,
+    'hideoverlay': NexxEventType.hideOverlay,
+    'enterpip': NexxEventType.enterPIP,
+    'exitpip': NexxEventType.exitPIP,
+    'enterfullscreen': NexxEventType.enterFullScreen,
+    'exitfullscreen': NexxEventType.exitFullScreen,
+    'mute': NexxEventType.mute,
+    'unmute': NexxEventType.unmute,
+    'ended': NexxEventType.ended,
+    'paypreviewended': NexxEventType.payPreviewEnded,
+    'endedall': NexxEventType.endedAll,
+    'error': NexxEventType.error,
+    'adcalled': NexxEventType.adCalled,
+    'adstarted': NexxEventType.adStarted,
+    'adended': NexxEventType.adEnded,
+    'adresumed': NexxEventType.adResumed,
+    'aderror': NexxEventType.adError,
+    'adclicked': NexxEventType.adClicked,
+    'trickplay': NexxEventType.trickPlay,
+    'bumperclicked': NexxEventType.bumperClicked,
+  };
 }

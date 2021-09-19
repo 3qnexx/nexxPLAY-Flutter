@@ -1,23 +1,111 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:nexx/nexx.dart';
 
-void main() => runApp(NexxExampleApp());
+void main() => runApp(const NexxExampleApp());
 
-class NexxExampleApp extends StatefulWidget {
+class NexxExampleApp extends StatelessWidget {
+  const NexxExampleApp({Key? key}) : super(key: key);
+
   @override
-  _NexxExampleAppState createState() => _NexxExampleAppState();
+  Widget build(BuildContext context) {
+    return const MaterialApp(home: _NexxPlayerPage());
+  }
 }
 
-class _NexxExampleAppState extends State<NexxExampleApp> {
+class _NexxPlayerPage extends StatefulWidget {
+  const _NexxPlayerPage({Key? key}) : super(key: key);
+
+  @override
+  __NexxPlayerPageState createState() => __NexxPlayerPageState();
+}
+
+class __NexxPlayerPageState extends State<_NexxPlayerPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(title: const Text('Nexx Player example app')),
-        body: Center(child: NexxPlayer(configuration: _configuration)),
+      home: ScaffoldMessenger(
+        key: _messengerKey,
+        child: Scaffold(
+          appBar: AppBar(title: const Text('Nexx Player example app')),
+          body: Center(child: _buildContent()),
+        ),
       ),
     );
   }
+
+  Widget _buildContent() {
+    return Column(
+      children: [
+        Expanded(child: _buildPlayer()),
+        Expanded(child: _buildEventsList()),
+      ],
+    );
+  }
+
+  Widget _buildPlayer() {
+    return NexxPlayer(
+      configuration: _configuration,
+      onControllerCreated: _startPlayer,
+    );
+  }
+
+  Widget _buildEventsList() {
+    return ListView(
+      children: _events.reversed
+          .map((e) => e.visit(const _WidgetPlayerEventVisitor()))
+          .toList(),
+    );
+  }
+
+  Future<void> _startPlayer(NexxPlayerController controller) async {
+    try {
+      final result = await controller.start();
+      if (!mounted) return;
+      if (result) {
+        _subscribe(controller);
+        _controller = controller;
+      } else {
+        _report('Nexx: player start was not successful');
+      }
+    } on Object catch (e, st) {
+      _report('Nexx: exception occurred during player start: \n$e\n$st');
+    }
+  }
+
+  void _report(String message) {
+    debugPrint(message);
+    _messengerKey.currentState?.showSnackBar(SnackBar(content: Text(message)));
+  }
+
+  void _subscribe(NexxPlayerController controller) {
+    _subscription = controller.events().listen(
+      (event) => setState(() => _events.add(event)),
+      onError: (Object e, StackTrace st) {
+        _report('Error occurred during events listening: $e');
+        debugPrintStack(
+          stackTrace: st,
+          label: 'Player events error stacktrace',
+        );
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _subscription?.cancel();
+    _subscription = null;
+    _controller?.dispose();
+    _controller = null;
+  }
+
+  NexxPlayerController? _controller;
+  StreamSubscription<PlayerEvent>? _subscription;
+  final List<PlayerEvent> _events = [];
+  final _messengerKey = GlobalKey<ScaffoldMessengerState>();
 
   static final _configuration = NexxPlayerConfiguration(
     provider: '3q',
@@ -38,4 +126,76 @@ class _NexxExampleAppState extends State<NexxExampleApp> {
     startPosition: 0,
     delay: 0.0,
   );
+}
+
+@immutable
+class _WidgetPlayerEventVisitor implements PlayerEventVisitor<Widget> {
+  const _WidgetPlayerEventVisitor();
+
+  @override
+  Widget onPlayerEvent(Map<String, Object?> properties) {
+    return _DirectPlayerEventWidget(properties: properties);
+  }
+
+  @override
+  Widget onPlayerStateChanged(
+    PlayerState state, {
+    required bool playWhenReady,
+  }) {
+    return _PlayerStateEventWidget(playWhenReady: playWhenReady, state: state);
+  }
+}
+
+class _PlayerStateEventWidget extends StatelessWidget {
+  final bool playWhenReady;
+  final PlayerState state;
+
+  const _PlayerStateEventWidget({
+    required this.playWhenReady,
+    required this.state,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: const Text('Player State Change'),
+      subtitle: Text('playWhenReady: $playWhenReady\nstate: $state'),
+    );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(FlagProperty('playWhenReady',
+          value: playWhenReady,
+          ifTrue: '<plays when ready>',
+          ifFalse: '<does not play when ready>'))
+      ..add(EnumProperty<PlayerState>('state', state));
+  }
+}
+
+class _DirectPlayerEventWidget extends StatelessWidget {
+  final Map<String, Object?> properties;
+
+  const _DirectPlayerEventWidget({
+    required this.properties,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: const Text('Player Event'),
+      subtitle: Text(
+          properties.entries.map((e) => '${e.key}: ${e.value}').join(', ')),
+    );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty('properties', properties));
+  }
 }
