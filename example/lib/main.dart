@@ -11,7 +11,28 @@ class NexxExampleApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: _NexxPlayerPage());
+    return const MaterialApp(home: NavigationPage());
+  }
+}
+
+class NavigationPage extends StatelessWidget {
+  const NavigationPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Navigation page')),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.of(context).push<void>(
+              MaterialPageRoute(builder: (_) => const _NexxPlayerPage()),
+            );
+          },
+          child: const Text('Launch player'),
+        ),
+      ),
+    );
   }
 }
 
