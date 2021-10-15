@@ -7,6 +7,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -96,20 +97,23 @@ final class NexxPlayerPlatformView implements PlatformView, MethodChannel.Method
                                                 Supplier<Lifecycle> lifecycle,
                                                 BinaryMessenger messenger) {
         final String identifier = instanceIdentifier(id);
-        final ViewGroup host = createPlayerHostView(activity);
-        final INexxPLAY player = new NexxPLAY(activity, host, activity.getWindow());
+        final NexxPlayerViewHost host = createPlayerHostView(activity);
+        final INexxPLAY player = new NexxPLAY(activity, host.getPlayerArea(), activity.getWindow());
         final MethodChannel methodChannel = new MethodChannel(messenger, identifier + "_methods");
         final EventChannel eventChannel = new EventChannel(messenger, identifier + "_events");
         final NexxPlayerPlatformView view = new NexxPlayerPlatformView(id, configuration, lifecycle,
-                host, player, methodChannel, eventChannel);
+                host.getRoot(), player, methodChannel, eventChannel);
         view.runBindings();
         return view;
     }
 
-    private static ViewGroup createPlayerHostView(Context context) {
-        final FrameLayout root = new FrameLayout(context);
+    private static NexxPlayerViewHost createPlayerHostView(Context context) {
+        final RelativeLayout root = new RelativeLayout(context);
         root.setLayoutParams(new FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
-        return root;
+        final FrameLayout playerArea = new FrameLayout(context);
+        playerArea.setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+        root.addView(playerArea);
+        return new NexxPlayerViewHost(root, playerArea);
     }
 
     @NonNull
