@@ -46,33 +46,22 @@ class _MethodChannelNexxPlayerController implements NexxPlayerController {
         await _methodChannel.invokeMapMethod<String, Object>('start');
     if (result == null) throw ArgumentError.notNull('result');
     final typed = _StartResult(_MethodChannelMapResult(result));
+    if (typed.isSuccessful()) {
+      _events = _eventChannel
+          .receiveBroadcastStream()
+          .asBroadcastStream()
+          .map(_eventFactory.fromPlatformInterface);
+    }
     return typed.isSuccessful();
   }
 
   @override
-  Stream<PlayerEvent> events() {
-    final stream = _events;
-    if (stream != null) {
-      return stream;
-    } else {
-      final newStream = _eventChannel
-          .receiveBroadcastStream()
-          .asBroadcastStream(onCancel: _onSubscriptionCancel)
-          .map(_eventFactory.fromPlatformInterface);
-      _events = newStream;
-      return newStream;
-    }
-  }
-
-  void _onSubscriptionCancel(StreamSubscription<dynamic> subscription) {
-    subscription.cancel();
-    _events = null;
-  }
+  Stream<PlayerEvent> events() =>
+      _events ??
+      (throw StateError('Player was not started yet or was already disposed'));
 
   @override
-  void dispose() {
-    _events = null;
-  }
+  void dispose() => _events = null;
 
   final _PlayerEventFactory _eventFactory;
   final MethodChannel _methodChannel;

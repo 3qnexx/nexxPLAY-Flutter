@@ -267,7 +267,10 @@ final class NexxPlayerPlatformView implements PlatformView,
         eventChannel.setStreamHandler(null);
         subject.unsubscribe(this);
         sink = null;
-        if (player != null) player.removePlaystateListener(this);
+        if (player != null) {
+            player.removePlaystateListener(this);
+            player.onActivityDestroyed();
+        }
         player = null;
         host = null;
     }

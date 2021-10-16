@@ -8,7 +8,7 @@
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
-        android:label="android_example"
+        android:label="3Q Nexx Flutter Player Example"
         tools:replace="android:label">
         <activity
             android:name=".MainActivity"

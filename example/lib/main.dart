@@ -146,7 +146,11 @@ class _NexxPlayerPageState extends State<_NexxPlayerPage>
   @override
   void dispose() {
     super.dispose();
-    _subscription?.cancel();
+    _dispose();
+  }
+
+  Future<void> _dispose() async {
+    await _subscription?.cancel();
     _subscription = null;
     _controller?.dispose();
     _controller = null;
@@ -208,7 +212,6 @@ class _PlayerMode {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-
     return other is _PlayerMode &&
         other.isFullscreen == isFullscreen &&
         other.isInPIP == isInPIP;
