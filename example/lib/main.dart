@@ -43,16 +43,32 @@ class _NexxPlayerPage extends StatefulWidget {
   __NexxPlayerPageState createState() => __NexxPlayerPageState();
 }
 
-class __NexxPlayerPageState extends State<_NexxPlayerPage> {
+class __NexxPlayerPageState extends State<_NexxPlayerPage>
+    with AdHocVisitor<void> {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: ScaffoldMessenger(
-        key: _messengerKey,
-        child: Scaffold(
-          appBar: AppBar(title: const Text('Nexx Player example app')),
-          body: Center(child: _buildContent()),
-        ),
+  Widget build(BuildContext context) => _buildPage();
+
+  Widget _buildPage() {
+    return _isFullscreen
+        ? _buildFullscreenPlayerPage()
+        : _buildNonFullScreenPlayerPage();
+  }
+
+  Widget _buildFullscreenPlayerPage() {
+    return ScaffoldMessenger(
+      key: _messengerKey,
+      child: Scaffold(
+        body: _buildPlayer(),
+      ),
+    );
+  }
+
+  Widget _buildNonFullScreenPlayerPage() {
+    return ScaffoldMessenger(
+      key: _messengerKey,
+      child: Scaffold(
+        appBar: AppBar(title: const Text('Nexx Player example app')),
+        body: Center(child: _buildContent()),
       ),
     );
   }
@@ -68,6 +84,7 @@ class __NexxPlayerPageState extends State<_NexxPlayerPage> {
 
   Widget _buildPlayer() {
     return NexxPlayer(
+      key: _playerKey,
       configuration: _configuration,
       onControllerCreated: _startPlayer,
     );
@@ -103,7 +120,7 @@ class __NexxPlayerPageState extends State<_NexxPlayerPage> {
 
   void _subscribe(NexxPlayerController controller) {
     _subscription = controller.events().listen(
-      (event) => setState(() => _events.add(event)),
+      _consumeEvent,
       onError: (Object e, StackTrace st) {
         _report('Error occurred during events listening: $e');
         debugPrintStack(
@@ -112,6 +129,21 @@ class __NexxPlayerPageState extends State<_NexxPlayerPage> {
         );
       },
     );
+  }
+
+  void _consumeEvent(PlayerEvent event) {
+    event.visit(this);
+    _events.add(event);
+    if (!_isFullscreen) setState(() {});
+  }
+
+  @override
+  void onPlayerEvent(DirectPlayerEvent event) {
+    if (event.type == NexxEventType.enterFullScreen) {
+      setState(() => _isFullscreen = true);
+    } else if (event.type == NexxEventType.exitFullScreen) {
+      setState(() => _isFullscreen = false);
+    }
   }
 
   @override
@@ -125,7 +157,9 @@ class __NexxPlayerPageState extends State<_NexxPlayerPage> {
 
   NexxPlayerController? _controller;
   StreamSubscription<PlayerEvent>? _subscription;
+  bool _isFullscreen = false;
   final List<PlayerEvent> _events = [];
+  final _playerKey = GlobalKey<NexxPlayerState>();
   final _messengerKey = GlobalKey<ScaffoldMessengerState>();
 
   static final _configuration = NexxPlayerConfiguration(
@@ -154,26 +188,21 @@ class _WidgetPlayerEventVisitor implements PlayerEventVisitor<Widget> {
   const _WidgetPlayerEventVisitor();
 
   @override
-  Widget onPlayerEvent(Map<String, Object?> properties) {
-    return _DirectPlayerEventWidget(properties: properties);
+  Widget onPlayerEvent(DirectPlayerEvent event) {
+    return _DirectPlayerEventWidget(event: event);
   }
 
   @override
-  Widget onPlayerStateChanged(
-    PlayerState state, {
-    required bool playWhenReady,
-  }) {
-    return _PlayerStateEventWidget(playWhenReady: playWhenReady, state: state);
+  Widget onPlayerStateChanged(PlayerStateChangeEvent event) {
+    return _PlayerStateEventWidget(event: event);
   }
 }
 
 class _PlayerStateEventWidget extends StatelessWidget {
-  final bool playWhenReady;
-  final PlayerState state;
+  final PlayerStateChangeEvent event;
 
   const _PlayerStateEventWidget({
-    required this.playWhenReady,
-    required this.state,
+    required this.event,
     Key? key,
   }) : super(key: key);
 
@@ -181,27 +210,23 @@ class _PlayerStateEventWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: const Text('Player State Change'),
-      subtitle: Text('playWhenReady: $playWhenReady\nstate: $state'),
+      subtitle:
+          Text('playWhenReady: ${event.playWhenReady}\nstate: ${event.state}'),
     );
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties
-      ..add(FlagProperty('playWhenReady',
-          value: playWhenReady,
-          ifTrue: '<plays when ready>',
-          ifFalse: '<does not play when ready>'))
-      ..add(EnumProperty<PlayerState>('state', state));
+    properties.add(DiagnosticsProperty('event', event));
   }
 }
 
 class _DirectPlayerEventWidget extends StatelessWidget {
-  final Map<String, Object?> properties;
+  final DirectPlayerEvent event;
 
   const _DirectPlayerEventWidget({
-    required this.properties,
+    required this.event,
     Key? key,
   }) : super(key: key);
 
@@ -209,14 +234,15 @@ class _DirectPlayerEventWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: const Text('Player Event'),
-      subtitle: Text(
-          properties.entries.map((e) => '${e.key}: ${e.value}').join(', ')),
+      subtitle: Text(event.properties.entries
+          .map((e) => '${e.key}: ${e.value}')
+          .join(', ')),
     );
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty('properties', properties));
+    properties.add(DiagnosticsProperty('event', event));
   }
 }

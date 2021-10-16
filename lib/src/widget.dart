@@ -10,13 +10,14 @@ class NexxPlayer extends StatefulWidget {
   final NexxPlayerConfiguration configuration;
   final ValueSetter<NexxPlayerController> onControllerCreated;
 
-  NexxPlayer({
+  const NexxPlayer({
     required this.configuration,
     required this.onControllerCreated,
-  }) : super(key: ValueKey(configuration));
+    Key? key,
+  }) : super(key: key);
 
   @override
-  _NexxPlayerState createState() => _NexxPlayerState();
+  NexxPlayerState createState() => NexxPlayerState();
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -27,7 +28,7 @@ class NexxPlayer extends StatefulWidget {
   }
 }
 
-class _NexxPlayerState extends State<NexxPlayer> {
+class NexxPlayerState extends State<NexxPlayer> {
   late NexxPlayerController _controller;
 
   @override
