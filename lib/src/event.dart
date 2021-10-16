@@ -15,9 +15,19 @@ enum PlayerState {
 }
 
 abstract class PlayerEventVisitor<T> {
-  T onPlayerStateChanged(PlayerState state, {required bool playWhenReady});
+  T onPlayerStateChanged(PlayerStateChangeEvent event);
 
-  T onPlayerEvent(Map<String, Object?> properties);
+  T onPlayerEvent(DirectPlayerEvent event);
+}
+
+/// Ad Hoc Visitor enables you to override only what you need.
+/// Returns `null` by default for every override.
+mixin AdHocVisitor<T> implements PlayerEventVisitor<T?> {
+  @override
+  T? onPlayerStateChanged(PlayerStateChangeEvent event) => null;
+
+  @override
+  T? onPlayerEvent(DirectPlayerEvent event) => null;
 }
 
 @immutable
@@ -29,12 +39,11 @@ class PlayerStateChangeEvent implements PlayerEvent {
 
   @override
   T visit<T>(PlayerEventVisitor<T> visitor) =>
-      visitor.onPlayerStateChanged(state, playWhenReady: playWhenReady);
+      visitor.onPlayerStateChanged(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-
     return other is PlayerStateChangeEvent &&
         other.playWhenReady == playWhenReady &&
         other.state == state;
@@ -56,9 +65,13 @@ class DirectPlayerEvent implements PlayerEvent {
 
   const DirectPlayerEvent(this._properties);
 
+  NexxEventType? get type {
+    final type = _properties['event'];
+    return type == null ? null : type as NexxEventType;
+  }
+
   @override
-  T visit<T>(PlayerEventVisitor<T> visitor) =>
-      visitor.onPlayerEvent(properties);
+  T visit<T>(PlayerEventVisitor<T> visitor) => visitor.onPlayerEvent(this);
 
   @override
   bool operator ==(Object other) {
@@ -75,45 +88,45 @@ class DirectPlayerEvent implements PlayerEvent {
 }
 
 enum NexxEventType {
-    playerAdded,
-    playerReady,
-    changeMedia,
-    changePlayPosition,
-    changeMediaIntent,
-    metadata,
-    startSession,
-    startPlay,
-    startPlayback,
-    mainInteraction,
-    pause,
-    play,
-    replay,
-    second,
-    quarter,
-    progress25,
-    progress50,
-    progress75,
-    progress95,
-    showHotSpot,
-    hideHotSpot,
-    showOverlay,
-    hideOverlay,
-    enterPIP,
-    exitPIP,
-    enterFullScreen,
-    exitFullScreen,
-    mute,
-    unmute,
-    ended,
-    payPreviewEnded,
-    endedAll,
-    error,
-    adCalled,
-    adStarted,
-    adEnded,
-    adResumed,
-    adError,
-    adClicked,
-    trickPlay,
-    bumperClicked,
+  playerAdded,
+  playerReady,
+  changeMedia,
+  changePlayPosition,
+  changeMediaIntent,
+  metadata,
+  startSession,
+  startPlay,
+  startPlayback,
+  mainInteraction,
+  pause,
+  play,
+  replay,
+  second,
+  quarter,
+  progress25,
+  progress50,
+  progress75,
+  progress95,
+  showHotSpot,
+  hideHotSpot,
+  showOverlay,
+  hideOverlay,
+  enterPIP,
+  exitPIP,
+  enterFullScreen,
+  exitFullScreen,
+  mute,
+  unmute,
+  ended,
+  payPreviewEnded,
+  endedAll,
+  error,
+  adCalled,
+  adStarted,
+  adEnded,
+  adResumed,
+  adError,
+  adClicked,
+  trickPlay,
+  bumperClicked,
 }

@@ -4,6 +4,7 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -110,6 +111,7 @@ final class NexxPlayerPlatformView implements PlatformView, MethodChannel.Method
     private static NexxPlayerViewHost createPlayerHostView(Context context) {
         final RelativeLayout root = new RelativeLayout(context);
         root.setLayoutParams(new FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+        root.setBackgroundColor(Color.BLACK);
         final FrameLayout playerArea = new FrameLayout(context);
         playerArea.setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
         root.addView(playerArea);
@@ -220,17 +222,17 @@ final class NexxPlayerPlatformView implements PlatformView, MethodChannel.Method
     }
 
     @Override
+    public void onFullScreen(boolean fullScreen) {
+        // This method isn't even used by the player
+    }
+
+    @Override
     public void onPlayerError(String reason, String details) {
         // No-op
     }
 
     @Override
     public void onVideoSizeChanged(int width, int height, float pixelWidthAspectRatio) {
-        // No-op
-    }
-
-    @Override
-    public void onFullScreen(boolean fullScreen) {
         // No-op
     }
 }

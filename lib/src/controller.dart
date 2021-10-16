@@ -137,13 +137,7 @@ class _PlayerEventFactory {
     final typed = payload as Map<dynamic, dynamic>;
     final casted = typed.cast<String, Object>();
     final type = casted['player_event_type'];
-    if (type == 'player_state_changed') {
-      return _parseStateChangedEvent(casted);
-    } else if (type == 'player_event') {
-      return _parsePlayerEvent(casted);
-    } else {
-      return _parseUnknownEvent(casted);
-    }
+    return _parserMap[type]?.call(this, casted) ?? _parseUnknownEvent(casted);
   }
 
   PlayerEvent _parseStateChangedEvent(Map<String, Object> event) {
@@ -174,6 +168,13 @@ class _PlayerEventFactory {
           '("player_event_type" or "player_event" are expected)',
     );
   }
+
+  static final _parserMap =
+      <String, PlayerEvent Function(_PlayerEventFactory, Map<String, Object>)>{
+    'player_state_changed': (player, event) =>
+        player._parseStateChangedEvent(event),
+    'player_event': (player, event) => player._parsePlayerEvent(event),
+  };
 
   static const _stateMapping = {
     'IDLE': PlayerState.idle,
