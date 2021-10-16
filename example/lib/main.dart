@@ -40,16 +40,16 @@ class _NexxPlayerPage extends StatefulWidget {
   const _NexxPlayerPage({Key? key}) : super(key: key);
 
   @override
-  __NexxPlayerPageState createState() => __NexxPlayerPageState();
+  _NexxPlayerPageState createState() => _NexxPlayerPageState();
 }
 
-class __NexxPlayerPageState extends State<_NexxPlayerPage>
+class _NexxPlayerPageState extends State<_NexxPlayerPage>
     with AdHocVisitor<void> {
   @override
   Widget build(BuildContext context) => _buildPage();
 
   Widget _buildPage() {
-    return _isFullscreen
+    return _mode.shouldExpand
         ? _buildFullscreenPlayerPage()
         : _buildNonFullScreenPlayerPage();
   }
@@ -134,16 +134,13 @@ class __NexxPlayerPageState extends State<_NexxPlayerPage>
   void _consumeEvent(PlayerEvent event) {
     event.visit(this);
     _events.add(event);
-    if (!_isFullscreen) setState(() {});
+    if (!_mode.shouldExpand) setState(() {});
   }
 
   @override
   void onPlayerEvent(DirectPlayerEvent event) {
-    if (event.type == NexxEventType.enterFullScreen) {
-      setState(() => _isFullscreen = true);
-    } else if (event.type == NexxEventType.exitFullScreen) {
-      setState(() => _isFullscreen = false);
-    }
+    final newMode = _modeTransformation[event.type]?.call(_mode);
+    if (newMode != null) setState(() => _mode = newMode);
   }
 
   @override
@@ -157,10 +154,18 @@ class __NexxPlayerPageState extends State<_NexxPlayerPage>
 
   NexxPlayerController? _controller;
   StreamSubscription<PlayerEvent>? _subscription;
-  bool _isFullscreen = false;
+  _PlayerMode _mode = const _PlayerMode.initial();
   final List<PlayerEvent> _events = [];
   final _playerKey = GlobalKey<NexxPlayerState>();
   final _messengerKey = GlobalKey<ScaffoldMessengerState>();
+
+  static final _modeTransformation =
+      <NexxEventType, _PlayerMode Function(_PlayerMode)>{
+    NexxEventType.enterFullScreen: (mode) => mode.fullscreen(isEnabled: true),
+    NexxEventType.exitFullScreen: (mode) => mode.fullscreen(isEnabled: false),
+    NexxEventType.enterPIP: (mode) => mode.pip(isEnabled: true),
+    NexxEventType.exitPIP: (mode) => mode.pip(isEnabled: false),
+  };
 
   static final _configuration = NexxPlayerConfiguration(
     provider: '3q',
@@ -181,6 +186,40 @@ class __NexxPlayerPageState extends State<_NexxPlayerPage>
     startPosition: 0,
     delay: 0.0,
   );
+}
+
+@immutable
+class _PlayerMode {
+  final bool isFullscreen;
+  final bool isInPIP;
+
+  bool get shouldExpand => isFullscreen || isInPIP;
+
+  const _PlayerMode({required this.isFullscreen, required this.isInPIP});
+
+  const _PlayerMode.initial() : this(isFullscreen: false, isInPIP: false);
+
+  _PlayerMode fullscreen({required bool isEnabled}) =>
+      _PlayerMode(isFullscreen: isEnabled, isInPIP: isInPIP);
+
+  _PlayerMode pip({required bool isEnabled}) =>
+      _PlayerMode(isFullscreen: isFullscreen, isInPIP: isEnabled);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is _PlayerMode &&
+        other.isFullscreen == isFullscreen &&
+        other.isInPIP == isInPIP;
+  }
+
+  @override
+  int get hashCode => isFullscreen.hashCode ^ isInPIP.hashCode;
+
+  @override
+  String toString() =>
+      '_PlayerMode(isFullscreen: $isFullscreen, isInPIP: $isInPIP)';
 }
 
 @immutable

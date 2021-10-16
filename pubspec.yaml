@@ -21,4 +21,4 @@ flutter:
     platforms:
       android:
         package: tv.nexx.flutter.android
-        pluginClass: AndroidPlugin
+        pluginClass: NexxPlugin
