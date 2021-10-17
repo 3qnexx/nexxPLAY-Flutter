@@ -39,6 +39,38 @@ class NavigationPage extends StatelessWidget {
   }
 }
 
+// `INTEGRATION_GUIDE` Flutter configuration.
+/// This page manages the player instance and shows how to enable Fullscreen and
+/// configure PiP mode properly.
+/// 
+/// 1. Initialization
+/// First of all, we need to instantiate the player, which is done 
+/// automatically on the first player inflation into the RenderObject hierarchy.
+/// The corresponding NexxPlayerController will be returned from the 
+/// initialization callback.
+/// 
+/// 2. Starting & Events Observation
+/// NexxPlayerController is used to start the player. Also serves as a 
+/// gateway to player events observation. More details are available in the 
+/// `_buildPlayer`, `_startPlayer`, `onPlayerEvent` and `_consumeEvent` 
+/// methods' definitions.
+/// 
+/// 3. Fullscreen Support
+/// Fullscreen support is done by simply moving the player widget to a 
+/// different tree part where it is expanded to the full height & width. It
+/// can be achieved by using a GlobalKey instance. It is implemented around the 
+/// next set of properties, methods and classes: `_playerKey`, `_mode`, 
+/// `_modeTransformation`, `_consumeEvent`, `PlayerEventVisitor` (and 
+/// `AdHocVisitor`), `onPlayerEvent` and `_buildFullscreenPlayerPage()`.
+/// "Entrypoint" method is `onPlayerEvent`.
+/// 
+/// 4. PiP Support
+/// Picture in picture mode is handled automatically by the player, and it is
+/// only needed to expand the player to full screen when in PiP, which is
+/// implemented as a subset of fullscreen implemenetation in a way that
+/// both `isFullscreen` and `isInPIPMode` trigger rendering the player in
+/// the fullscreen mode. "Entrypoint" method is `onPlayerEvent`.
+/// 
 class _NexxPlayerPage extends StatefulWidget {
   const _NexxPlayerPage({Key? key}) : super(key: key);
 
@@ -148,8 +180,8 @@ class _NexxPlayerPageState extends State<_NexxPlayerPage>
 
   @override
   void dispose() {
-    super.dispose();
     _dispose();
+    super.dispose();
   }
 
   Future<void> _dispose() async {

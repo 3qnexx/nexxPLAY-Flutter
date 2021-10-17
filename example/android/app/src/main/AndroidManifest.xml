@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="tv.nexx.flutter.android_example">
 
+    <!-- [INTEGRATION GUIDE] Add `tools:replace="android:label"` to the `application` tag. -->
     <!-- TODO: A transitive dependency of the 3Q Nexx Player (thread-poster) includes
           the `label` attribute, which (for some reason) does not get filtered out by
           `remove` rule marker in the plugin's Android manifest. -->
@@ -10,6 +11,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="nexxPLAY Flutter Testing"
         tools:replace="android:label">
+        <!-- [INTEGRATION GUIDE] Add `android:resizeableActivity="true"` and
+        `android:supportsPictureInPicture="true"` to the `application` tag. -->
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"

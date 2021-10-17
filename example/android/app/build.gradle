@@ -37,12 +37,14 @@ android {
 
     buildTypes {
         release {
+            // [INTEGRATION GUIDE] Disable minification
             minifyEnabled false
             shrinkResources false
             signingConfig signingConfigs.debug
         }
     }
 
+    // [INTEGRATION GUIDE] Copy this to your app/build.gradle
     // TODO: This comes from 3Q Nexx Player as well. Needs some attention.
     packagingOptions {
         exclude 'META-INF/ASL2.0'
