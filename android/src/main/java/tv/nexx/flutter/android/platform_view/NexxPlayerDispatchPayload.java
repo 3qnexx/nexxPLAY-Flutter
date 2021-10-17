@@ -12,6 +12,7 @@ public final class NexxPlayerDispatchPayload {
         this.result = result;
     }
 
+    @SuppressWarnings("unused")
     public MethodCall call() {
         return call;
     }

@@ -15,6 +15,7 @@ import tv.nexx.flutter.android.platform_view.NexxPlayerFactory;
 
 public final class NexxPlugin implements FlutterPlugin, ActivityAware {
 
+    private static final String PLUGIN_IDENTIFIER = "tv.nexx.flutter.android";
     private static final MutableSubject<AndroidEvent> EVENT_SUBJECT = Channel.threadConfined();
 
     public static void post(AndroidEvent event) {
@@ -26,12 +27,12 @@ public final class NexxPlugin implements FlutterPlugin, ActivityAware {
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
         final BinaryMessenger messenger = flutterPluginBinding.getBinaryMessenger();
+        final NexxPlayerConfigurationFactory configurationFactory =
+                NexxPlayerConfigurationFactory.create();
         final NexxPlayerFactory factory = NexxPlayerFactory.from(messenger,
-                NexxPlayerConfigurationFactory.create(),
-                lifecycleReference,
-                EVENT_SUBJECT);
+                configurationFactory, lifecycleReference, EVENT_SUBJECT, PLUGIN_IDENTIFIER);
         flutterPluginBinding.getPlatformViewRegistry()
-                .registerViewFactory(NexxPluginEnvironment.PLUGIN_IDENTIFIER, factory);
+                .registerViewFactory(PLUGIN_IDENTIFIER, factory);
     }
 
     @Override

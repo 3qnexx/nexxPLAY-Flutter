@@ -10,7 +10,7 @@ final class LifecycleReference implements Supplier<Lifecycle>, Consumer<Lifecycl
     @Nullable
     private Lifecycle lifecycle;
 
-    private LifecycleReference(@Nullable Lifecycle lifecycle) {
+    private LifecycleReference(@SuppressWarnings("SameParameterValue") @Nullable Lifecycle lifecycle) {
         this.lifecycle = lifecycle;
     }
 

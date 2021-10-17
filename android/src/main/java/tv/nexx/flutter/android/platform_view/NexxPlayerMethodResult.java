@@ -18,12 +18,6 @@ class NexxPlayerMethodResult {
         return new NexxPlayerMethodResult(identifiedPayload(id));
     }
 
-    public static NexxPlayerMethodResult from(int id, Map<String, Object> additional) {
-        final Map<String, Object> payload = identifiedPayload(id);
-        payload.putAll(additional);
-        return new NexxPlayerMethodResult(payload);
-    }
-
     @NonNull
     private static Map<String, Object> identifiedPayload(int id) {
         final Map<String, Object> result = new HashMap<>();
