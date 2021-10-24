@@ -69,7 +69,7 @@ public class NexxPlayerConfiguration {
     public NexxPLAYEnvironment nexxPLAYEnvironment() {
         final Map<String, Object> result = new HashMap<>();
         result.put(domain, domainID);
-        result.put(alwaysInFullscreen, startFullscreen);
+        result.put(alwaysInFullscreen, startFullscreen ? 1 : 0);
         return new NexxPLAYEnvironment(result);
     }
 

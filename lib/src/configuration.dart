@@ -19,7 +19,7 @@ class NexxPlayerConfiguration {
     required bool disableAds,
     required bool hidePrevNext,
     required bool forcePrevNext,
-    required bool startFullScreen,
+    required bool startFullscreen,
     required int startPosition,
     required double delay,
   }) {
@@ -38,7 +38,7 @@ class NexxPlayerConfiguration {
       'disableAds': disableAds,
       'hidePrevNext': hidePrevNext,
       'forcePrevNext': forcePrevNext,
-      'startFullScreen': startFullScreen,
+      'startFullscreen': startFullscreen,
       'startPosition': startPosition,
       'delay': delay,
     };

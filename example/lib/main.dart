@@ -221,7 +221,7 @@ class _NexxPlayerPageState extends State<_NexxPlayerPage>
     disableAds: true,
     hidePrevNext: false,
     forcePrevNext: false,
-    startFullScreen: false,
+    startFullscreen: false,
     startPosition: 0,
     delay: 0.0,
   );
