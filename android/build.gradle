@@ -16,7 +16,6 @@ rootProject.allprojects {
     repositories {
         mavenCentral()
         google()
-        maven { url 'https://jitpack.io' }
         // A lot of player's dependencies are currently being resolved from JCenter, unfortunately
         //noinspection JcenterRepositoryObsolete,GrDeprecatedAPIUsage
         jcenter()
@@ -36,7 +35,7 @@ android {
 }
 
 dependencies {
-    implementation("tv.nexx.android:play:6.0.03-PREVIEW") {
+    implementation("tv.nexx.android:play:6.0.10-PREVIEW") {
         exclude group: 'com.android.support', module: 'support-v4'
     }
 }
