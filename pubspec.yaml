@@ -1,5 +1,5 @@
-name: nexx
-description: Plugin for the 3Q Nexx Android native Player
+name: nexxplay
+description: Plugin for Android native nexxPLAY
 version: 0.0.1
 homepage:
 
@@ -21,4 +21,4 @@ flutter:
     platforms:
       android:
         package: tv.nexx.flutter.android
-        pluginClass: NexxPlugin
+        pluginClass: NexxPlayPlugin

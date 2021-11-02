@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:nexx/nexx.dart';
+import 'package:nexxplay/nexxplay.dart';
 
 void main() => runApp(const NexxExampleApp());
 
@@ -29,7 +29,7 @@ class NavigationPage extends StatelessWidget {
         child: ElevatedButton(
           onPressed: () {
             Navigator.of(context).push<void>(
-              MaterialPageRoute(builder: (_) => const _NexxPlayerPage()),
+              MaterialPageRoute(builder: (_) => const _NexxPlayPage()),
             );
           },
           child: const Text('Launch player'),
@@ -46,11 +46,11 @@ class NavigationPage extends StatelessWidget {
 /// 1. Initialization
 /// First of all, we need to instantiate the player, which is done 
 /// automatically on the first player inflation into the RenderObject hierarchy.
-/// The corresponding NexxPlayerController will be returned from the 
+/// The corresponding NexxPlayController will be returned from the 
 /// initialization callback.
 /// 
 /// 2. Starting & Events Observation
-/// NexxPlayerController is used to start the player. Also serves as a 
+/// NexxPlayController is used to start the player. Also serves as a 
 /// gateway to player events observation. More details are available in the 
 /// `_buildPlayer`, `_startPlayer`, `onPlayerEvent` and `_consumeEvent` 
 /// methods' definitions.
@@ -71,14 +71,14 @@ class NavigationPage extends StatelessWidget {
 /// both `isFullscreen` and `isInPIPMode` trigger rendering the player in
 /// the fullscreen mode. "Entrypoint" method is `onPlayerEvent`.
 /// 
-class _NexxPlayerPage extends StatefulWidget {
-  const _NexxPlayerPage({Key? key}) : super(key: key);
+class _NexxPlayPage extends StatefulWidget {
+  const _NexxPlayPage({Key? key}) : super(key: key);
 
   @override
-  _NexxPlayerPageState createState() => _NexxPlayerPageState();
+  _NexxPlayPageState createState() => _NexxPlayPageState();
 }
 
-class _NexxPlayerPageState extends State<_NexxPlayerPage>
+class _NexxPlayPageState extends State<_NexxPlayPage>
     with AdHocVisitor<void> {
   @override
   Widget build(BuildContext context) => _buildPage();
@@ -102,7 +102,7 @@ class _NexxPlayerPageState extends State<_NexxPlayerPage>
     return ScaffoldMessenger(
       key: _messengerKey,
       child: Scaffold(
-        appBar: AppBar(title: const Text('Nexx Player example app')),
+        appBar: AppBar(title: const Text('nexxPLAY example app')),
         body: Center(child: _buildContent()),
       ),
     );
@@ -118,7 +118,7 @@ class _NexxPlayerPageState extends State<_NexxPlayerPage>
   }
 
   Widget _buildPlayer() {
-    return NexxPlayer(
+    return NexxPlay(
       key: _playerKey,
       configuration: _configuration,
       onControllerCreated: _startPlayer,
@@ -133,7 +133,7 @@ class _NexxPlayerPageState extends State<_NexxPlayerPage>
     );
   }
 
-  Future<void> _startPlayer(NexxPlayerController controller) async {
+  Future<void> _startPlayer(NexxPlayController controller) async {
     try {
       final result = await controller.start();
       if (!mounted) return;
@@ -153,7 +153,7 @@ class _NexxPlayerPageState extends State<_NexxPlayerPage>
     _messengerKey.currentState?.showSnackBar(SnackBar(content: Text(message)));
   }
 
-  void _subscribe(NexxPlayerController controller) {
+  void _subscribe(NexxPlayController controller) {
     _subscription = controller.events().listen(
       _consumeEvent,
       onError: (Object e, StackTrace st) {
@@ -191,11 +191,11 @@ class _NexxPlayerPageState extends State<_NexxPlayerPage>
     _controller = null;
   }
 
-  NexxPlayerController? _controller;
+  NexxPlayController? _controller;
   StreamSubscription<PlayerEvent>? _subscription;
   _PlayerMode _mode = const _PlayerMode.initial();
   final List<PlayerEvent> _events = [];
-  final _playerKey = GlobalKey<NexxPlayerState>();
+  final _playerKey = GlobalKey<NexxPlayState>();
   final _messengerKey = GlobalKey<ScaffoldMessengerState>();
 
   static final _modeTransformation =
@@ -206,7 +206,7 @@ class _NexxPlayerPageState extends State<_NexxPlayerPage>
     NexxEventType.exitPIP: (mode) => mode.pip(isEnabled: false),
   };
 
-  static final _configuration = NexxPlayerConfiguration(
+  static final _configuration = NexxPlayConfiguration(
     provider: '3q',
     domainID: '484',
     mediaID: '1472879',

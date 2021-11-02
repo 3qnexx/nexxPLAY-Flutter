@@ -3,11 +3,11 @@ package tv.nexx.flutter.android.platform_view;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 
-public final class NexxPlayerDispatchPayload {
+public final class NexxPlayDispatchPayload {
     private final MethodCall call;
     private final MethodChannel.Result result;
 
-    public NexxPlayerDispatchPayload(MethodCall call, MethodChannel.Result result) {
+    public NexxPlayDispatchPayload(MethodCall call, MethodChannel.Result result) {
         this.call = call;
         this.result = result;
     }

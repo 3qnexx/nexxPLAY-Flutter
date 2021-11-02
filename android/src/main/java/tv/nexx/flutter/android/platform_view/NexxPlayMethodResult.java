@@ -6,16 +6,16 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-class NexxPlayerMethodResult {
+class NexxPlayMethodResult {
 
     private final Map<String, Object> payload;
 
-    private NexxPlayerMethodResult(Map<String, Object> payload) {
+    private NexxPlayMethodResult(Map<String, Object> payload) {
         this.payload = payload;
     }
 
-    public static NexxPlayerMethodResult from(int id) {
-        return new NexxPlayerMethodResult(identifiedPayload(id));
+    public static NexxPlayMethodResult from(int id) {
+        return new NexxPlayMethodResult(identifiedPayload(id));
     }
 
     @NonNull
@@ -25,7 +25,7 @@ class NexxPlayerMethodResult {
         return result;
     }
 
-    public NexxPlayerMethodResult put(String key, Object value) {
+    public NexxPlayMethodResult put(String key, Object value) {
         payload.put(key, value);
         return this;
     }

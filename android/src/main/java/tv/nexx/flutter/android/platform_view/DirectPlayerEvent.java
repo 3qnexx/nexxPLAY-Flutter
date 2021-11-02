@@ -10,22 +10,22 @@ import tv.nexx.android.play.Event;
 import tv.nexx.android.play.NexxPLAYNotification.IPlayerEvent;
 
 class DirectPlayerEvent implements CallResult {
-    private final NexxPlayerInstanceID id;
+    private final NexxPlayInstanceID id;
     private final IPlayerEvent event;
 
-    private DirectPlayerEvent(NexxPlayerInstanceID id, IPlayerEvent event) {
+    private DirectPlayerEvent(NexxPlayInstanceID id, IPlayerEvent event) {
         this.id = id;
         this.event = event;
     }
 
-    static DirectPlayerEvent of(NexxPlayerInstanceID id, IPlayerEvent event) {
+    static DirectPlayerEvent of(NexxPlayInstanceID id, IPlayerEvent event) {
         return new DirectPlayerEvent(id, event);
     }
 
     @Override
     public Map<String, Object> asMap() {
         final Map<String, Object> body = preprocessEventBody(event);
-        return NexxPlayerMethodResult.from(id.numeric())
+        return NexxPlayMethodResult.from(id.numeric())
                 .put("properties", body)
                 .put("player_event_type", "player_event")
                 .asMap();

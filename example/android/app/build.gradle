@@ -45,7 +45,7 @@ android {
     }
 
     // [INTEGRATION GUIDE] Copy this to your app/build.gradle
-    // TODO: This comes from 3Q Nexx Player as well. Needs some attention.
+    // TODO: This comes from nexxPLAY as well. Needs some attention.
     packagingOptions {
         exclude 'META-INF/ASL2.0'
         exclude 'META-INF/LICENSE'

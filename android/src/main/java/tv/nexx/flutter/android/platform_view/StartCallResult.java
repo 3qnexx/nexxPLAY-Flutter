@@ -4,22 +4,22 @@ import java.util.Map;
 import java.util.Objects;
 
 class StartCallResult implements CallResult {
-    private final NexxPlayerInstanceID id;
+    private final NexxPlayInstanceID id;
     private final boolean isStarted;
 
     @SuppressWarnings("SameParameterValue")
-    private StartCallResult(NexxPlayerInstanceID id, boolean isStarted) {
+    private StartCallResult(NexxPlayInstanceID id, boolean isStarted) {
         this.id = id;
         this.isStarted = isStarted;
     }
 
-    static StartCallResult started(NexxPlayerInstanceID id) {
+    static StartCallResult started(NexxPlayInstanceID id) {
         return new StartCallResult(id, true);
     }
 
     @Override
     public Map<String, Object> asMap() {
-        return NexxPlayerMethodResult.from(id.numeric()).put("started", isStarted).asMap();
+        return NexxPlayMethodResult.from(id.numeric()).put("started", isStarted).asMap();
     }
 
     @Override

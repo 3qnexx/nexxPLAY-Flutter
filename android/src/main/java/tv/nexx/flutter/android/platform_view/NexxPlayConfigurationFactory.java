@@ -2,18 +2,18 @@ package tv.nexx.flutter.android.platform_view;
 
 import java.util.Map;
 
-import tv.nexx.flutter.android.nexx_player.NexxPlayerConfiguration;
+import tv.nexx.flutter.android.nexxplay.NexxPlayConfiguration;
 
-public class NexxPlayerConfigurationFactory {
+public class NexxPlayConfigurationFactory {
 
-    private NexxPlayerConfigurationFactory() {}
+    private NexxPlayConfigurationFactory() {}
 
-    public static NexxPlayerConfigurationFactory create() {
-        return new NexxPlayerConfigurationFactory();
+    public static NexxPlayConfigurationFactory create() {
+        return new NexxPlayConfigurationFactory();
     }
 
     @SuppressWarnings("unchecked")
-    public NexxPlayerConfiguration fromFlutterArguments(Object args) {
+    public NexxPlayConfiguration fromFlutterArguments(Object args) {
         if (!(args instanceof Map)) throw new InvalidPlayerArgumentsException(args);
         final DynamicArguments arguments = DynamicArguments.from((Map<Object, Object>) args);
         final String provider = arguments.getString("provider");
@@ -34,7 +34,7 @@ public class NexxPlayerConfigurationFactory {
         final String streamingFilter = arguments.getString("streamingFilter");
         final String adType = arguments.getString("adType");
         final Float delayF = delay == null ? null : delay.floatValue();
-        return new NexxPlayerConfiguration(provider, domainID, mediaID, playMode, autoplay,
+        return new NexxPlayConfiguration(provider, domainID, mediaID, playMode, autoplay,
                 autoNext, disableAds, dataMode, hidePrevNext, forcePrevNext, exitMode,
                 startPosition, delayF, startFullscreen, mediaSourceType, streamingFilter, adType);
     }

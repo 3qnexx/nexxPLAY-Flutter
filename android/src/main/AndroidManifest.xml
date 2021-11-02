@@ -4,7 +4,7 @@
 
     <application>
         <!-- TODO: Override of an assumingly mistakenly put `com.google.android.gms.version`
-              key in the 3Q Nexx Player's manifest. Seems to be left there after abandoning
+              key in the nexxPLAY's manifest. Seems to be left there after abandoning
               AdMob implementation, which, in turn, was added in 2017. -->
         <meta-data
             android:name="com.google.android.gms.version"

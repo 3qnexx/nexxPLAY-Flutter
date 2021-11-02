@@ -3,7 +3,7 @@
     package="tv.nexx.flutter.android_example">
 
     <!-- [INTEGRATION GUIDE] Add `tools:replace="android:label"` to the `application` tag. -->
-    <!-- TODO: A transitive dependency of the 3Q Nexx Player (thread-poster) includes
+    <!-- TODO: A transitive dependency of the nexxPLAY (thread-poster) includes
           the `label` attribute, which (for some reason) does not get filtered out by
           `remove` rule marker in the plugin's Android manifest. -->
     <application

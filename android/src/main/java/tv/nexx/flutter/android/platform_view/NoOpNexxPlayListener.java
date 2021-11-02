@@ -3,7 +3,7 @@ package tv.nexx.flutter.android.platform_view;
 import tv.nexx.android.play.NexxPLAYNotification;
 import tv.nexx.android.play.player.Player;
 
-public interface NoOpNexxPlayerListener extends NexxPLAYNotification.Listener {
+public interface NoOpNexxPlayListener extends NexxPLAYNotification.Listener {
     @Override
     default void onPlayerStateChanged(boolean playWhenReady, Player.State current) {
     }

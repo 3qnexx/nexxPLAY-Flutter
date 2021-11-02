@@ -10,10 +10,10 @@ import io.flutter.plugin.common.BinaryMessenger;
 import tv.nexx.flutter.android.android.event.AndroidEvent;
 import tv.nexx.flutter.android.estd.observer.Channel;
 import tv.nexx.flutter.android.estd.observer.MutableSubject;
-import tv.nexx.flutter.android.platform_view.NexxPlayerConfigurationFactory;
-import tv.nexx.flutter.android.platform_view.NexxPlayerFactory;
+import tv.nexx.flutter.android.platform_view.NexxPlayConfigurationFactory;
+import tv.nexx.flutter.android.platform_view.NexxPlayFactory;
 
-public final class NexxPlugin implements FlutterPlugin, ActivityAware {
+public final class NexxPlayPlugin implements FlutterPlugin, ActivityAware {
 
     private static final String PLUGIN_IDENTIFIER = "tv.nexx.flutter.android";
     private static final MutableSubject<AndroidEvent> EVENT_SUBJECT = Channel.threadConfined();
@@ -27,9 +27,9 @@ public final class NexxPlugin implements FlutterPlugin, ActivityAware {
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
         final BinaryMessenger messenger = flutterPluginBinding.getBinaryMessenger();
-        final NexxPlayerConfigurationFactory configurationFactory =
-                NexxPlayerConfigurationFactory.create();
-        final NexxPlayerFactory factory = NexxPlayerFactory.from(messenger,
+        final NexxPlayConfigurationFactory configurationFactory =
+                NexxPlayConfigurationFactory.create();
+        final NexxPlayFactory factory = NexxPlayFactory.from(messenger,
                 configurationFactory, lifecycleReference, EVENT_SUBJECT, PLUGIN_IDENTIFIER);
         flutterPluginBinding.getPlatformViewRegistry()
                 .registerViewFactory(PLUGIN_IDENTIFIER, factory);

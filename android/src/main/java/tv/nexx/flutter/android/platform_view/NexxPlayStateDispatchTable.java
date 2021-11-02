@@ -3,11 +3,11 @@ package tv.nexx.flutter.android.platform_view;
 import tv.nexx.android.play.INexxPLAY;
 import tv.nexx.android.play.MediaSourceType;
 import tv.nexx.flutter.android.estd.virtual_dispatch.DispatchTable;
-import tv.nexx.flutter.android.nexx_player.NexxPlayerConfiguration;
+import tv.nexx.flutter.android.nexxplay.NexxPlayConfiguration;
 
-class NexxPlayerStateDispatchTable {
+class NexxPlayStateDispatchTable {
 
-    private static final DispatchTable<MediaSourceType, INexxPLAY, NexxPlayerConfiguration> DISPATCH_TABLE = DispatchTable.threadConfined();
+    private static final DispatchTable<MediaSourceType, INexxPLAY, NexxPlayConfiguration> DISPATCH_TABLE = DispatchTable.threadConfined();
 
     static {
         DISPATCH_TABLE.set(MediaSourceType.NORMAL, (player, config) ->
@@ -18,20 +18,20 @@ class NexxPlayerStateDispatchTable {
                 player.startPlayWithGlobalID(config.getMediaID(), config.nexxPLAYConfiguration()));
     }
 
-    private NexxPlayerStateDispatchTable() {
+    private NexxPlayStateDispatchTable() {
     }
 
     // Thread-safe initialization via classloader
     private static class InstanceHolder {
-        private static final NexxPlayerStateDispatchTable INSTANCE =
-                new NexxPlayerStateDispatchTable();
+        private static final NexxPlayStateDispatchTable INSTANCE =
+                new NexxPlayStateDispatchTable();
     }
 
-    static NexxPlayerStateDispatchTable get() {
-        return NexxPlayerStateDispatchTable.InstanceHolder.INSTANCE;
+    static NexxPlayStateDispatchTable get() {
+        return NexxPlayStateDispatchTable.InstanceHolder.INSTANCE;
     }
 
-    public void dispatch(MediaSourceType type, INexxPLAY player, NexxPlayerConfiguration conf) {
+    public void dispatch(MediaSourceType type, INexxPLAY player, NexxPlayConfiguration conf) {
         DISPATCH_TABLE.dispatch(type, player, conf);
     }
 

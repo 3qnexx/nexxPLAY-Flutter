@@ -2,16 +2,16 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:nexx/src/event.dart';
+import 'package:nexxplay/src/event.dart';
 
-abstract class NexxPlayerControllerFactory {
-  factory NexxPlayerControllerFactory() =
-      _MethodChannelNexxPlayerControllerFactory;
+abstract class NexxPlayControllerFactory {
+  factory NexxPlayControllerFactory() =
+      _MethodChannelNexxPlayControllerFactory;
 
-  NexxPlayerController create(String type, int id);
+  NexxPlayController create(String type, int id);
 }
 
-abstract class NexxPlayerController {
+abstract class NexxPlayController {
   Future<bool> start();
 
   Stream<PlayerEvent> events();
@@ -19,16 +19,16 @@ abstract class NexxPlayerController {
   void dispose();
 }
 
-class _MethodChannelNexxPlayerControllerFactory
-    implements NexxPlayerControllerFactory {
-  const _MethodChannelNexxPlayerControllerFactory();
+class _MethodChannelNexxPlayControllerFactory
+    implements NexxPlayControllerFactory {
+  const _MethodChannelNexxPlayControllerFactory();
 
   @override
-  NexxPlayerController create(String type, int id) {
+  NexxPlayController create(String type, int id) {
     final identifier = '${type}_$id';
     final methodChannel = MethodChannel('${identifier}_methods');
     final eventChannel = EventChannel('${identifier}_events');
-    return _MethodChannelNexxPlayerController(
+    return _MethodChannelNexxPlayController(
       methodChannel,
       eventChannel,
       const _PlayerEventFactory(),
@@ -36,8 +36,8 @@ class _MethodChannelNexxPlayerControllerFactory
   }
 }
 
-class _MethodChannelNexxPlayerController implements NexxPlayerController {
-  _MethodChannelNexxPlayerController(
+class _MethodChannelNexxPlayController implements NexxPlayController {
+  _MethodChannelNexxPlayController(
       this._methodChannel, this._eventChannel, this._eventFactory);
 
   @override

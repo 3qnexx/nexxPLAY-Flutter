@@ -20,18 +20,18 @@ import tv.nexx.flutter.android.android.event.OnPIPModeChangedEvent;
 import tv.nexx.flutter.android.android.event.OnUserLeaveHintEvent;
 import tv.nexx.flutter.android.estd.functional.Consumer;
 import tv.nexx.flutter.android.estd.virtual_dispatch.UndefinedDispatchTableMethodException;
-import tv.nexx.flutter.android.nexx_player.NexxPlayerConfiguration;
+import tv.nexx.flutter.android.nexxplay.NexxPlayConfiguration;
 
-final class NexxPlayerPlatformView implements PlatformView, MethodChannel.MethodCallHandler,
-        EventChannel.StreamHandler, LifecycleObserver, NoOpNexxPlayerListener,
+final class NexxPlayPlatformView implements PlatformView, MethodChannel.MethodCallHandler,
+        EventChannel.StreamHandler, LifecycleObserver, NoOpNexxPlayListener,
         Consumer<AndroidEvent>, AndroidEventVisitor {
 
-    private static final NexxPlayerPlatformViewDispatchTable DISPATCH_TABLE = NexxPlayerPlatformViewDispatchTable.get();
-    private static final NexxPlayerStateDispatchTable PLAYER_DISPATCH_TABLE = NexxPlayerStateDispatchTable.get();
+    private static final NexxPlayPlatformViewDispatchTable DISPATCH_TABLE = NexxPlayPlatformViewDispatchTable.get();
+    private static final NexxPlayStateDispatchTable PLAYER_DISPATCH_TABLE = NexxPlayStateDispatchTable.get();
 
-    private final NexxPlayerPlatformViewState state;
+    private final NexxPlayPlatformViewState state;
 
-    NexxPlayerPlatformView(NexxPlayerPlatformViewState state) {
+    NexxPlayPlatformView(NexxPlayPlatformViewState state) {
         this.state = state;
     }
 
@@ -42,15 +42,15 @@ final class NexxPlayerPlatformView implements PlatformView, MethodChannel.Method
     @Override
     public void onMethodCall(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
         try {
-            DISPATCH_TABLE.dispatch(call.method, this, new NexxPlayerDispatchPayload(call, result));
+            DISPATCH_TABLE.dispatch(call.method, this, new NexxPlayDispatchPayload(call, result));
         } catch (UndefinedDispatchTableMethodException unused) {
             result.notImplemented();
         }
     }
 
-    void start(NexxPlayerDispatchPayload payload) {
+    void start(NexxPlayDispatchPayload payload) {
         if (state.player() == null) return;
-        final NexxPlayerConfiguration conf = state.configuration();
+        final NexxPlayConfiguration conf = state.configuration();
         state.player().setEnvironment(conf.nexxPLAYEnvironment());
         PLAYER_DISPATCH_TABLE.dispatch(conf.getMediaSourceType(), state.player(), conf);
         payload.result().success(StartCallResult.started(state.id()).asMap());

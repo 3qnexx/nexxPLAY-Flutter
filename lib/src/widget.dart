@@ -3,21 +3,21 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:nexx/src/configuration.dart';
-import 'package:nexx/src/controller.dart';
+import 'package:nexxplay/src/configuration.dart';
+import 'package:nexxplay/src/controller.dart';
 
-class NexxPlayer extends StatefulWidget {
-  final NexxPlayerConfiguration configuration;
-  final ValueSetter<NexxPlayerController> onControllerCreated;
+class NexxPlay extends StatefulWidget {
+  final NexxPlayConfiguration configuration;
+  final ValueSetter<NexxPlayController> onControllerCreated;
 
-  const NexxPlayer({
+  const NexxPlay({
     required this.configuration,
     required this.onControllerCreated,
     Key? key,
   }) : super(key: key);
 
   @override
-  NexxPlayerState createState() => NexxPlayerState();
+  NexxPlayState createState() => NexxPlayState();
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -28,8 +28,8 @@ class NexxPlayer extends StatefulWidget {
   }
 }
 
-class NexxPlayerState extends State<NexxPlayer> {
-  late NexxPlayerController _controller;
+class NexxPlayState extends State<NexxPlay> {
+  late NexxPlayController _controller;
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +60,7 @@ class NexxPlayerState extends State<NexxPlayer> {
   }
 
   void _onPlatformViewCreated(int id) {
-    _controller = NexxPlayerControllerFactory().create(_viewType, id);
+    _controller = NexxPlayControllerFactory().create(_viewType, id);
     widget.onControllerCreated(_controller);
   }
 

@@ -6,11 +6,11 @@
 /// Refer to the documentation of the corresponding class if you are interested
 /// in certain specifics.
 
-library nexx;
+library nexxplay;
 
-export 'src/configuration.dart' show NexxPlayerConfiguration;
+export 'src/configuration.dart' show NexxPlayConfiguration;
 export 'src/controller.dart'
-    show NexxPlayerController, NexxPlayerControllerFactory;
+    show NexxPlayController, NexxPlayControllerFactory;
 export 'src/event.dart'
     show
         DirectPlayerEvent,
@@ -20,4 +20,4 @@ export 'src/event.dart'
         NexxEventType,
         PlayerState,
         AdHocVisitor;
-export 'src/widget.dart' show NexxPlayer, NexxPlayerState;
+export 'src/widget.dart' show NexxPlay, NexxPlayState;

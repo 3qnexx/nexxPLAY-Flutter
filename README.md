@@ -1,11 +1,11 @@
-# nexxPLAY Flutter Player
+# nexxPLAY Flutter
 
 ## Features
 
-Flutter plugin serves as a wrapper for the Android nexxPLAY player, and, combined
+Flutter plugin serves as a wrapper for the Android nexxPLAY, and, combined
 with the custom code that the "example" app provides, enables next features:
 
-- nexxPLAY player native view wrapped with a widget available for use
+- nexxPLAY native view wrapped with a widget available for use
 - Dynamic configuration support
 - Player events observation
 - Fullscreen mode

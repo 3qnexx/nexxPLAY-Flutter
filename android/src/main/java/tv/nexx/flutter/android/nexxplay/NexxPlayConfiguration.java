@@ -1,4 +1,4 @@
-package tv.nexx.flutter.android.nexx_player;
+package tv.nexx.flutter.android.nexxplay;
 
 import static tv.nexx.android.play.NexxPLAYEnvironment.alwaysInFullscreen;
 import static tv.nexx.android.play.NexxPLAYEnvironment.domain;
@@ -11,7 +11,7 @@ import tv.nexx.android.play.MediaSourceType;
 import tv.nexx.android.play.NexxPLAYConfiguration;
 import tv.nexx.android.play.NexxPLAYEnvironment;
 
-public class NexxPlayerConfiguration {
+public class NexxPlayConfiguration {
     private final String provider;
     private final String domainID;
     private final String mediaID;
@@ -30,23 +30,23 @@ public class NexxPlayerConfiguration {
     private final String streamingFilter;
     private final String adType;
 
-    public NexxPlayerConfiguration(String provider,
-                                   String domainID,
-                                   String mediaID,
-                                   String playMode,
-                                   Boolean autoplay,
-                                   Boolean autoNext,
-                                   Boolean disableAds,
-                                   String dataMode,
-                                   Boolean hidePrevNext,
-                                   Boolean forcePrevNext,
-                                   String exitMode,
-                                   Integer startPosition,
-                                   Float delay,
-                                   Boolean startFullscreen,
-                                   String mediaSourceType,
-                                   String streamingFilter,
-                                   String adType) {
+    public NexxPlayConfiguration(String provider,
+                                 String domainID,
+                                 String mediaID,
+                                 String playMode,
+                                 Boolean autoplay,
+                                 Boolean autoNext,
+                                 Boolean disableAds,
+                                 String dataMode,
+                                 Boolean hidePrevNext,
+                                 Boolean forcePrevNext,
+                                 String exitMode,
+                                 Integer startPosition,
+                                 Float delay,
+                                 Boolean startFullscreen,
+                                 String mediaSourceType,
+                                 String streamingFilter,
+                                 String adType) {
         this.provider = provider;
         this.domainID = domainID;
         this.mediaID = mediaID;
@@ -112,7 +112,7 @@ public class NexxPlayerConfiguration {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        NexxPlayerConfiguration that = (NexxPlayerConfiguration) o;
+        NexxPlayConfiguration that = (NexxPlayConfiguration) o;
         return Objects.equals(autoplay, that.autoplay) &&
                 Objects.equals(autoNext, that.autoNext) &&
                 Objects.equals(disableAds, that.disableAds) &&
@@ -157,7 +157,7 @@ public class NexxPlayerConfiguration {
     @SuppressWarnings("NullableProblems")
     @Override
     public String toString() {
-        return "NexxPlayerConfiguration{" +
+        return "NexxPlayConfiguration{" +
                 "provider='" + provider + '\'' +
                 ", domainID='" + domainID + '\'' +
                 ", mediaID='" + mediaID + '\'' +

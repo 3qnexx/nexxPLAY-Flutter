@@ -13,15 +13,15 @@ import tv.nexx.android.play.INexxPLAY;
 import tv.nexx.flutter.android.android.event.AndroidEvent;
 import tv.nexx.flutter.android.estd.functional.Supplier;
 import tv.nexx.flutter.android.estd.observer.Subject;
-import tv.nexx.flutter.android.nexx_player.NexxPlayerConfiguration;
+import tv.nexx.flutter.android.nexxplay.NexxPlayConfiguration;
 
-class NexxPlayerPlatformViewState {
+class NexxPlayPlatformViewState {
 
-    private final NexxPlayerInstanceID id;
+    private final NexxPlayInstanceID id;
     private final MethodChannel methodChannel;
     private final EventChannel eventChannel;
     private final Supplier<Lifecycle> lifecycle;
-    private final NexxPlayerConfiguration configuration;
+    private final NexxPlayConfiguration configuration;
     private final Subject<AndroidEvent> subject;
     // Mutable due to the PlatformView#dispose contract
     @Nullable
@@ -31,14 +31,14 @@ class NexxPlayerPlatformViewState {
     @Nullable
     private INexxPLAY player;
 
-    NexxPlayerPlatformViewState(Supplier<Lifecycle> lifecycle,
-                                Subject<AndroidEvent> subject,
-                                NexxPlayerInstanceID id,
-                                NexxPlayerConfiguration configuration,
-                                MethodChannel methodChannel,
-                                EventChannel eventChannel,
-                                ViewGroup host,
-                                INexxPLAY player) {
+    NexxPlayPlatformViewState(Supplier<Lifecycle> lifecycle,
+                              Subject<AndroidEvent> subject,
+                              NexxPlayInstanceID id,
+                              NexxPlayConfiguration configuration,
+                              MethodChannel methodChannel,
+                              EventChannel eventChannel,
+                              ViewGroup host,
+                              INexxPLAY player) {
         this.id = id;
         this.methodChannel = methodChannel;
         this.eventChannel = eventChannel;
@@ -51,7 +51,7 @@ class NexxPlayerPlatformViewState {
 
     // Method exists to prevent object leaking in the constructor
     // https://stackoverflow.com/a/9851843/7884542
-    void initialize(NexxPlayerPlatformView view) {
+    void initialize(NexxPlayPlatformView view) {
         final Lifecycle lifecycle = this.lifecycle.get();
         Objects.requireNonNull(lifecycle, "Lifecycle is null, normal operation is disrupted.");
         methodChannel.setMethodCallHandler(view);
@@ -60,11 +60,11 @@ class NexxPlayerPlatformViewState {
         subject.subscribe(view);
     }
 
-    NexxPlayerInstanceID id() {
+    NexxPlayInstanceID id() {
         return id;
     }
 
-    NexxPlayerConfiguration configuration() {
+    NexxPlayConfiguration configuration() {
         return configuration;
     }
 
@@ -84,7 +84,7 @@ class NexxPlayerPlatformViewState {
         return player;
     }
 
-    void dispose(NexxPlayerPlatformView view) {
+    void dispose(NexxPlayPlatformView view) {
         subject.unsubscribe(view);
         final Lifecycle lifecycle = this.lifecycle.get();
         if (lifecycle != null) lifecycle.removeObserver(view);

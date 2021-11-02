@@ -19,7 +19,7 @@ rootProject.allprojects {
         // A lot of player's dependencies are currently being resolved from JCenter, unfortunately
         //noinspection JcenterRepositoryObsolete,GrDeprecatedAPIUsage
         jcenter()
-        // 3Q Nexx Player's hosting repository
+        // nexxPLAY hosting repository
         maven { url "https://www.myget.org/F/3qnexx/maven" }
     }
 }
