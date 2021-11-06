@@ -35,7 +35,7 @@ android {
 }
 
 dependencies {
-    implementation("tv.nexx.android:play:6.0.11-PREVIEW") {
+    implementation("tv.nexx.android:play:6.0.12-PREVIEW") {
         exclude group: 'com.android.support', module: 'support-v4'
     }
 }

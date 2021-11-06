@@ -5,18 +5,58 @@ import 'package:flutter/services.dart';
 import 'package:nexxplay/src/event.dart';
 
 abstract class NexxPlayControllerFactory {
-  factory NexxPlayControllerFactory() =
-      _MethodChannelNexxPlayControllerFactory;
+  factory NexxPlayControllerFactory() = _MethodChannelNexxPlayControllerFactory;
 
   NexxPlayController create(String type, int id);
 }
 
 abstract class NexxPlayController {
-  Future<bool> start();
+  Future<bool> start(NexxPlayPlaybackConfiguration configuration);
 
   Stream<PlayerEvent> events();
 
   void dispose();
+}
+
+class NexxPlayPlaybackConfiguration {
+  final String _mediaSourceType;
+  final String _mediaID;
+  final String? _playMode;
+  final String? _provider;
+
+  const NexxPlayPlaybackConfiguration.normal({
+    required String playMode,
+    required String mediaID,
+  })  : _mediaSourceType = 'NORMAL',
+        _mediaID = mediaID,
+        _playMode = playMode,
+        _provider = null;
+
+  const NexxPlayPlaybackConfiguration.remote({
+    required String playMode,
+    required String mediaID,
+    required String provider,
+  })  : _mediaSourceType = 'REMOTE',
+        _mediaID = mediaID,
+        _playMode = playMode,
+        _provider = provider;
+
+  const NexxPlayPlaybackConfiguration.global({required String mediaID})
+      : _mediaSourceType = 'GLOBAL',
+        _mediaID = mediaID,
+        _playMode = null,
+        _provider = null;
+
+  Map<String, Object> toMap() {
+    final playMode = _playMode;
+    final provider = _provider;
+    return {
+      'mediaSourceType': _mediaSourceType,
+      'mediaID': _mediaID,
+      if (playMode != null) 'playMode': playMode,
+      if (provider != null) 'provider': provider,
+    };
+  }
 }
 
 class _MethodChannelNexxPlayControllerFactory
@@ -41,9 +81,9 @@ class _MethodChannelNexxPlayController implements NexxPlayController {
       this._methodChannel, this._eventChannel, this._eventFactory);
 
   @override
-  Future<bool> start() async {
-    final result =
-        await _methodChannel.invokeMapMethod<String, Object>('start');
+  Future<bool> start(NexxPlayPlaybackConfiguration configuration) async {
+    final result = await _methodChannel.invokeMapMethod<String, Object>(
+        'start', configuration.toMap());
     if (result == null) throw ArgumentError.notNull('result');
     final typed = _StartResult(_MethodChannelMapResult(result));
     if (typed.isSuccessful()) {

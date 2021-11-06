@@ -42,35 +42,35 @@ class NavigationPage extends StatelessWidget {
 // `INTEGRATION_GUIDE` Flutter configuration.
 /// This page manages the player instance and shows how to enable Fullscreen and
 /// configure PiP mode properly.
-/// 
+///
 /// 1. Initialization
-/// First of all, we need to instantiate the player, which is done 
+/// First of all, we need to instantiate the player, which is done
 /// automatically on the first player inflation into the RenderObject hierarchy.
-/// The corresponding NexxPlayController will be returned from the 
+/// The corresponding NexxPlayController will be returned from the
 /// initialization callback.
-/// 
+///
 /// 2. Starting & Events Observation
-/// NexxPlayController is used to start the player. Also serves as a 
-/// gateway to player events observation. More details are available in the 
-/// `_buildPlayer`, `_startPlayer`, `onPlayerEvent` and `_consumeEvent` 
+/// NexxPlayController is used to start the player. Also serves as a
+/// gateway to player events observation. More details are available in the
+/// `_buildPlayer`, `_startPlayer`, `onPlayerEvent` and `_consumeEvent`
 /// methods' definitions.
-/// 
+///
 /// 3. Fullscreen Support
-/// Fullscreen support is done by simply moving the player widget to a 
+/// Fullscreen support is done by simply moving the player widget to a
 /// different tree part where it is expanded to the full height & width. It
-/// can be achieved by using a GlobalKey instance. It is implemented around the 
-/// next set of properties, methods and classes: `_playerKey`, `_mode`, 
-/// `_modeTransformation`, `_consumeEvent`, `PlayerEventVisitor` (and 
+/// can be achieved by using a GlobalKey instance. It is implemented around the
+/// next set of properties, methods and classes: `_playerKey`, `_mode`,
+/// `_modeTransformation`, `_consumeEvent`, `PlayerEventVisitor` (and
 /// `AdHocVisitor`), `onPlayerEvent` and `_buildFullscreenPlayerPage()`.
 /// "Entrypoint" method is `onPlayerEvent`.
-/// 
+///
 /// 4. PiP Support
 /// Picture in picture mode is handled automatically by the player, and it is
 /// only needed to expand the player to full screen when in PiP, which is
 /// implemented as a subset of fullscreen implemenetation in a way that
 /// both `isFullscreen` and `isInPIPMode` trigger rendering the player in
 /// the fullscreen mode. "Entrypoint" method is `onPlayerEvent`.
-/// 
+///
 class _NexxPlayPage extends StatefulWidget {
   const _NexxPlayPage({Key? key}) : super(key: key);
 
@@ -78,8 +78,7 @@ class _NexxPlayPage extends StatefulWidget {
   _NexxPlayPageState createState() => _NexxPlayPageState();
 }
 
-class _NexxPlayPageState extends State<_NexxPlayPage>
-    with AdHocVisitor<void> {
+class _NexxPlayPageState extends State<_NexxPlayPage> with AdHocVisitor<void> {
   @override
   Widget build(BuildContext context) => _buildPage();
 
@@ -120,6 +119,7 @@ class _NexxPlayPageState extends State<_NexxPlayPage>
   Widget _buildPlayer() {
     return NexxPlay(
       key: _playerKey,
+      environment: _environment,
       configuration: _configuration,
       onControllerCreated: _startPlayer,
     );
@@ -135,7 +135,7 @@ class _NexxPlayPageState extends State<_NexxPlayPage>
 
   Future<void> _startPlayer(NexxPlayController controller) async {
     try {
-      final result = await controller.start();
+      final result = await controller.start(_playback);
       if (!mounted) return;
       if (result) {
         _subscribe(controller);
@@ -206,24 +206,28 @@ class _NexxPlayPageState extends State<_NexxPlayPage>
     NexxEventType.exitPIP: (mode) => mode.pip(isEnabled: false),
   };
 
-  static final _configuration = NexxPlayConfiguration(
-    provider: '3q',
-    domainID: '484',
-    mediaID: '1472879',
+  static const _environment = NexxPlayEnvironment({
+    'domain': '484',
+    'startFullscreen': 0,
+  });
+
+  static const _configuration = NexxPlayConfiguration({
+    'dataMode': 'API',
+    'exitMode': 'load',
+    'streamingFilter': '',
+    'adType': 'IMA',
+    'autoplay': 0,
+    'autoNext': 1,
+    'disableAds': 1,
+    'hidePrevNext': 0,
+    'forcePrevNext': 0,
+    'startPosition': 0,
+    'delay': 0.0,
+  });
+
+  static const _playback = NexxPlayPlaybackConfiguration.normal(
     playMode: 'video',
-    dataMode: 'API',
-    exitMode: 'load',
-    mediaSourceType: 'NORMAL',
-    streamingFilter: '',
-    adType: 'IMA',
-    autoplay: false,
-    autoNext: true,
-    disableAds: true,
-    hidePrevNext: false,
-    forcePrevNext: false,
-    startFullscreen: false,
-    startPosition: 0,
-    delay: 0.0,
+    mediaID: '1472879',
   );
 }
 

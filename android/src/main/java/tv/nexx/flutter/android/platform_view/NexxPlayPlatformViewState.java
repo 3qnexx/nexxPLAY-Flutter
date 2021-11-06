@@ -13,7 +13,6 @@ import tv.nexx.android.play.INexxPLAY;
 import tv.nexx.flutter.android.android.event.AndroidEvent;
 import tv.nexx.flutter.android.estd.functional.Supplier;
 import tv.nexx.flutter.android.estd.observer.Subject;
-import tv.nexx.flutter.android.nexxplay.NexxPlayConfiguration;
 
 class NexxPlayPlatformViewState {
 
@@ -21,7 +20,7 @@ class NexxPlayPlatformViewState {
     private final MethodChannel methodChannel;
     private final EventChannel eventChannel;
     private final Supplier<Lifecycle> lifecycle;
-    private final NexxPlayConfiguration configuration;
+    private final NexxPlayInitializationArguments configuration;
     private final Subject<AndroidEvent> subject;
     // Mutable due to the PlatformView#dispose contract
     @Nullable
@@ -34,7 +33,7 @@ class NexxPlayPlatformViewState {
     NexxPlayPlatformViewState(Supplier<Lifecycle> lifecycle,
                               Subject<AndroidEvent> subject,
                               NexxPlayInstanceID id,
-                              NexxPlayConfiguration configuration,
+                              NexxPlayInitializationArguments configuration,
                               MethodChannel methodChannel,
                               EventChannel eventChannel,
                               ViewGroup host,
@@ -64,7 +63,7 @@ class NexxPlayPlatformViewState {
         return id;
     }
 
-    NexxPlayConfiguration configuration() {
+    NexxPlayInitializationArguments initializationArguments() {
         return configuration;
     }
 

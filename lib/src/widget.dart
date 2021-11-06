@@ -7,10 +7,12 @@ import 'package:nexxplay/src/configuration.dart';
 import 'package:nexxplay/src/controller.dart';
 
 class NexxPlay extends StatefulWidget {
+  final NexxPlayEnvironment environment;
   final NexxPlayConfiguration configuration;
   final ValueSetter<NexxPlayController> onControllerCreated;
 
   const NexxPlay({
+    required this.environment,
     required this.configuration,
     required this.onControllerCreated,
     Key? key,
@@ -23,6 +25,7 @@ class NexxPlay extends StatefulWidget {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
+      ..add(DiagnosticsProperty('environment', environment))
       ..add(DiagnosticsProperty('configuration', configuration))
       ..add(ObjectFlagProperty.has('onControllerCreated', onControllerCreated));
   }
@@ -47,7 +50,10 @@ class NexxPlayState extends State<NexxPlay> {
           id: params.id,
           viewType: _viewType,
           layoutDirection: TextDirection.ltr,
-          creationParams: widget.configuration.toMap(),
+          creationParams: <String, Object>{
+            'environment': widget.environment.asMap(),
+            'configuration': widget.configuration.asMap(),
+          },
           creationParamsCodec: const StandardMessageCodec(),
         )
           ..addOnPlatformViewCreatedListener((int id) {

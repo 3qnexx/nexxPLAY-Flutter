@@ -1,64 +1,46 @@
 import 'package:flutter/foundation.dart';
 
 @immutable
-class NexxPlayConfiguration {
-  final Map<String, Object> _arguments;
+class NexxPlayEnvironment {
+  final Map<String, Object> _environment;
 
-  factory NexxPlayConfiguration({
-    required String provider,
-    required String domainID,
-    required String mediaID,
-    required String playMode,
-    required String dataMode,
-    required String exitMode,
-    required String mediaSourceType,
-    required String streamingFilter,
-    required String adType,
-    required bool autoplay,
-    required bool autoNext,
-    required bool disableAds,
-    required bool hidePrevNext,
-    required bool forcePrevNext,
-    required bool startFullscreen,
-    required int startPosition,
-    required double delay,
-  }) {
-    final arguments = {
-      'provider': provider,
-      'domainID': domainID,
-      'mediaID': mediaID,
-      'playMode': playMode,
-      'dataMode': dataMode,
-      'exitMode': exitMode,
-      'mediaSourceType': mediaSourceType,
-      'streamingFilter': streamingFilter,
-      'adType': adType,
-      'autoplay': autoplay,
-      'autoNext': autoNext,
-      'disableAds': disableAds,
-      'hidePrevNext': hidePrevNext,
-      'forcePrevNext': forcePrevNext,
-      'startFullscreen': startFullscreen,
-      'startPosition': startPosition,
-      'delay': delay,
-    };
-    return NexxPlayConfiguration._(arguments);
-  }
+  const NexxPlayEnvironment(this._environment);
 
-  const NexxPlayConfiguration._(this._arguments);
-
-  Map<String, Object> toMap() => Map.of(_arguments);
+  Map<String, Object> asMap() => _environment;
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    return other is NexxPlayConfiguration &&
-      mapEquals(other._arguments, _arguments);
+    return other is NexxPlayEnvironment &&
+        mapEquals(other._environment, _environment);
   }
 
   @override
-  int get hashCode => _arguments.hashCode;
+  int get hashCode => _environment.hashCode;
 
   @override
-  String toString() => 'NexxPlayConfiguration(_arguments: $_arguments)';
+  String toString() => 'NexxPlayEnvironment(_environment: $_environment)';
+}
+
+@immutable
+class NexxPlayConfiguration {
+  final Map<String, Object> _configuration;
+
+  const NexxPlayConfiguration(this._configuration);
+
+  Map<String, Object> asMap() => _configuration;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is NexxPlayConfiguration &&
+        mapEquals(other._configuration, _configuration);
+  }
+
+  @override
+  int get hashCode => _configuration.hashCode;
+
+  @override
+  String toString() => 'NexxPlayConfiguration(_configuration: $_configuration)';
 }

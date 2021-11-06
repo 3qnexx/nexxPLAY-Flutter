@@ -20,17 +20,10 @@ public class DynamicArguments {
     public String getString(Object key) {
         return derive(key, String.class);
     }
-
-    public Boolean getBoolean(Object key) {
-        return derive(key, Boolean.class);
-    }
-
-    public Integer getInteger(Object key) {
-        return derive(key, Integer.class);
-    }
-
-    public Double getDouble(Object key) {
-        return derive(key, Double.class);
+    
+    @SuppressWarnings("rawtypes")
+    public Map getMap(Object key) {
+        return derive(key, Map.class);
     }
 
     private <T> T derive(Object key, Class<T> expected) {
@@ -50,4 +43,23 @@ public class DynamicArguments {
                 "[" + expected.getSimpleName() + "]: " + value;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DynamicArguments that = (DynamicArguments) o;
+        return Objects.equals(arguments, that.arguments);
+    }
+
+    @Override
+    public int hashCode() {
+        return arguments.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "DynamicArguments{" +
+                "arguments=" + arguments +
+                '}';
+    }
 }

@@ -3,19 +3,33 @@ package tv.nexx.flutter.android.platform_view;
 import tv.nexx.android.play.INexxPLAY;
 import tv.nexx.android.play.MediaSourceType;
 import tv.nexx.flutter.android.estd.virtual_dispatch.DispatchTable;
-import tv.nexx.flutter.android.nexxplay.NexxPlayConfiguration;
 
 class NexxPlayStateDispatchTable {
 
-    private static final DispatchTable<MediaSourceType, INexxPLAY, NexxPlayConfiguration> DISPATCH_TABLE = DispatchTable.threadConfined();
+    private static final DispatchTable<MediaSourceType, INexxPLAY, NexxPlayPlaybackPayload> DISPATCH_TABLE = DispatchTable.threadConfined();
 
     static {
-        DISPATCH_TABLE.set(MediaSourceType.NORMAL, (player, config) ->
-                player.startPlay(config.getPlayMode(), config.getMediaID(), config.nexxPLAYConfiguration()));
-        DISPATCH_TABLE.set(MediaSourceType.REMOTE, (player, config) ->
-                player.startPlayWithRemoteMedia(config.getPlayMode(), config.getMediaID(), config.getProvider(), config.nexxPLAYConfiguration()));
-        DISPATCH_TABLE.set(MediaSourceType.GLOBAL, (player, config) ->
-                player.startPlayWithGlobalID(config.getMediaID(), config.nexxPLAYConfiguration()));
+        DISPATCH_TABLE.set(MediaSourceType.NORMAL, (player, payload) ->
+                player.startPlay(
+                        payload.playback().playMode(),
+                        payload.playback().mediaID(),
+                        payload.configuration()
+                )
+        );
+        DISPATCH_TABLE.set(MediaSourceType.REMOTE, (player, payload) ->
+                player.startPlayWithRemoteMedia(
+                        payload.playback().playMode(),
+                        payload.playback().mediaID(),
+                        payload.playback().provider(),
+                        payload.configuration()
+                )
+        );
+        DISPATCH_TABLE.set(MediaSourceType.GLOBAL, (player, payload) ->
+                player.startPlayWithGlobalID(
+                        payload.playback().mediaID(),
+                        payload.configuration()
+                )
+        );
     }
 
     private NexxPlayStateDispatchTable() {
@@ -31,8 +45,8 @@ class NexxPlayStateDispatchTable {
         return NexxPlayStateDispatchTable.InstanceHolder.INSTANCE;
     }
 
-    public void dispatch(MediaSourceType type, INexxPLAY player, NexxPlayConfiguration conf) {
-        DISPATCH_TABLE.dispatch(type, player, conf);
+    public void dispatch(MediaSourceType type, INexxPLAY player, NexxPlayPlaybackPayload payload) {
+        DISPATCH_TABLE.dispatch(type, player, payload);
     }
 
 }

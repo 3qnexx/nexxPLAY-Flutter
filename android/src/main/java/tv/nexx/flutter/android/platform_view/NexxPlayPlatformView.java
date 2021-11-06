@@ -20,7 +20,6 @@ import tv.nexx.flutter.android.android.event.OnPIPModeChangedEvent;
 import tv.nexx.flutter.android.android.event.OnUserLeaveHintEvent;
 import tv.nexx.flutter.android.estd.functional.Consumer;
 import tv.nexx.flutter.android.estd.virtual_dispatch.UndefinedDispatchTableMethodException;
-import tv.nexx.flutter.android.nexxplay.NexxPlayConfiguration;
 
 final class NexxPlayPlatformView implements PlatformView, MethodChannel.MethodCallHandler,
         EventChannel.StreamHandler, LifecycleObserver, NoOpNexxPlayListener,
@@ -50,9 +49,10 @@ final class NexxPlayPlatformView implements PlatformView, MethodChannel.MethodCa
 
     void start(NexxPlayDispatchPayload payload) {
         if (state.player() == null) return;
-        final NexxPlayConfiguration conf = state.configuration();
-        state.player().setEnvironment(conf.nexxPLAYEnvironment());
-        PLAYER_DISPATCH_TABLE.dispatch(conf.getMediaSourceType(), state.player(), conf);
+        final NexxPlayInitializationArguments args = state.initializationArguments();
+        state.player().setEnvironment(args.nexxPLAYEnvironment());
+        final NexxPlayPlaybackConfiguration playback = NexxPlayPlaybackConfiguration.from(payload.call().arguments());
+        PLAYER_DISPATCH_TABLE.dispatch(playback.mediaSourceType(), state.player(), NexxPlayPlaybackPayload.of(args.nexxPLAYConfiguration(), playback));
         payload.result().success(StartCallResult.started(state.id()).asMap());
     }
 

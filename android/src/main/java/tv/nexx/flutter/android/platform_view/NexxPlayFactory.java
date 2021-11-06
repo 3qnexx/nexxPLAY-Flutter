@@ -18,18 +18,17 @@ import tv.nexx.android.play.NexxPLAY;
 import tv.nexx.flutter.android.android.event.AndroidEvent;
 import tv.nexx.flutter.android.estd.functional.Supplier;
 import tv.nexx.flutter.android.estd.observer.Subject;
-import tv.nexx.flutter.android.nexxplay.NexxPlayConfiguration;
 
 public final class NexxPlayFactory extends PlatformViewFactory {
 
     private final BinaryMessenger messenger;
-    private final NexxPlayConfigurationFactory factory;
+    private final NexxPlayInitializationArgumentsFactory factory;
     private final Supplier<Lifecycle> lifecycle;
     private final Subject<AndroidEvent> subject;
     private final String pluginId;
 
     private NexxPlayFactory(BinaryMessenger messenger,
-                            NexxPlayConfigurationFactory factory,
+                            NexxPlayInitializationArgumentsFactory factory,
                             Supplier<Lifecycle> lifecycle,
                             Subject<AndroidEvent> subject,
                             String pluginId) {
@@ -42,7 +41,7 @@ public final class NexxPlayFactory extends PlatformViewFactory {
     }
 
     public static NexxPlayFactory from(BinaryMessenger messenger,
-                                       NexxPlayConfigurationFactory factory,
+                                       NexxPlayInitializationArgumentsFactory factory,
                                        Supplier<Lifecycle> lifecycleFactory,
                                        Subject<AndroidEvent> subject,
                                        String pluginId) {
@@ -52,9 +51,14 @@ public final class NexxPlayFactory extends PlatformViewFactory {
     @Override
     public PlatformView create(Context context, int viewId, Object args) {
         if (!(context instanceof Activity)) throw new NonActivityNexxPlayHostException();
-        final NexxPlayConfiguration configuration = Objects.requireNonNull(factory.fromFlutterArguments(args));
-        return createPlayer(messenger, lifecycle, subject, (Activity) context,
-                NexxPlayInstanceID.create(viewId, pluginId), configuration);
+        return createPlayer(
+                messenger,
+                lifecycle,
+                subject,
+                (Activity) context,
+                NexxPlayInstanceID.create(viewId, pluginId),
+                Objects.requireNonNull(factory.fromFlutterArguments(args))
+        );
     }
 
     private NexxPlayPlatformView createPlayer(BinaryMessenger messenger,
@@ -62,7 +66,7 @@ public final class NexxPlayFactory extends PlatformViewFactory {
                                               Subject<AndroidEvent> subject,
                                               Activity activity,
                                               NexxPlayInstanceID id,
-                                              NexxPlayConfiguration configuration) {
+                                              NexxPlayInitializationArguments configuration) {
         final NexxPlayViewHost host = NexxPlayViewHost.create(activity);
         final INexxPLAY player = new NexxPLAY(activity, host.getPlayerArea(), activity.getWindow());
         final MethodChannel methodChannel = new MethodChannel(messenger, id.methodChannel());
