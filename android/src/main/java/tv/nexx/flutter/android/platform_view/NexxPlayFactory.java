@@ -13,7 +13,6 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.StandardMessageCodec;
 import io.flutter.plugin.platform.PlatformView;
 import io.flutter.plugin.platform.PlatformViewFactory;
-import tv.nexx.android.play.INexxPLAY;
 import tv.nexx.android.play.NexxPLAY;
 import tv.nexx.flutter.android.android.event.AndroidEvent;
 import tv.nexx.flutter.android.estd.functional.Supplier;
@@ -68,7 +67,7 @@ public final class NexxPlayFactory extends PlatformViewFactory {
                                               NexxPlayInstanceID id,
                                               NexxPlayInitializationArguments configuration) {
         final NexxPlayViewHost host = NexxPlayViewHost.create(activity);
-        final INexxPLAY player = new NexxPLAY(activity, host.getPlayerArea(), activity.getWindow());
+        final NexxPLAY player = new NexxPLAY(activity, host.getPlayerArea(), activity.getWindow());
         final MethodChannel methodChannel = new MethodChannel(messenger, id.methodChannel());
         final EventChannel eventChannel = new EventChannel(messenger, id.eventChannel());
         final NexxPlayPlatformViewState state = new NexxPlayPlatformViewState(lifecycle, subject, id,

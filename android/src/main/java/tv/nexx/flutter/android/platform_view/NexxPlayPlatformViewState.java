@@ -9,7 +9,8 @@ import java.util.Objects;
 
 import io.flutter.plugin.common.EventChannel;
 import io.flutter.plugin.common.MethodChannel;
-import tv.nexx.android.play.INexxPLAY;
+import tv.nexx.android.play.HiddenConfiguration;
+import tv.nexx.android.play.NexxPLAY;
 import tv.nexx.flutter.android.android.event.AndroidEvent;
 import tv.nexx.flutter.android.estd.functional.Supplier;
 import tv.nexx.flutter.android.estd.observer.Subject;
@@ -28,7 +29,7 @@ class NexxPlayPlatformViewState {
     @Nullable
     private ViewGroup host;
     @Nullable
-    private INexxPLAY player;
+    private NexxPLAY player;
 
     NexxPlayPlatformViewState(Supplier<Lifecycle> lifecycle,
                               Subject<AndroidEvent> subject,
@@ -37,7 +38,7 @@ class NexxPlayPlatformViewState {
                               MethodChannel methodChannel,
                               EventChannel eventChannel,
                               ViewGroup host,
-                              INexxPLAY player) {
+                              NexxPLAY player) {
         this.id = id;
         this.methodChannel = methodChannel;
         this.eventChannel = eventChannel;
@@ -51,6 +52,7 @@ class NexxPlayPlatformViewState {
     // Method exists to prevent object leaking in the constructor
     // https://stackoverflow.com/a/9851843/7884542
     void initialize(NexxPlayPlatformView view) {
+        HiddenConfiguration.of(player).apply();
         final Lifecycle lifecycle = this.lifecycle.get();
         Objects.requireNonNull(lifecycle, "Lifecycle is null, normal operation is disrupted.");
         methodChannel.setMethodCallHandler(view);
@@ -79,7 +81,7 @@ class NexxPlayPlatformViewState {
         return host;
     }
 
-    INexxPLAY player() {
+    NexxPLAY player() {
         return player;
     }
 
