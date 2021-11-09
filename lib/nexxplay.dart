@@ -9,11 +9,7 @@
 library nexxplay;
 
 export 'src/configuration.dart' show NexxPlayConfiguration, NexxPlayEnvironment;
-export 'src/controller.dart'
-    show
-        NexxPlayController,
-        NexxPlayControllerFactory,
-        NexxPlayPlaybackConfiguration;
+export 'src/controller.dart' show NexxPlayController, NexxPlayControllerFactory;
 export 'src/event.dart'
     show
         DirectPlayerEvent,

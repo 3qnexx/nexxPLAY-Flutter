@@ -2,7 +2,6 @@ package tv.nexx.flutter.android.platform_view;
 
 import android.view.ViewGroup;
 
-import androidx.annotation.Nullable;
 import androidx.lifecycle.Lifecycle;
 
 import java.util.Objects;
@@ -11,30 +10,30 @@ import io.flutter.plugin.common.EventChannel;
 import io.flutter.plugin.common.MethodChannel;
 import tv.nexx.android.play.HiddenConfiguration;
 import tv.nexx.android.play.NexxPLAY;
+import tv.nexx.android.play.NexxPLAYEnvironment;
 import tv.nexx.flutter.android.android.event.AndroidEvent;
 import tv.nexx.flutter.android.estd.functional.Supplier;
 import tv.nexx.flutter.android.estd.observer.Subject;
 
-class NexxPlayPlatformViewState {
+public class NexxPlayPlatformViewState {
 
     private final NexxPlayInstanceID id;
     private final MethodChannel methodChannel;
     private final EventChannel eventChannel;
     private final Supplier<Lifecycle> lifecycle;
-    private final NexxPlayInitializationArguments configuration;
+    private final NexxPLAYEnvironment environment;
     private final Subject<AndroidEvent> subject;
-    // Mutable due to the PlatformView#dispose contract
-    @Nullable
+    // Mutable (and nullable) due to the PlatformView#dispose contract
     private EventChannel.EventSink sink;
-    @Nullable
     private ViewGroup host;
-    @Nullable
     private NexxPLAY player;
+    private NexxPlayLifecycleAdapter lifecycleAdapter;
+    private AndroidEventNexxPlayAdapter eventAdapter;
 
     NexxPlayPlatformViewState(Supplier<Lifecycle> lifecycle,
                               Subject<AndroidEvent> subject,
                               NexxPlayInstanceID id,
-                              NexxPlayInitializationArguments configuration,
+                              NexxPLAYEnvironment environment,
                               MethodChannel methodChannel,
                               EventChannel eventChannel,
                               ViewGroup host,
@@ -43,10 +42,12 @@ class NexxPlayPlatformViewState {
         this.methodChannel = methodChannel;
         this.eventChannel = eventChannel;
         this.lifecycle = lifecycle;
-        this.configuration = configuration;
+        this.environment = environment;
         this.subject = subject;
         this.host = host;
         this.player = player;
+        this.lifecycleAdapter = NexxPlayLifecycleAdapter.of(player);
+        this.eventAdapter = AndroidEventNexxPlayAdapter.of(player);
     }
 
     // Method exists to prevent object leaking in the constructor
@@ -57,40 +58,48 @@ class NexxPlayPlatformViewState {
         Objects.requireNonNull(lifecycle, "Lifecycle is null, normal operation is disrupted.");
         methodChannel.setMethodCallHandler(view);
         eventChannel.setStreamHandler(view);
-        lifecycle.addObserver(view);
-        subject.subscribe(view);
+        lifecycle.addObserver(lifecycleAdapter);
+        subject.subscribe(eventAdapter);
     }
 
-    NexxPlayInstanceID id() {
+    public NexxPlayInstanceID id() {
         return id;
     }
 
-    NexxPlayInitializationArguments initializationArguments() {
-        return configuration;
+    public NexxPLAYEnvironment environment() {
+        return environment;
     }
 
-    EventChannel.EventSink sink() {
+    public EventChannel.EventSink sink() {
         return sink;
+    }
+
+    public ViewGroup host() {
+        return host;
+    }
+
+    public NexxPLAY player() {
+        return player;
+    }
+
+    public boolean isDisposed() {
+        return player == null;
     }
 
     void sink(EventChannel.EventSink sink) {
         this.sink = sink;
     }
 
-    ViewGroup host() {
-        return host;
-    }
-
-    NexxPLAY player() {
-        return player;
-    }
-
     void dispose(NexxPlayPlatformView view) {
-        subject.unsubscribe(view);
+        subject.unsubscribe(eventAdapter);
         final Lifecycle lifecycle = this.lifecycle.get();
-        if (lifecycle != null) lifecycle.removeObserver(view);
+        if (lifecycle != null && lifecycleAdapter != null) {
+            lifecycle.removeObserver(lifecycleAdapter);
+        }
         eventChannel.setStreamHandler(null);
         methodChannel.setMethodCallHandler(null);
+        eventAdapter = null;
+        lifecycleAdapter = null;
         sink = null;
         if (player != null) {
             player.removePlaystateListener(view);
@@ -98,9 +107,5 @@ class NexxPlayPlatformViewState {
         }
         player = null;
         host = null;
-    }
-
-    boolean isDisposed() {
-        return player == null;
     }
 }

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:nexxplay/src/configuration.dart';
 import 'package:nexxplay/src/event.dart';
 
 abstract class NexxPlayControllerFactory {
@@ -11,52 +12,34 @@ abstract class NexxPlayControllerFactory {
 }
 
 abstract class NexxPlayController {
-  Future<bool> start(NexxPlayPlaybackConfiguration configuration);
+  Future<void> startPlay({
+    required String playMode,
+    required String mediaID,
+    required NexxPlayConfiguration configuration,
+  });
+
+  Future<void> startPlayWithGlobalID({
+    required String globalID,
+    required NexxPlayConfiguration configuration,
+  });
+
+  Future<void> startPlayWithRemoteMedia({
+    required String playMode,
+    required String mediaID,
+    required String provider,
+    required NexxPlayConfiguration configuration,
+  });
 
   Stream<PlayerEvent> events();
 
   void dispose();
-}
 
-class NexxPlayPlaybackConfiguration {
-  final String _mediaSourceType;
-  final String _mediaID;
-  final String? _playMode;
-  final String? _provider;
+  Future<void> clearCache();
 
-  const NexxPlayPlaybackConfiguration.normal({
-    required String playMode,
-    required String mediaID,
-  })  : _mediaSourceType = 'NORMAL',
-        _mediaID = mediaID,
-        _playMode = playMode,
-        _provider = null;
-
-  const NexxPlayPlaybackConfiguration.remote({
-    required String playMode,
-    required String mediaID,
-    required String provider,
-  })  : _mediaSourceType = 'REMOTE',
-        _mediaID = mediaID,
-        _playMode = playMode,
-        _provider = provider;
-
-  const NexxPlayPlaybackConfiguration.global({required String mediaID})
-      : _mediaSourceType = 'GLOBAL',
-        _mediaID = mediaID,
-        _playMode = null,
-        _provider = null;
-
-  Map<String, Object> toMap() {
-    final playMode = _playMode;
-    final provider = _provider;
-    return {
-      'mediaSourceType': _mediaSourceType,
-      'mediaID': _mediaID,
-      if (playMode != null) 'playMode': playMode,
-      if (provider != null) 'provider': provider,
-    };
-  }
+  Future<void> updateConfiguration({
+    required String key,
+    required Object value,
+  });
 }
 
 class _MethodChannelNexxPlayControllerFactory
@@ -78,21 +61,86 @@ class _MethodChannelNexxPlayControllerFactory
 
 class _MethodChannelNexxPlayController implements NexxPlayController {
   _MethodChannelNexxPlayController(
-      this._methodChannel, this._eventChannel, this._eventFactory);
+    this._methodChannel,
+    EventChannel eventChannel,
+    _PlayerEventFactory eventFactory,
+  ) : _events = eventChannel
+            .receiveBroadcastStream()
+            .asBroadcastStream()
+            .map(eventFactory.fromPlatformInterface);
 
   @override
-  Future<bool> start(NexxPlayPlaybackConfiguration configuration) async {
+  Future<void> startPlay({
+    required String playMode,
+    required String mediaID,
+    required NexxPlayConfiguration configuration,
+  }) {
+    final playback = _NexxPlayPlaybackConfiguration.normal(
+      playMode: playMode,
+      mediaID: mediaID,
+    );
+    return _startPlayer(playback, configuration);
+  }
+
+  @override
+  Future<void> startPlayWithGlobalID({
+    required String globalID,
+    required NexxPlayConfiguration configuration,
+  }) {
+    final playback = _NexxPlayPlaybackConfiguration.global(mediaID: globalID);
+    return _startPlayer(playback, configuration);
+  }
+
+  @override
+  Future<void> startPlayWithRemoteMedia({
+    required String playMode,
+    required String mediaID,
+    required String provider,
+    required NexxPlayConfiguration configuration,
+  }) {
+    final playback = _NexxPlayPlaybackConfiguration.remote(
+      mediaID: mediaID,
+      playMode: playMode,
+      provider: provider,
+    );
+    return _startPlayer(playback, configuration);
+  }
+
+  Future<void> _startPlayer(
+    _NexxPlayPlaybackConfiguration playback,
+    NexxPlayConfiguration configuration,
+  ) async {
     final result = await _methodChannel.invokeMapMethod<String, Object>(
-        'start', configuration.toMap());
-    if (result == null) throw ArgumentError.notNull('result');
-    final typed = _StartResult(_MethodChannelMapResult(result));
-    if (typed.isSuccessful()) {
-      _events = _eventChannel
-          .receiveBroadcastStream()
-          .asBroadcastStream()
-          .map(_eventFactory.fromPlatformInterface);
+      'start',
+      {'playback': playback.toMap(), 'configuration': configuration.asMap()},
+    );
+    _throwIfCommonCallResultInvalid(result);
+  }
+
+  void _throwIfCommonCallResultInvalid(Map<String, Object>? result) {
+    if (result == null) throw StateError('No result received.');
+    if (!_MethodChannelMapResult(result).isArgumentPresent('id', int)) {
+      throw StateError('Expected result was not received.');
     }
-    return typed.isSuccessful();
+  }
+
+  @override
+  Future<void> clearCache() {
+    return _methodChannel
+        .invokeMapMethod<String, Object>('clearCache')
+        .then(_throwIfCommonCallResultInvalid);
+  }
+
+  @override
+  Future<void> updateConfiguration({
+    required String key,
+    required Object value,
+  }) {
+    return _methodChannel.invokeMapMethod<String, Object>(
+        'updateConfiguration', <String, dynamic>{
+      'key': key,
+      'value': value,
+    }).then(_throwIfCommonCallResultInvalid);
   }
 
   @override
@@ -103,9 +151,7 @@ class _MethodChannelNexxPlayController implements NexxPlayController {
   @override
   void dispose() => _events = null;
 
-  final _PlayerEventFactory _eventFactory;
   final MethodChannel _methodChannel;
-  final EventChannel _eventChannel;
   Stream<PlayerEvent>? _events;
 }
 
@@ -124,38 +170,45 @@ class _MethodChannelMapResult {
   String toString() => '_MethodChannelMapResult(_raw: $_raw)';
 }
 
-@immutable
-class _StartResult {
-  final Map<String, Object> _raw;
+class _NexxPlayPlaybackConfiguration {
+  final String _mediaSourceType;
+  final String _mediaID;
+  final String? _playMode;
+  final String? _provider;
 
-  factory _StartResult(_MethodChannelMapResult result) {
-    if (!result.isArgumentPresent('id', int)) {
-      throw ArgumentError.value(result, 'result', 'Result does not contain ID');
-    }
-    if (!result.isArgumentPresent('started', bool)) {
-      throw ArgumentError.value(
-          result, 'result', 'Result does not contain success flag');
-    }
-    return _StartResult._(result.raw());
+  const _NexxPlayPlaybackConfiguration.normal({
+    required String playMode,
+    required String mediaID,
+  })  : _mediaSourceType = 'NORMAL',
+        _mediaID = mediaID,
+        _playMode = playMode,
+        _provider = null;
+
+  const _NexxPlayPlaybackConfiguration.remote({
+    required String playMode,
+    required String mediaID,
+    required String provider,
+  })  : _mediaSourceType = 'REMOTE',
+        _mediaID = mediaID,
+        _playMode = playMode,
+        _provider = provider;
+
+  const _NexxPlayPlaybackConfiguration.global({required String mediaID})
+      : _mediaSourceType = 'GLOBAL',
+        _mediaID = mediaID,
+        _playMode = null,
+        _provider = null;
+
+  Map<String, Object> toMap() {
+    final playMode = _playMode;
+    final provider = _provider;
+    return {
+      'mediaSourceType': _mediaSourceType,
+      'mediaID': _mediaID,
+      if (playMode != null) 'playMode': playMode,
+      if (provider != null) 'provider': provider,
+    };
   }
-
-  const _StartResult._(this._raw);
-
-  bool isSuccessful() {
-    return _raw['started'] as bool;
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    return other is _StartResult && mapEquals(other._raw, _raw);
-  }
-
-  @override
-  int get hashCode => _raw.hashCode;
-
-  @override
-  String toString() => '_StartResult(_raw: $_raw)';
 }
 
 @immutable
