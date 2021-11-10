@@ -36,9 +36,53 @@ abstract class NexxPlayController {
 
   Future<void> clearCache();
 
+  Future<void> updateEnvironment({
+    required String key,
+    required Object value,
+  });
+
   Future<void> updateConfiguration({
     required String key,
     required Object value,
+  });
+
+  Future<void> play();
+
+  Future<void> pause();
+
+  Future<void> toggle();
+
+  Future<void> mute();
+
+  Future<void> unmute();
+
+  Future<void> next();
+
+  Future<void> previous();
+
+  Future<void> seekTo(double timeMillis);
+
+  Future<void> seekBy(double timeSeconds);
+
+  Future<void> swapToPosition(int position);
+
+  Future<void> swapToMediaItem({
+    required String mediaID,
+    String? streamType,
+    int startPosition = 0,
+    double delay = 0,
+  });
+
+  Future<void> swapToGlobalID({
+    required String globalID,
+    int startPosition = 0,
+    double delay = 0,
+  });
+
+  Future<void> swapToRemoteMedia({
+    required String reference,
+    required String provider,
+    double delay = 0,
   });
 }
 
@@ -109,38 +153,110 @@ class _MethodChannelNexxPlayController implements NexxPlayController {
   Future<void> _startPlayer(
     _NexxPlayPlaybackConfiguration playback,
     NexxPlayConfiguration configuration,
-  ) async {
-    final result = await _methodChannel.invokeMapMethod<String, Object>(
-      'start',
-      {'playback': playback.toMap(), 'configuration': configuration.asMap()},
-    );
-    _throwIfCommonCallResultInvalid(result);
-  }
-
-  void _throwIfCommonCallResultInvalid(Map<String, Object>? result) {
-    if (result == null) throw StateError('No result received.');
-    if (!_MethodChannelMapResult(result).isArgumentPresent('id', int)) {
-      throw StateError('Expected result was not received.');
-    }
-  }
+  ) =>
+      _invokeVoidMapMethod(
+        'start',
+        {'playback': playback.toMap(), 'configuration': configuration.asMap()},
+      );
 
   @override
-  Future<void> clearCache() {
-    return _methodChannel
-        .invokeMapMethod<String, Object>('clearCache')
-        .then(_throwIfCommonCallResultInvalid);
-  }
+  Future<void> clearCache() => _invokeVoidMapMethod('clearCache');
+
+  @override
+  Future<void> updateEnvironment({
+    required String key,
+    required Object value,
+  }) =>
+      _invokeVoidMapMethod(
+        'updateEnvironment',
+        <String, dynamic>{'key': key, 'value': value},
+      );
 
   @override
   Future<void> updateConfiguration({
     required String key,
     required Object value,
+  }) =>
+      _invokeVoidMapMethod(
+        'updateConfiguration',
+        <String, dynamic>{'key': key, 'value': value},
+      );
+
+  @override
+  Future<void> play() => _invokeVoidMapMethod('play');
+
+  @override
+  Future<void> pause() => _invokeVoidMapMethod('pause');
+
+  @override
+  Future<void> toggle() => _invokeVoidMapMethod('toggle');
+
+  @override
+  Future<void> mute() => _invokeVoidMapMethod('mute');
+
+  @override
+  Future<void> unmute() => _invokeVoidMapMethod('unmute');
+
+  @override
+  Future<void> next() => _invokeVoidMapMethod('next');
+
+  @override
+  Future<void> previous() => _invokeVoidMapMethod('previous');
+
+  @override
+  Future<void> seekTo(double timeMillis) =>
+      _invokeVoidMapMethod('seekTo', {'time': timeMillis});
+
+  @override
+  Future<void> seekBy(double timeSeconds) =>
+      _invokeVoidMapMethod('seekBy', {'time': timeSeconds});
+
+  @override
+  Future<void> swapToPosition(int position) =>
+      _invokeVoidMapMethod('swapToPosition', {'position': position});
+
+  @override
+  Future<void> swapToMediaItem({
+    required String mediaID,
+    String? streamType,
+    int startPosition = 0,
+    double delay = 0,
   }) {
-    return _methodChannel.invokeMapMethod<String, Object>(
-        'updateConfiguration', <String, dynamic>{
-      'key': key,
-      'value': value,
-    }).then(_throwIfCommonCallResultInvalid);
+    final arguments = {
+      'mediaID': mediaID,
+      'streamType': streamType,
+      'startPosition': startPosition,
+      'delay': delay,
+    };
+    return _invokeVoidMapMethod('swapToMediaItem', arguments);
+  }
+
+  @override
+  Future<void> swapToGlobalID({
+    required String globalID,
+    int startPosition = 0,
+    double delay = 0,
+  }) {
+    final arguments = {
+      'globalID': globalID,
+      'startPosition': startPosition,
+      'delay': delay,
+    };
+    return _invokeVoidMapMethod('swapToGlobalID', arguments);
+  }
+
+  @override
+  Future<void> swapToRemoteMedia({
+    required String reference,
+    required String provider,
+    double delay = 0,
+  }) {
+    final arguments = {
+      'reference': reference,
+      'provider': provider,
+      'delay': delay,
+    };
+    return _invokeVoidMapMethod('swapToRemoteMedia', arguments);
   }
 
   @override
@@ -150,6 +266,19 @@ class _MethodChannelNexxPlayController implements NexxPlayController {
 
   @override
   void dispose() => _events = null;
+
+  Future<void> _invokeVoidMapMethod(String name, [Object? arguments]) {
+    return _methodChannel
+        .invokeMapMethod<String, Object>(name, arguments)
+        .then(_throwIfCommonCallResultInvalid);
+  }
+
+  void _throwIfCommonCallResultInvalid(Map<String, Object>? result) {
+    if (result == null) throw StateError('No result received.');
+    if (!_MethodChannelMapResult(result).isArgumentPresent('id', int)) {
+      throw StateError('Expected result was not received.');
+    }
+  }
 
   final MethodChannel _methodChannel;
   Stream<PlayerEvent>? _events;

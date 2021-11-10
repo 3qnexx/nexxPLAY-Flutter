@@ -216,7 +216,17 @@ class _NexxPlayPageState extends State<_NexxPlayPage> with AdHocVisitor<void> {
   final _messengerKey = GlobalKey<ScaffoldMessengerState>();
 
   final _optionMap = <String, void Function(BuildContext, NexxPlayController)>{
-    'Clear Cache': (_, c) => c.clearCache()
+    'Clear Cache': (_, c) => c.clearCache(),
+    'Play': (_, c) => c.play(),
+    'Pause': (_, c) => c.pause(),
+    'Toggle': (_, c) => c.toggle(),
+    'Mute': (_, c) => c.mute(),
+    'Unmute': (_, c) => c.unmute(),
+    'Next': (_, c) => c.next(),
+    'Previous': (_, c) => c.previous(),
+    'Seek To 7.5 sec': (_, c) => c.seekTo(7500),
+    'Seek By 5 sec': (_, c) => c.seekBy(5),
+    'Swap to position 1': (_, c) => c.swapToPosition(1),
   };
 
   static final _modeTransformation =

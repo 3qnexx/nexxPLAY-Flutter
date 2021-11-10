@@ -13,7 +13,20 @@ public class NexxPlayPlatformViewDispatchTable {
         DISPATCH_TABLE.set("start", StartPlayerCommand.create());
         DISPATCH_TABLE.set("clearCache", ClearCacheCommand.create());
         DISPATCH_TABLE.set("updateConfiguration", UpdateConfigurationCommand.create());
-        DISPATCH_TABLE.set("UpdateEnvironmentCommand", UpdateEnvironmentCommand.create());
+        DISPATCH_TABLE.set("updateEnvironment", UpdateEnvironmentCommand.create());
+        DISPATCH_TABLE.set("play", PlayCommand.create());
+        DISPATCH_TABLE.set("pause", PauseCommand.create());
+        DISPATCH_TABLE.set("toggle", ToggleCommand.create());
+        DISPATCH_TABLE.set("mute", MuteCommand.create());
+        DISPATCH_TABLE.set("unmute", UnmuteCommand.create());
+        DISPATCH_TABLE.set("next", NextCommand.create());
+        DISPATCH_TABLE.set("previous", PreviousCommand.create());
+        DISPATCH_TABLE.set("seekTo", SeekToCommand.create());
+        DISPATCH_TABLE.set("seekBy", SeekByCommand.create());
+        DISPATCH_TABLE.set("swapToPosition", SwapToPositionCommand.create());
+        DISPATCH_TABLE.set("swapToMediaItem", SwapToMediaItemCommand.create());
+        DISPATCH_TABLE.set("swapToGlobalID", SwapToGlobalIDCommand.create());
+        DISPATCH_TABLE.set("swapToRemoteMedia", SwapToRemoteMediaCommand.create());
     }
 
     private NexxPlayPlatformViewDispatchTable() {
