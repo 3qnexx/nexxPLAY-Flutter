@@ -120,9 +120,7 @@ class _NexxPlayPageState extends State<_NexxPlayPage> with AdHocVisitor<void> {
     );
   }
 
-  void _handleOptionSelection(String option) {
-    _optionMap[option]!(context, _controller!);
-  }
+  void _handleOptionSelection(String option) => _optionMap[option]?.call(this);
 
   Widget _buildContent() {
     return Column(
@@ -215,18 +213,58 @@ class _NexxPlayPageState extends State<_NexxPlayPage> with AdHocVisitor<void> {
   final _playerKey = GlobalKey<NexxPlayState>();
   final _messengerKey = GlobalKey<ScaffoldMessengerState>();
 
-  final _optionMap = <String, void Function(BuildContext, NexxPlayController)>{
-    'Clear Cache': (_, c) => c.clearCache(),
-    'Play': (_, c) => c.play(),
-    'Pause': (_, c) => c.pause(),
-    'Toggle': (_, c) => c.toggle(),
-    'Mute': (_, c) => c.mute(),
-    'Unmute': (_, c) => c.unmute(),
-    'Next': (_, c) => c.next(),
-    'Previous': (_, c) => c.previous(),
-    'Seek To 7.5 sec': (_, c) => c.seekTo(7500),
-    'Seek By 5 sec': (_, c) => c.seekBy(5),
-    'Swap to position 1': (_, c) => c.swapToPosition(1),
+  final _optionMap = <String, void Function(_NexxPlayPageState)>{
+    'Clear Cache': (s) => s._controller?.clearCache(),
+    'Play': (s) => s._controller?.play(),
+    'Pause': (s) => s._controller?.pause(),
+    'Toggle': (s) => s._controller?.toggle(),
+    'Mute': (s) => s._controller?.mute(),
+    'Unmute': (s) => s._controller?.unmute(),
+    'Next': (s) => s._controller?.next(),
+    'Previous': (s) => s._controller?.previous(),
+    'Seek To 7.5 sec': (s) => s._controller?.seekTo(7500),
+    'Seek By 5 sec': (s) => s._controller?.seekBy(5),
+    'Swap to position 1': (s) => s._controller?.swapToPosition(1),
+    'Get Media Data': (s) async {
+      final data = await s._controller?.getMediaData();
+      debugPrint("Media Data: $data");
+    },
+    'Get Captions': (s) async {
+      final data = await s._controller?.getCaptionData();
+      debugPrint('Caption data for no specific language: $data');
+    },
+    'Get Captions (Eng)': (s) async {
+      final data = await s._controller?.getCaptionData('en');
+      debugPrint("Caption data for 'en': $data");
+    },
+    'Get Caption Languages': (s) async {
+      final data = await s._controller?.getCaptionLanguages();
+      debugPrint("Caption Languages: $data");
+    },
+    'Get Audio Languages': (s) async {
+      final data = await s._controller?.getAudioLanguages();
+      debugPrint("Audio Languages: $data");
+    },
+    'Get Current Time': (s) async {
+      final data = await s._controller?.getCurrentTime();
+      debugPrint("Current Time: $data");
+    },
+    'Is Playing?': (s) async {
+      final data = await s._controller?.isPlaying();
+      debugPrint("Is Playing?: $data");
+    },
+    'Is Playing Ad?': (s) async {
+      final data = await s._controller?.isPlayingAd();
+      debugPrint("Is Playing Ad?: $data");
+    },
+    'Is Muted?': (s) async {
+      final data = await s._controller?.isMuted();
+      debugPrint("Is Muted?: $data");
+    },
+    'Is In PiP?': (s) async {
+      final data = await s._controller?.isInPiP();
+      debugPrint("Is In PiP?: $data");
+    },
   };
 
   static final _modeTransformation =
