@@ -1,4 +1,4 @@
-package tv.nexx.flutter.android.platform_view;
+package tv.nexx.flutter.android.platform_view.command;
 
 import tv.nexx.android.play.INexxPLAY;
 import tv.nexx.android.play.MediaSourceType;

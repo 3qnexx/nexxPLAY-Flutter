@@ -101,11 +101,26 @@ class _NexxPlayPageState extends State<_NexxPlayPage> with AdHocVisitor<void> {
     return ScaffoldMessenger(
       key: _messengerKey,
       child: Scaffold(
-        appBar: AppBar(title: const Text('nexxPLAY example app')),
+        appBar: AppBar(
+          title: const Text('nexxPLAY example app'),
+          actions: _controller == null
+              ? []
+              : [
+                  PopupMenuButton<String>(
+                    onSelected: _handleOptionSelection,
+                    itemBuilder: (_) => _optionMap.keys
+                        .map((o) =>
+                            PopupMenuItem<String>(value: o, child: Text(o)))
+                        .toList(),
+                  ),
+                ],
+        ),
         body: Center(child: _buildContent()),
       ),
     );
   }
+
+  void _handleOptionSelection(String option) => _optionMap[option]?.call(this);
 
   Widget _buildContent() {
     return Column(
@@ -135,14 +150,14 @@ class _NexxPlayPageState extends State<_NexxPlayPage> with AdHocVisitor<void> {
 
   Future<void> _startPlayer(NexxPlayController controller) async {
     try {
-      final result = await controller.start(_playback);
+      await controller.startPlay(
+        playMode: 'video',
+        mediaID: '#TODO',
+        configuration: _configuration,
+      );
       if (!mounted) return;
-      if (result) {
-        _subscribe(controller);
-        _controller = controller;
-      } else {
-        _report('Nexx: player start was not successful');
-      }
+      _subscribe(controller);
+      _controller = controller;
     } on Object catch (e, st) {
       _report('Nexx: exception occurred during player start: \n$e\n$st');
     }
@@ -198,6 +213,60 @@ class _NexxPlayPageState extends State<_NexxPlayPage> with AdHocVisitor<void> {
   final _playerKey = GlobalKey<NexxPlayState>();
   final _messengerKey = GlobalKey<ScaffoldMessengerState>();
 
+  final _optionMap = <String, void Function(_NexxPlayPageState)>{
+    'Clear Cache': (s) => s._controller?.clearCache(),
+    'Play': (s) => s._controller?.play(),
+    'Pause': (s) => s._controller?.pause(),
+    'Toggle': (s) => s._controller?.toggle(),
+    'Mute': (s) => s._controller?.mute(),
+    'Unmute': (s) => s._controller?.unmute(),
+    'Next': (s) => s._controller?.next(),
+    'Previous': (s) => s._controller?.previous(),
+    'Seek To 7.5 sec': (s) => s._controller?.seekTo(7500),
+    'Seek By 5 sec': (s) => s._controller?.seekBy(5),
+    'Swap to position 1': (s) => s._controller?.swapToPosition(1),
+    'Get Media Data': (s) async {
+      final data = await s._controller?.getMediaData();
+      debugPrint("Media Data: $data");
+    },
+    'Get Captions': (s) async {
+      final data = await s._controller?.getCaptionData();
+      debugPrint('Caption data for no specific language: $data');
+    },
+    'Get Captions (Eng)': (s) async {
+      final data = await s._controller?.getCaptionData('en');
+      debugPrint("Caption data for 'en': $data");
+    },
+    'Get Caption Languages': (s) async {
+      final data = await s._controller?.getCaptionLanguages();
+      debugPrint("Caption Languages: $data");
+    },
+    'Get Audio Languages': (s) async {
+      final data = await s._controller?.getAudioLanguages();
+      debugPrint("Audio Languages: $data");
+    },
+    'Get Current Time': (s) async {
+      final data = await s._controller?.getCurrentTime();
+      debugPrint("Current Time: $data");
+    },
+    'Is Playing?': (s) async {
+      final data = await s._controller?.isPlaying();
+      debugPrint("Is Playing?: $data");
+    },
+    'Is Playing Ad?': (s) async {
+      final data = await s._controller?.isPlayingAd();
+      debugPrint("Is Playing Ad?: $data");
+    },
+    'Is Muted?': (s) async {
+      final data = await s._controller?.isMuted();
+      debugPrint("Is Muted?: $data");
+    },
+    'Is In PiP?': (s) async {
+      final data = await s._controller?.isInPiP();
+      debugPrint("Is In PiP?: $data");
+    },
+  };
+
   static final _modeTransformation =
       <NexxEventType, _PlayerMode Function(_PlayerMode)>{
     NexxEventType.enterFullScreen: (mode) => mode.fullscreen(isEnabled: true),
@@ -207,7 +276,7 @@ class _NexxPlayPageState extends State<_NexxPlayPage> with AdHocVisitor<void> {
   };
 
   static const _environment = NexxPlayEnvironment({
-    'domain': '484',
+    'domain': '#TODO',
     'startFullscreen': 0,
   });
 
@@ -224,11 +293,6 @@ class _NexxPlayPageState extends State<_NexxPlayPage> with AdHocVisitor<void> {
     'startPosition': 0,
     'delay': 0.0,
   });
-
-  static const _playback = NexxPlayPlaybackConfiguration.normal(
-    playMode: 'video',
-    mediaID: '1472879',
-  );
 }
 
 @immutable

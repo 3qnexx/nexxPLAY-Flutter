@@ -1,10 +1,10 @@
-package tv.nexx.flutter.android.platform_view;
+package tv.nexx.flutter.android.platform_view.command;
 
 import java.util.Objects;
 
 import tv.nexx.android.play.NexxPLAYConfiguration;
 
-class NexxPlayPlaybackPayload {
+public class NexxPlayPlaybackPayload {
     private final NexxPLAYConfiguration configuration;
     private final NexxPlayPlaybackConfiguration playback;
 

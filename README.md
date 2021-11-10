@@ -7,6 +7,7 @@ with the custom code that the "example" app provides, enables next features:
 
 - nexxPLAY native view wrapped with a widget available for use
 - Dynamic configuration support
+- Public API, consisting from methods falling under these categories: 'Preparing and Configuring the Player', 'Playback Control', 'Requesting Player Status and Details'
 - Player events observation
 - Fullscreen mode
 - PiP mode

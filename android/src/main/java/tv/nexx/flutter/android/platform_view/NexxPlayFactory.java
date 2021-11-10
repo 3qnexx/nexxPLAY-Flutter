@@ -14,6 +14,7 @@ import io.flutter.plugin.common.StandardMessageCodec;
 import io.flutter.plugin.platform.PlatformView;
 import io.flutter.plugin.platform.PlatformViewFactory;
 import tv.nexx.android.play.NexxPLAY;
+import tv.nexx.android.play.NexxPLAYEnvironment;
 import tv.nexx.flutter.android.android.event.AndroidEvent;
 import tv.nexx.flutter.android.estd.functional.Supplier;
 import tv.nexx.flutter.android.estd.observer.Subject;
@@ -56,7 +57,7 @@ public final class NexxPlayFactory extends PlatformViewFactory {
                 subject,
                 (Activity) context,
                 NexxPlayInstanceID.create(viewId, pluginId),
-                Objects.requireNonNull(factory.fromFlutterArguments(args))
+                Objects.requireNonNull(factory.fromFlutterArguments(args)).nexxPLAYEnvironment()
         );
     }
 
@@ -65,13 +66,21 @@ public final class NexxPlayFactory extends PlatformViewFactory {
                                               Subject<AndroidEvent> subject,
                                               Activity activity,
                                               NexxPlayInstanceID id,
-                                              NexxPlayInitializationArguments configuration) {
+                                              NexxPLAYEnvironment environment) {
         final NexxPlayViewHost host = NexxPlayViewHost.create(activity);
         final NexxPLAY player = new NexxPLAY(activity, host.getPlayerArea(), activity.getWindow());
         final MethodChannel methodChannel = new MethodChannel(messenger, id.methodChannel());
         final EventChannel eventChannel = new EventChannel(messenger, id.eventChannel());
-        final NexxPlayPlatformViewState state = new NexxPlayPlatformViewState(lifecycle, subject, id,
-                configuration, methodChannel, eventChannel, host.getRoot(), player);
+        final NexxPlayPlatformViewState state = new NexxPlayPlatformViewState(
+                lifecycle,
+                subject,
+                id,
+                environment,
+                methodChannel,
+                eventChannel,
+                host.getRoot(),
+                player
+        );
         final NexxPlayPlatformView view = new NexxPlayPlatformView(state);
         view.initialize();
         return view;

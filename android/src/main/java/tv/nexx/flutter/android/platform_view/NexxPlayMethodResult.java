@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-class NexxPlayMethodResult {
+public class NexxPlayMethodResult {
 
     private final Map<String, Object> payload;
 
