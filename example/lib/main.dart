@@ -152,7 +152,7 @@ class _NexxPlayPageState extends State<_NexxPlayPage> with AdHocVisitor<void> {
     try {
       await controller.startPlay(
         playMode: 'video',
-        mediaID: '1472879',
+        mediaID: '#TODO',
         configuration: _configuration,
       );
       if (!mounted) return;
@@ -276,7 +276,7 @@ class _NexxPlayPageState extends State<_NexxPlayPage> with AdHocVisitor<void> {
   };
 
   static const _environment = NexxPlayEnvironment({
-    'domain': '484',
+    'domain': '#TODO',
     'startFullscreen': 0,
   });
 
