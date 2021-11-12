@@ -16,9 +16,6 @@ rootProject.allprojects {
     repositories {
         mavenCentral()
         google()
-        // A lot of player's dependencies are currently being resolved from JCenter, unfortunately
-        //noinspection JcenterRepositoryObsolete,GrDeprecatedAPIUsage
-        jcenter()
         // nexxPLAY hosting repository
         maven { url "https://www.myget.org/F/3qnexx/maven" }
     }
@@ -35,7 +32,7 @@ android {
 }
 
 dependencies {
-    implementation("tv.nexx.android:play:6.0.14-PREVIEW") {
+    implementation("tv.nexx.android:play:6.0.00") {
         exclude group: 'com.android.support', module: 'support-v4'
     }
 }

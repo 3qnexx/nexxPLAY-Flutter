@@ -9,7 +9,7 @@ public interface NoOpNexxPlayListener extends NexxPLAYNotification.Listener {
     }
 
     @Override
-    default void onVideoSizeChanged(int width, int height, float pixelWidthAspectRatio) {
+    default void onPlayerEvent(NexxPLAYNotification.IPlayerEvent e) {
     }
 
     @Override
@@ -18,9 +18,5 @@ public interface NoOpNexxPlayListener extends NexxPLAYNotification.Listener {
 
     @Override
     default void onFullScreen(boolean fullScreen) {
-    }
-
-    @Override
-    default void onPlayerEvent(NexxPLAYNotification.IPlayerEvent e) {
     }
 }
