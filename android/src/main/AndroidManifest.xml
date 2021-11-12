@@ -1,3 +1,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="tv.nexx.flutter.android">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="tv.nexx.flutter.android">
+
+    <application>
+        <!-- TODO: Override of an assumingly mistakenly put `com.google.android.gms.version`
+              key in the nexxPLAY's manifest. Seems to be left there after abandoning
+              AdMob implementation, which, in turn, was added in 2017. -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            tools:node="remove" />
+    </application>
 </manifest>

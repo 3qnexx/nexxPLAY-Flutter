@@ -3,28 +3,36 @@ version '1.0'
 
 buildscript {
     repositories {
+        mavenCentral()
         google()
-        jcenter()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.0'
+        classpath 'com.android.tools.build:gradle:7.0.3'
     }
 }
 
 rootProject.allprojects {
     repositories {
+        mavenCentral()
         google()
-        jcenter()
+        // nexxPLAY hosting repository
+        maven { url "https://www.myget.org/F/3qnexx/maven" }
     }
 }
 
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 22
+    }
+}
+
+dependencies {
+    implementation("tv.nexx.android:play:6.0.00") {
+        exclude group: 'com.android.support', module: 'support-v4'
     }
 }
