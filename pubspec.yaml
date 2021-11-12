@@ -1,7 +1,7 @@
 name: nexxplay
 description: Plugin for Android native nexxPLAY
 version: 1.0.0
-homepage:
+homepage: https://play.docs.nexx.cloud/
 
 environment:
   sdk: ">=2.14.0 <3.0.0"
