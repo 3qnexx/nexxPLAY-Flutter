@@ -2,7 +2,7 @@ package tv.nexx.flutter.android.platform_view;
 
 import java.util.Map;
 
-import tv.nexx.android.play.player.Player.State;
+import tv.nexx.android.play.player.IPlayer.State;
 
 class PlayerStateChangeEvent implements CallResult {
 

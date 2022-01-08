@@ -65,6 +65,15 @@ Please note that iOS is not supported by this plugin.
     ```
     Refer to `example/android/app/src/main/java/tv/nexx/flutter/android_example/MainActivity.java` for more details.
 
-4. Lastly, there is a set of things to be done from the Flutter PoV for proper fullscreen and PiP support. Example app's `main.dart` file contains all the documentation necessary for that.
+4. Next, inherit from the AppCompat theme for the Android native app part (required by Chromecast):
+    ```
+    <style name="NormalTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:windowBackground">?android:colorBackground</item>
+    </style>
+   ```
+   Ensure that you have the AndroidX AppCompat dependency, a transitive or a direct one (`
+   implementation "androidx.appcompat:appcompat:1.4.0"`). Refer to `example/android/app/build.gradle`, `example/android/app/src/main/res/values/styles.xml` and `example/android/app/src/main/res/values-night/styles.xml` for more details.
+
+5. Lastly, there is a set of things to be done from the Flutter PoV for proper fullscreen and PiP support. Example app's `main.dart` file contains all the documentation necessary for that.
 
 `INTEGRATION_GUIDE` markers were placed all over the documentation for navigation to make the integration process easier.

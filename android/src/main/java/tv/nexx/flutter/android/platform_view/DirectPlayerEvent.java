@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import tv.nexx.android.play.Event;
 import tv.nexx.android.play.NexxPLAYNotification.IPlayerEvent;
+import tv.nexx.android.play.enums.Event;
 
 class DirectPlayerEvent implements CallResult {
     private final NexxPlayInstanceID id;

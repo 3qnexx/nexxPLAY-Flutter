@@ -8,7 +8,7 @@ import java.util.Objects;
 
 import io.flutter.plugin.common.EventChannel;
 import io.flutter.plugin.common.MethodChannel;
-import tv.nexx.android.play.HiddenConfiguration;
+import tv.nexx.android.play.PrivilegedConfiguration;
 import tv.nexx.android.play.NexxPLAY;
 import tv.nexx.android.play.NexxPLAYEnvironment;
 import tv.nexx.flutter.android.android.event.AndroidEvent;
@@ -53,7 +53,7 @@ public class NexxPlayPlatformViewState {
     // Method exists to prevent object leaking in the constructor
     // https://stackoverflow.com/a/9851843/7884542
     void initialize(NexxPlayPlatformView view) {
-        HiddenConfiguration.of(player).apply();
+        PrivilegedConfiguration.of(player).apply();
         final Lifecycle lifecycle = this.lifecycle.get();
         Objects.requireNonNull(lifecycle, "Lifecycle is null, normal operation is disrupted.");
         methodChannel.setMethodCallHandler(view);

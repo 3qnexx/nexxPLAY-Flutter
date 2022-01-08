@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:nexxplay/nexxplay.dart';
 import 'package:nexxplay/src/configuration.dart';
+import 'package:nexxplay/src/details.dart';
 import 'package:nexxplay/src/event.dart';
 
 abstract class NexxPlayControllerFactory {
@@ -83,6 +83,7 @@ abstract class NexxPlayController {
   Future<void> swapToRemoteMedia({
     required String reference,
     required String provider,
+    String? streamType,
     double delay = 0,
   });
 
@@ -103,6 +104,8 @@ abstract class NexxPlayController {
   Future<bool> isMuted();
 
   Future<bool> isInPiP();
+
+  Future<bool> isCasting();
 }
 
 class _MethodChannelNexxPlayControllerFactory
@@ -240,12 +243,16 @@ class _MethodChannelNexxPlayController implements NexxPlayController {
     String? streamType,
     int startPosition = 0,
     double delay = 0,
+    String reason = "",
+    bool showReturnButton = false,
   }) {
     final arguments = {
       'mediaID': mediaID,
       'streamType': streamType,
       'startPosition': startPosition,
       'delay': delay,
+      'reason': reason,
+      'showReturnButton': showReturnButton,
     };
     return _invokeVoidMapMethod('swapToMediaItem', arguments);
   }
@@ -255,11 +262,15 @@ class _MethodChannelNexxPlayController implements NexxPlayController {
     required String globalID,
     int startPosition = 0,
     double delay = 0,
+    String reason = "",
+    bool showReturnButton = false,
   }) {
     final arguments = {
       'globalID': globalID,
       'startPosition': startPosition,
       'delay': delay,
+      'reason': reason,
+      'showReturnButton': showReturnButton,
     };
     return _invokeVoidMapMethod('swapToGlobalID', arguments);
   }
@@ -268,12 +279,18 @@ class _MethodChannelNexxPlayController implements NexxPlayController {
   Future<void> swapToRemoteMedia({
     required String reference,
     required String provider,
+    String? streamType,
     double delay = 0,
+    String reason = "",
+    bool showReturnButton = false,
   }) {
     final arguments = {
       'reference': reference,
+      'streamType': streamType,
       'provider': provider,
       'delay': delay,
+      'reason': reason,
+      'showReturnButton': showReturnButton,
     };
     return _invokeVoidMapMethod('swapToRemoteMedia', arguments);
   }
@@ -332,6 +349,12 @@ class _MethodChannelNexxPlayController implements NexxPlayController {
   @override
   Future<bool> isInPiP() async {
     final result = await _invokeMapMapMethod('isInPiP');
+    return _BooleanResult.from(_MethodChannelMapResult(result)).result;
+  }
+
+  @override
+  Future<bool> isCasting() async {
+    final result = await _invokeMapMapMethod('isCasting');
     return _BooleanResult.from(_MethodChannelMapResult(result)).result;
   }
 

@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import tv.nexx.android.play.Caption;
 import tv.nexx.android.play.NexxPLAY;
-import tv.nexx.android.play.logic.Caption;
 import tv.nexx.android.play.logic.CaptionData;
 import tv.nexx.flutter.android.estd.virtual_dispatch.DispatchTableMethod;
 import tv.nexx.flutter.android.platform_view.NexxPlayDispatchPayload;

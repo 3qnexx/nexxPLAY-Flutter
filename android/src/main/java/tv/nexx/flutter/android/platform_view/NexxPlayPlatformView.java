@@ -9,7 +9,7 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.platform.PlatformView;
 import tv.nexx.android.play.NexxPLAYNotification;
-import tv.nexx.android.play.player.Player;
+import tv.nexx.android.play.player.IPlayer;
 import tv.nexx.flutter.android.estd.virtual_dispatch.UndefinedDispatchTableMethodException;
 import tv.nexx.flutter.android.platform_view.command.NexxPlayPlatformViewDispatchTable;
 
@@ -57,7 +57,7 @@ public final class NexxPlayPlatformView implements PlatformView, MethodChannel.M
     }
 
     @Override
-    public void onPlayerStateChanged(boolean pwr, Player.State current) {
+    public void onPlayerStateChanged(boolean pwr, IPlayer.State current) {
         state.sink().success(PlayerStateChangeEvent.of(state.id(), pwr, current).asMap());
     }
 

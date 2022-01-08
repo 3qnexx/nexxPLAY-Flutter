@@ -265,6 +265,10 @@ class _NexxPlayPageState extends State<_NexxPlayPage> with AdHocVisitor<void> {
       final data = await s._controller?.isInPiP();
       debugPrint("Is In PiP?: $data");
     },
+    'Is Casting?': (s) async {
+      final data = await s._controller?.isCasting();
+      debugPrint("Is Casting?: $data");
+    },
   };
 
   static final _modeTransformation =
