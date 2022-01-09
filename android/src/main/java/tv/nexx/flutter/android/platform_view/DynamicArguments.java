@@ -7,23 +7,27 @@ import java.util.Objects;
 
 public class DynamicArguments {
 
-    private final Map<Object, Object> arguments;
+    private final Map<?, ?> arguments;
 
-    private DynamicArguments(Map<Object, Object> arguments) {
+    private DynamicArguments(Map<?, ?> arguments) {
         this.arguments = Objects.requireNonNull(arguments);
     }
 
-    public static DynamicArguments from(Map<Object, Object> arguments) {
+    public static DynamicArguments from(Map<?, ?> arguments) {
         return new DynamicArguments(arguments);
     }
 
     public String getString(Object key) {
         return derive(key, String.class);
     }
-    
+
     @SuppressWarnings("rawtypes")
     public Map getMap(Object key) {
         return derive(key, Map.class);
+    }
+
+    public Boolean getBoolean(Object key) {
+        return derive(key, Boolean.class);
     }
 
     private <T> T derive(Object key, Class<T> expected) {
@@ -45,8 +49,12 @@ public class DynamicArguments {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         DynamicArguments that = (DynamicArguments) o;
         return Objects.equals(arguments, that.arguments);
     }

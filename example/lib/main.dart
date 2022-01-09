@@ -150,11 +150,12 @@ class _NexxPlayPageState extends State<_NexxPlayPage> with AdHocVisitor<void> {
 
   Future<void> _startPlayer(NexxPlayController controller) async {
     try {
-      await controller.startPlay(
+      final result = await controller.startPlay(
         playMode: 'video',
         mediaID: '#TODO',
         configuration: _configuration,
       );
+      debugPrint('Player start result: $result');
       if (!mounted) return;
       _subscribe(controller);
       _controller = controller;
@@ -282,6 +283,7 @@ class _NexxPlayPageState extends State<_NexxPlayPage> with AdHocVisitor<void> {
   static const _environment = NexxPlayEnvironment({
     'domain': '#TODO',
     'startFullscreen': 0,
+    'enableChromeCast': true,
   });
 
   static const _configuration = NexxPlayConfiguration({
