@@ -37,6 +37,11 @@ public class NexxPlayPlatformViewDispatchTable {
         DISPATCH_TABLE.set("isMuted", IsMutedCommand.create());
         DISPATCH_TABLE.set("isInPiP", IsInPIPCommand.create());
         DISPATCH_TABLE.set("isCasting", IsCastingCommand.create());
+        DISPATCH_TABLE.set("startDownloadingLocalMedia", StartDownloadingLocalMediaCommand.create());
+        DISPATCH_TABLE.set("listLocalMedia", ListLocalMediaCommand.create());
+        DISPATCH_TABLE.set("hasDownloadOfLocalMedia", HasDownloadOfLocalMediaCommand.create());
+        DISPATCH_TABLE.set("clearLocalMedia", ClearLocalMediaCommand.create());
+        DISPATCH_TABLE.set("diskSpaceUsedForLocalMedia", DiskSpaceUsedForLocalMediaCommand.create());
     }
 
     private NexxPlayPlatformViewDispatchTable() {

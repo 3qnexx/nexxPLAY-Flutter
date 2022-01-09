@@ -289,25 +289,299 @@ class MediaData {
   }
 
   @override
-  String toString() {
-    return 'MediaData(playReason: $playReason, isPlayingAd: $isPlayingAd, '
-        'persons: $persons, domain: $domain, mediaSessionParent: '
-        '$mediaSessionParent, autoplay: $autoplay, studio: $studio, '
-        'studioAdRef: $studioAdRef, mediaID: $mediaID, hash: $hash, title: '
-        '$title, subtitle: $subtitle, teaser: $teaser, description: '
-        '$description, channel: $channel, uploaded: $uploaded, created: '
-        '$created, orderHint: $orderHint, isPresentation: $isPresentation, '
-        'currentCaptionLanguage: $currentCaptionLanguage, currentAudioLanguage:'
-        ' $currentAudioLanguage, channelAdRef: $channelAdRef, channelId: '
-        '$channelId, thumb: $thumb, thumbABT: $thumbABT, streamType: '
-        '$streamType, runtime: $runtime, licenseBy: $licenseBy, '
-        'currentPlaybackSpeed: $currentPlaybackSpeed, isBumper: $isBumper, '
-        'isStitched: $isStitched, orientation: $orientation, hasAudio: '
-        '$hasAudio, globalID: $globalID, chosenAbVersion: $chosenAbVersion, '
-        'playbackMode: $playbackMode, isRemoteMedia: $isRemoteMedia, '
-        'remoteReference: $remoteReference, isStory: $isStory, isSceneSplit: '
-        '$isSceneSplit, currentTime: $currentTime, currentDuration: '
-        '$currentDuration, mediaSession: $mediaSession, formatId: $formatId, '
-        'format: $format)';
-  }
+  String toString() => 'MediaData(playReason: $playReason, '
+      'isPlayingAd: $isPlayingAd, persons: $persons, domain: $domain, '
+      'mediaSessionParent: $mediaSessionParent, autoplay: $autoplay, '
+      'studio: $studio, studioAdRef: $studioAdRef, mediaID: $mediaID, '
+      'hash: $hash, title: $title, subtitle: $subtitle, teaser: $teaser, '
+      'description: $description, channel: $channel, uploaded: $uploaded, '
+      'created: $created, orderHint: $orderHint, '
+      'isPresentation: $isPresentation, '
+      'currentCaptionLanguage: $currentCaptionLanguage, '
+      'currentAudioLanguage: $currentAudioLanguage, '
+      'channelAdRef: $channelAdRef, '
+      'channelId: $channelId, thumb: $thumb, thumbABT: $thumbABT, streamType: '
+      '$streamType, runtime: $runtime, licenseBy: $licenseBy, '
+      'currentPlaybackSpeed: $currentPlaybackSpeed, isBumper: $isBumper, '
+      'isStitched: $isStitched, orientation: $orientation, hasAudio: '
+      '$hasAudio, globalID: $globalID, chosenAbVersion: $chosenAbVersion, '
+      'playbackMode: $playbackMode, isRemoteMedia: $isRemoteMedia, '
+      'remoteReference: $remoteReference, isStory: $isStory, isSceneSplit: '
+      '$isSceneSplit, currentTime: $currentTime, currentDuration: '
+      '$currentDuration, mediaSession: $mediaSession, formatId: $formatId, '
+      'format: $format)';
+}
+
+@immutable
+class MediaGeneral {
+  final int created;
+  final String? hash;
+  final int id;
+  final int parentID;
+  final String? parentHash;
+  final String? streamType;
+  final int gid;
+  final int isPicked;
+  final int isUGC;
+  final int isPay;
+  final int episode;
+  final int season;
+  final String? language;
+  final int channel;
+  final int licenseBy;
+  final int releaseDate;
+  final String? orderHint;
+  final String? type;
+  final String? runtime;
+  final String? subtitle;
+  final String? title;
+  final String? teaser;
+  final String? description;
+  final String? purpose;
+  final String? slug;
+  final String? format;
+  final String? contentModerationAspects;
+  final int formatRaw;
+  final int fileVersion;
+  final int occurance;
+  final String? languageRaw;
+  final int uploaded;
+  final String? videoType;
+  final String? podcastURL;
+
+  const MediaGeneral({
+    required this.created,
+    required this.hash,
+    required this.id,
+    required this.parentID,
+    required this.parentHash,
+    required this.streamType,
+    required this.gid,
+    required this.isPicked,
+    required this.isUGC,
+    required this.isPay,
+    required this.episode,
+    required this.season,
+    required this.language,
+    required this.channel,
+    required this.licenseBy,
+    required this.releaseDate,
+    required this.orderHint,
+    required this.type,
+    required this.runtime,
+    required this.subtitle,
+    required this.title,
+    required this.teaser,
+    required this.description,
+    required this.purpose,
+    required this.slug,
+    required this.format,
+    required this.contentModerationAspects,
+    required this.formatRaw,
+    required this.fileVersion,
+    required this.occurance,
+    required this.languageRaw,
+    required this.uploaded,
+    required this.videoType,
+    required this.podcastURL,
+  });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MediaGeneral &&
+          runtimeType == other.runtimeType &&
+          created == other.created &&
+          hash == other.hash &&
+          id == other.id &&
+          parentID == other.parentID &&
+          parentHash == other.parentHash &&
+          streamType == other.streamType &&
+          gid == other.gid &&
+          isPicked == other.isPicked &&
+          isUGC == other.isUGC &&
+          isPay == other.isPay &&
+          episode == other.episode &&
+          season == other.season &&
+          language == other.language &&
+          channel == other.channel &&
+          licenseBy == other.licenseBy &&
+          releaseDate == other.releaseDate &&
+          orderHint == other.orderHint &&
+          type == other.type &&
+          runtime == other.runtime &&
+          subtitle == other.subtitle &&
+          title == other.title &&
+          teaser == other.teaser &&
+          description == other.description &&
+          purpose == other.purpose &&
+          slug == other.slug &&
+          format == other.format &&
+          contentModerationAspects == other.contentModerationAspects &&
+          formatRaw == other.formatRaw &&
+          fileVersion == other.fileVersion &&
+          occurance == other.occurance &&
+          languageRaw == other.languageRaw &&
+          uploaded == other.uploaded &&
+          videoType == other.videoType &&
+          podcastURL == other.podcastURL;
+
+  @override
+  int get hashCode =>
+      created.hashCode ^
+      hash.hashCode ^
+      id.hashCode ^
+      parentID.hashCode ^
+      parentHash.hashCode ^
+      streamType.hashCode ^
+      gid.hashCode ^
+      isPicked.hashCode ^
+      isUGC.hashCode ^
+      isPay.hashCode ^
+      episode.hashCode ^
+      season.hashCode ^
+      language.hashCode ^
+      channel.hashCode ^
+      licenseBy.hashCode ^
+      releaseDate.hashCode ^
+      orderHint.hashCode ^
+      type.hashCode ^
+      runtime.hashCode ^
+      subtitle.hashCode ^
+      title.hashCode ^
+      teaser.hashCode ^
+      description.hashCode ^
+      purpose.hashCode ^
+      slug.hashCode ^
+      format.hashCode ^
+      contentModerationAspects.hashCode ^
+      formatRaw.hashCode ^
+      fileVersion.hashCode ^
+      occurance.hashCode ^
+      languageRaw.hashCode ^
+      uploaded.hashCode ^
+      videoType.hashCode ^
+      podcastURL.hashCode;
+
+  @override
+  String toString() => 'MediaGeneral{created: $created, hash: $hash, id: $id, '
+      'parentID: $parentID, parentHash: $parentHash, streamtype: $streamType, '
+      'gid: $gid, isPicked: $isPicked, isUGC: $isUGC, isPay: $isPay, '
+      'episode: $episode, season: $season, language: $language, '
+      'channel: $channel, licenseby: $licenseBy, releasedate: $releaseDate, '
+      'orderhint: $orderHint, type: $type, runtime: $runtime, '
+      'subtitle: $subtitle, title: $title, teaser: $teaser, '
+      'description: $description, purpose: $purpose, slug: $slug, '
+      'format: $format, contentModerationAspects: $contentModerationAspects, '
+      'formatRaw: $formatRaw, fileversion: $fileVersion, occurance: $occurance,'
+      ' languageRaw: $languageRaw, uploaded: $uploaded, videotype: $videoType, '
+      'podcastURL: $podcastURL}';
+}
+
+@immutable
+class OfflineMediaResult extends MediaGeneral {
+  final String? downloadState;
+  final String? localCover;
+  final String? offlineReference;
+  final int operationId;
+
+  const OfflineMediaResult({
+    required this.downloadState,
+    required this.localCover,
+    required this.offlineReference,
+    required this.operationId,
+    required int created,
+    required String? hash,
+    required int id,
+    required int parentID,
+    required String? parentHash,
+    required String? streamType,
+    required int gid,
+    required int isPicked,
+    required int isUGC,
+    required int isPay,
+    required int episode,
+    required int season,
+    required String? language,
+    required int channel,
+    required int licenseBy,
+    required int releaseDate,
+    required String? orderHint,
+    required String? type,
+    required String? runtime,
+    required String? subtitle,
+    required String? title,
+    required String? teaser,
+    required String? description,
+    required String? purpose,
+    required String? slug,
+    required String? format,
+    required String? contentModerationAspects,
+    required int formatRaw,
+    required int fileVersion,
+    required int occurance,
+    required String? languageRaw,
+    required int uploaded,
+    required String? videoType,
+    required String? podcastURL,
+  }) : super(
+          created: created,
+          hash: hash,
+          id: id,
+          parentID: parentID,
+          parentHash: parentHash,
+          streamType: streamType,
+          gid: gid,
+          isPicked: isPicked,
+          isUGC: isUGC,
+          isPay: isPay,
+          episode: episode,
+          season: season,
+          language: language,
+          channel: channel,
+          licenseBy: licenseBy,
+          releaseDate: releaseDate,
+          orderHint: orderHint,
+          type: type,
+          runtime: runtime,
+          subtitle: subtitle,
+          title: title,
+          teaser: teaser,
+          description: description,
+          purpose: purpose,
+          slug: slug,
+          format: format,
+          contentModerationAspects: contentModerationAspects,
+          formatRaw: formatRaw,
+          fileVersion: fileVersion,
+          occurance: occurance,
+          languageRaw: languageRaw,
+          uploaded: uploaded,
+          videoType: videoType,
+          podcastURL: podcastURL,
+        );
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      super == other &&
+          other is OfflineMediaResult &&
+          runtimeType == other.runtimeType &&
+          downloadState == other.downloadState &&
+          localCover == other.localCover &&
+          offlineReference == other.offlineReference &&
+          operationId == other.operationId;
+
+  @override
+  int get hashCode =>
+      super.hashCode ^
+      downloadState.hashCode ^
+      localCover.hashCode ^
+      offlineReference.hashCode ^
+      operationId.hashCode;
+
+  @override
+  String toString() => 'OfflineMediaResult{downloadState: $downloadState, '
+      'localCover: $localCover, offlineReference: $offlineReference, '
+      'operationId: $operationId, `super`: ${super.toString()}}';
 }
