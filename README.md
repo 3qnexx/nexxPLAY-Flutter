@@ -67,7 +67,7 @@ Please note that iOS is not supported by this plugin.
     ```
     Refer to `example/android/app/src/main/java/tv/nexx/flutter/android_example/MainActivity.java` for more details.
 
-4. Next, inherit from the AppCompat theme for the Android native app part (required by Chromecast):
+4. Next, inherit from the AppCompat theme for the Android native app part (required by ChromeCast, even if you don't use it, unfortunately):
     ```
     <style name="NormalTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="android:windowBackground">?android:colorBackground</item>
@@ -76,9 +76,6 @@ Please note that iOS is not supported by this plugin.
    Ensure that you have the AndroidX AppCompat dependency, a transitive or a direct one (`
    implementation "androidx.appcompat:appcompat:1.4.0"`). Refer to `example/android/app/build.gradle`, `example/android/app/src/main/res/values/styles.xml` and `example/android/app/src/main/res/values-night/styles.xml` for more details. 
 
-5. [OPTIONAL] If you need ChromeCast covered by nexxPLAY, then follow the documentation [here]( 
-) with an exception of native code part: to enable CastContext passing to native player, pass `'enableChromeCast': false,` to `NexxPlayEnvironment` constructor's `Map` argument.
-
-6. Lastly, there is a set of things to be done from the Flutter PoV for proper fullscreen and PiP support. Example app's `main.dart` file contains all the documentation necessary for that.
+5. Lastly, there is a set of things to be done from the Flutter PoV for proper fullscreen and PiP support. Example app's `main.dart` file contains all the documentation necessary for that.
 
 `INTEGRATION_GUIDE` markers were placed all over the documentation for navigation to make the integration process easier.

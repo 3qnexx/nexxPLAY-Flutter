@@ -8,11 +8,9 @@ import tv.nexx.android.play.NexxPLAYEnvironment;
 
 public class NexxPlayInitializationArguments {
     private final Map<String, Object> environmentProperties;
-    private final boolean enableChromeCast;
 
-    public NexxPlayInitializationArguments(Map<String, Object> environmentProperties, boolean enableChromeCast) {
+    public NexxPlayInitializationArguments(Map<String, Object> environmentProperties) {
         this.environmentProperties = environmentProperties;
-        this.enableChromeCast = enableChromeCast;
     }
 
     public NexxPLAYEnvironment environment() {
@@ -27,10 +25,6 @@ public class NexxPlayInitializationArguments {
         return new NexxPLAYEnvironment(extendedProperties);
     }
 
-    public boolean shouldEnableChromeCast() {
-        return enableChromeCast;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -40,21 +34,18 @@ public class NexxPlayInitializationArguments {
             return false;
         }
         NexxPlayInitializationArguments that = (NexxPlayInitializationArguments) o;
-        return enableChromeCast == that.enableChromeCast && Objects.equals(environmentProperties, that.environmentProperties);
+        return Objects.equals(environmentProperties, that.environmentProperties);
     }
 
     @Override
     public int hashCode() {
-        int result = environmentProperties != null ? environmentProperties.hashCode() : 0;
-        result = 31 * result + (enableChromeCast ? 1 : 0);
-        return result;
+        return environmentProperties != null ? environmentProperties.hashCode() : 0;
     }
 
     @Override
     public String toString() {
         return "NexxPlayInitializationArguments{" +
                 "environmentProperties=" + environmentProperties +
-                ", enableChromeCast=" + enableChromeCast +
                 '}';
     }
 }

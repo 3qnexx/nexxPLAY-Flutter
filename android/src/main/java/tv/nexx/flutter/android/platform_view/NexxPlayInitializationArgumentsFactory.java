@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 public class NexxPlayInitializationArgumentsFactory {
-    private static final List<String> BRIDGING_KEYS = Collections.singletonList("enableChromeCast");
+    // Can be used to shrink any Flutter-specific keys before they will be passed to the native
+    // NexxEnvironment.
+    private static final List<String> BRIDGING_KEYS = Collections.emptyList();
 
     private NexxPlayInitializationArgumentsFactory() {
     }
@@ -22,9 +24,8 @@ public class NexxPlayInitializationArgumentsFactory {
         }
         final DynamicArguments arguments = DynamicArguments.from((Map<Object, Object>) args);
         final Map<String, Object> environment = (Map<String, Object>) arguments.getMap("environment");
-        final Boolean enableChromeCast = DynamicArguments.from(environment).getBoolean("enableChromeCast");
         final Map<String, Object> envMap = removeBridgingKeys(environment);
-        return new NexxPlayInitializationArguments(envMap, enableChromeCast != null && enableChromeCast);
+        return new NexxPlayInitializationArguments(envMap);
     }
 
     private Map<String, Object> removeBridgingKeys(Map<String, Object> target) {

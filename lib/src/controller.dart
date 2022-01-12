@@ -17,18 +17,18 @@ abstract class NexxPlayController {
 
   void dispose();
 
-  Future<StartResult> startPlay({
+  Future<void> startPlay({
     required String playMode,
     required String mediaID,
     required NexxPlayConfiguration configuration,
   });
 
-  Future<StartResult> startPlayWithGlobalID({
+  Future<void> startPlayWithGlobalID({
     required String globalID,
     required NexxPlayConfiguration configuration,
   });
 
-  Future<StartResult> startPlayWithRemoteMedia({
+  Future<void> startPlayWithRemoteMedia({
     required String playMode,
     required String mediaID,
     required String provider,
@@ -160,7 +160,7 @@ class _MethodChannelNexxPlayController implements NexxPlayController {
             .map(eventFactory.fromPlatformInterface);
 
   @override
-  Future<StartResult> startPlay({
+  Future<void> startPlay({
     required String playMode,
     required String mediaID,
     required NexxPlayConfiguration configuration,
@@ -173,7 +173,7 @@ class _MethodChannelNexxPlayController implements NexxPlayController {
   }
 
   @override
-  Future<StartResult> startPlayWithGlobalID({
+  Future<void> startPlayWithGlobalID({
     required String globalID,
     required NexxPlayConfiguration configuration,
   }) {
@@ -182,7 +182,7 @@ class _MethodChannelNexxPlayController implements NexxPlayController {
   }
 
   @override
-  Future<StartResult> startPlayWithRemoteMedia({
+  Future<void> startPlayWithRemoteMedia({
     required String playMode,
     required String mediaID,
     required String provider,
@@ -196,7 +196,7 @@ class _MethodChannelNexxPlayController implements NexxPlayController {
     return _startPlayer(playback, configuration);
   }
 
-  Future<StartResult> _startPlayer(
+  Future<void> _startPlayer(
     _NexxPlayPlaybackConfiguration playback,
     NexxPlayConfiguration configuration,
   ) async {
@@ -204,8 +204,7 @@ class _MethodChannelNexxPlayController implements NexxPlayController {
       'playback': playback.toMap(),
       'configuration': configuration.asMap()
     };
-    final result = await _invokeMapMapMethod('start', arguments);
-    return StartResult._from(_MethodChannelMapResult(result));
+    return _invokeVoidMapMethod('start', arguments);
   }
 
   @override
@@ -495,44 +494,6 @@ class _MethodChannelMapResult {
 
   @override
   String toString() => '_MethodChannelMapResult(_raw: $_raw)';
-}
-
-@immutable
-class StartResult {
-  final bool isChromeCastEnabled;
-  final String? chromeCastFailureCause;
-
-  const StartResult._({
-    required this.isChromeCastEnabled,
-    required this.chromeCastFailureCause,
-  });
-
-  factory StartResult._from(_MethodChannelMapResult result) {
-    final isEnabled = result.get<bool>('chrome_cast_enabled') ?? false;
-    final failureCause = result.get<String>('chrome_cast_failure_cause');
-    return StartResult._(
-      isChromeCastEnabled: isEnabled,
-      chromeCastFailureCause: failureCause,
-    );
-  }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is StartResult &&
-          runtimeType == other.runtimeType &&
-          isChromeCastEnabled == other.isChromeCastEnabled &&
-          chromeCastFailureCause == other.chromeCastFailureCause;
-
-  @override
-  int get hashCode =>
-      isChromeCastEnabled.hashCode ^ chromeCastFailureCause.hashCode;
-
-  @override
-  String toString() {
-    return 'StartResult{isChromeCastEnabled: $isChromeCastEnabled, '
-        'chromeCastFailureCause: $chromeCastFailureCause}';
-  }
 }
 
 class _GetCaptionsDataResult {
