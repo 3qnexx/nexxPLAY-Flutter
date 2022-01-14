@@ -113,6 +113,8 @@ abstract class NexxPlayController {
 
   Future<MediaData> getCurrentMedia();
 
+  Future<PlaybackState> getCurrentPlaybackState();
+
   Future<List<Caption>> getCaptionData([String? language]);
 
   Future<List<String>> getCaptionLanguages();
@@ -396,6 +398,13 @@ class _MethodChannelNexxPlayController implements NexxPlayController {
   }
 
   @override
+  Future<PlaybackState> getCurrentPlaybackState() async {
+    final result = await _invokeMapMapMethod('getCurrentPlaybackState');
+    return _GetCurrentPlaybackStateResult.from(_MethodChannelMapResult(result))
+        .playbackState;
+  }
+
+  @override
   Future<List<String>> getCaptionLanguages() async {
     final result = await _invokeMapMapMethod('getCaptionLanguages');
     return _GetLanguagesResult.from(_MethodChannelMapResult(result)).languages;
@@ -611,10 +620,10 @@ class _GetLanguagesResult {
   factory _GetLanguagesResult.from(_MethodChannelMapResult result) {
     final captionData = result.get<List>('languages');
     if (captionData == null) throw ArgumentError.notNull('languages');
-    return _GetLanguagesResult._(_deserializeLanguages(captionData));
+    return _GetLanguagesResult._(_deserialize(captionData));
   }
 
-  static List<String> _deserializeLanguages(List serialized) =>
+  static List<String> _deserialize(List serialized) =>
       serialized.where((Object? e) => e != null).cast<String>().toList();
 }
 
@@ -650,10 +659,10 @@ class _GetCurrentMediaResult {
   factory _GetCurrentMediaResult.from(_MethodChannelMapResult result) {
     final captionData = result.get<Map>('media_data');
     if (captionData == null) throw ArgumentError.notNull('media_data');
-    return _GetCurrentMediaResult._(_deserializeCaptions(captionData));
+    return _GetCurrentMediaResult._(_deserialize(captionData));
   }
 
-  static MediaData _deserializeCaptions(Map serialized) => MediaData(
+  static MediaData _deserialize(Map serialized) => MediaData(
         remoteReference: serialized['remote_reference'] as String?,
         id: serialized['id'] as int,
         gid: serialized['global_id'] as int,
@@ -679,6 +688,47 @@ class _GetCurrentMediaResult {
         isReLive: serialized['is_re_live'] as bool,
       );
 }
+
+class _GetCurrentPlaybackStateResult {
+  final PlaybackState playbackState;
+
+  _GetCurrentPlaybackStateResult._(this.playbackState);
+
+  factory _GetCurrentPlaybackStateResult.from(_MethodChannelMapResult result) {
+    final captionData = result.get<Map>('playback_state');
+    if (captionData == null) throw ArgumentError.notNull('playback_state');
+    return _GetCurrentPlaybackStateResult._(_deserialize(captionData));
+  }
+
+  static PlaybackState _deserialize(Map serialized) => PlaybackState(
+      captionLanguage: serialized["caption_language"] as String?,
+      audioLanguage: serialized["audio_language"] as String?,
+      mediaSession: serialized["media_session"] as String?,
+      elapsedTime: serialized["elapsed_time"] as double,
+      currentTime: serialized["current_time"] as double,
+      abTestVersion: serialized["ab_test_version"] as int,
+      duration: serialized["duration"] as double,
+      playReason: serialized["play_reason"] as String?,
+      liveStatus: serialized["live_status"] as String?,
+      isAutoPlay: serialized["is_auto_play"] as bool,
+      isPlayingAd: serialized["is_playing_ad"] as bool,
+      isPlayingBumper: serialized["is_playing_bumper"] as bool,
+      isMuted: serialized["is_muted"] as bool,
+      isLocalMedia: serialized["is_local_media"] as bool,
+      isInPiP: serialized["is_in_pip"] as bool,
+      isCasting: serialized["is_casting"] as bool,
+      canBeCommented: serialized["can_be_commented"] as bool,
+      isInFullscreen: serialized["is_in_fullscreen"] as bool,
+      isInStoryMode: serialized["is_in_story_mode"] as bool,
+      isStitched: serialized["is_stitched"] as bool,
+      isPresentationMode: serialized["is_presentation_mode"] as bool,
+      isStoryMode: serialized["is_story_mode"] as bool,
+      isSceneSplitMode: serialized["is_scene_split_mode"] as bool,
+      isLightsOut: serialized["is_lights_out"] as bool,
+      isInPopOut: serialized["is_in_pop_out"] as bool,
+  );
+}
+
 
 class _NexxPlayPlaybackConfiguration {
   final String _mediaSourceType;

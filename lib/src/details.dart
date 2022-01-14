@@ -466,3 +466,134 @@ class OfflineMediaResult extends MediaGeneral {
       'localCover: $localCover, offlineReference: $offlineReference, '
       'operationId: $operationId, `super`: ${super.toString()}}';
 }
+
+@immutable
+class PlaybackState {
+  final String? captionLanguage;
+  final String? audioLanguage;
+  final String? mediaSession;
+  final double elapsedTime;
+  final double currentTime;
+  final int abTestVersion;
+  final double duration;
+  final String? playReason;
+  final String? liveStatus;
+  final bool isAutoPlay;
+  final bool isPlayingAd;
+  final bool isPlayingBumper;
+  final bool isMuted;
+  final bool isLocalMedia;
+  final bool isInPiP;
+  final bool isCasting;
+  final bool canBeCommented;
+  final bool isInFullscreen;
+  final bool isInStoryMode;
+  final bool isStitched;
+  final bool isPresentationMode;
+  final bool isStoryMode;
+  final bool isSceneSplitMode;
+  final bool isLightsOut;
+  final bool isInPopOut;
+
+  const PlaybackState({
+    required this.captionLanguage,
+    required this.audioLanguage,
+    required this.mediaSession,
+    required this.elapsedTime,
+    required this.currentTime,
+    required this.abTestVersion,
+    required this.duration,
+    required this.playReason,
+    required this.liveStatus,
+    required this.isAutoPlay,
+    required this.isPlayingAd,
+    required this.isPlayingBumper,
+    required this.isMuted,
+    required this.isLocalMedia,
+    required this.isInPiP,
+    required this.isCasting,
+    required this.canBeCommented,
+    required this.isInFullscreen,
+    required this.isInStoryMode,
+    required this.isStitched,
+    required this.isPresentationMode,
+    required this.isStoryMode,
+    required this.isSceneSplitMode,
+    required this.isLightsOut,
+    required this.isInPopOut,
+  });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PlaybackState &&
+          runtimeType == other.runtimeType &&
+          captionLanguage == other.captionLanguage &&
+          audioLanguage == other.audioLanguage &&
+          mediaSession == other.mediaSession &&
+          elapsedTime == other.elapsedTime &&
+          currentTime == other.currentTime &&
+          abTestVersion == other.abTestVersion &&
+          duration == other.duration &&
+          playReason == other.playReason &&
+          liveStatus == other.liveStatus &&
+          isAutoPlay == other.isAutoPlay &&
+          isPlayingAd == other.isPlayingAd &&
+          isPlayingBumper == other.isPlayingBumper &&
+          isMuted == other.isMuted &&
+          isLocalMedia == other.isLocalMedia &&
+          isInPiP == other.isInPiP &&
+          isCasting == other.isCasting &&
+          canBeCommented == other.canBeCommented &&
+          isInFullscreen == other.isInFullscreen &&
+          isInStoryMode == other.isInStoryMode &&
+          isStitched == other.isStitched &&
+          isPresentationMode == other.isPresentationMode &&
+          isStoryMode == other.isStoryMode &&
+          isSceneSplitMode == other.isSceneSplitMode &&
+          isLightsOut == other.isLightsOut &&
+          isInPopOut == other.isInPopOut;
+
+  @override
+  int get hashCode =>
+      captionLanguage.hashCode ^
+      audioLanguage.hashCode ^
+      mediaSession.hashCode ^
+      elapsedTime.hashCode ^
+      currentTime.hashCode ^
+      abTestVersion.hashCode ^
+      duration.hashCode ^
+      playReason.hashCode ^
+      liveStatus.hashCode ^
+      isAutoPlay.hashCode ^
+      isPlayingAd.hashCode ^
+      isPlayingBumper.hashCode ^
+      isMuted.hashCode ^
+      isLocalMedia.hashCode ^
+      isInPiP.hashCode ^
+      isCasting.hashCode ^
+      canBeCommented.hashCode ^
+      isInFullscreen.hashCode ^
+      isInStoryMode.hashCode ^
+      isStitched.hashCode ^
+      isPresentationMode.hashCode ^
+      isStoryMode.hashCode ^
+      isSceneSplitMode.hashCode ^
+      isLightsOut.hashCode ^
+      isInPopOut.hashCode;
+
+  @override
+  String toString() => 'PlaybackState{captionLanguage: $captionLanguage, '
+      'audioLanguage: $audioLanguage, mediaSession: $mediaSession, '
+      'elapsedTime: $elapsedTime, currentTime: $currentTime, '
+      'abTestVersion: $abTestVersion, duration: $duration, '
+      'playReason: $playReason, liveStatus: $liveStatus, '
+      'isAutoPlay: $isAutoPlay, isPlayingAd: $isPlayingAd, '
+      'isPlayingBumper: $isPlayingBumper, isMuted: $isMuted, '
+      'isLocalMedia: $isLocalMedia, isInPiP: $isInPiP, isCasting: $isCasting, '
+      'canBeCommented: $canBeCommented, isInFullscreen: $isInFullscreen, '
+      'isInStoryMode: $isInStoryMode, isStitched: $isStitched, '
+      'isPresentationMode: $isPresentationMode, isStoryMode: $isStoryMode, '
+      'isSceneSplitMode: $isSceneSplitMode, isLightsOut: $isLightsOut, '
+      'isInPopOut: $isInPopOut}';
+}

@@ -227,7 +227,11 @@ class _NexxPlayPageState extends State<_NexxPlayPage> with AdHocVisitor<void> {
     'Swap to position 1': (s) => s._controller?.swapToPosition(1),
     'Get Current Media': (s) async {
       final data = await s._controller?.getCurrentMedia();
-      debugPrint("Media Data: $data");
+      debugPrint("Current Media: $data");
+    },
+    'Get Current Playback State': (s) async {
+      final data = await s._controller?.getCurrentPlaybackState();
+      debugPrint("Current Playback State: $data");
     },
     'Get Captions': (s) async {
       final data = await s._controller?.getCaptionData();
