@@ -111,7 +111,7 @@ abstract class NexxPlayController {
 
   Future<int> diskSpaceUsedForLocalMedia();
 
-  Future<MediaData> getMediaData();
+  Future<MediaData> getCurrentMedia();
 
   Future<List<Caption>> getCaptionData([String? language]);
 
@@ -389,9 +389,10 @@ class _MethodChannelNexxPlayController implements NexxPlayController {
   }
 
   @override
-  Future<MediaData> getMediaData() async {
-    final result = await _invokeMapMapMethod('getMediaData');
-    return _GetMediaDataResult.from(_MethodChannelMapResult(result)).mediaData;
+  Future<MediaData> getCurrentMedia() async {
+    final result = await _invokeMapMapMethod('getCurrentMedia');
+    return _GetCurrentMediaResult.from(_MethodChannelMapResult(result))
+        .mediaData;
   }
 
   @override
@@ -568,8 +569,6 @@ class _ListLocalMediaResult {
       created: serialized['created'] as int,
       hash: serialized['hash'] as String?,
       id: serialized['id'] as int,
-      parentID: serialized['parent_id'] as int,
-      parentHash: serialized['parent_hash'] as String?,
       streamType: serialized['stream_type'] as String?,
       gid: serialized['gid'] as int,
       isPicked: serialized['is_picked'] as int,
@@ -643,66 +642,42 @@ class _PrimitiveResult<T> {
   }
 }
 
-class _GetMediaDataResult {
+class _GetCurrentMediaResult {
   final MediaData mediaData;
 
-  _GetMediaDataResult._(this.mediaData);
+  _GetCurrentMediaResult._(this.mediaData);
 
-  factory _GetMediaDataResult.from(_MethodChannelMapResult result) {
+  factory _GetCurrentMediaResult.from(_MethodChannelMapResult result) {
     final captionData = result.get<Map>('media_data');
     if (captionData == null) throw ArgumentError.notNull('media_data');
-    return _GetMediaDataResult._(_deserializeCaptions(captionData));
+    return _GetCurrentMediaResult._(_deserializeCaptions(captionData));
   }
 
-  static MediaData _deserializeCaptions(Map serialized) {
-    return MediaData(
-      playReason: serialized['play_reason'] as String?,
-      isPlayingAd: serialized['is_playing_ad'] as int,
-      persons: serialized['persons'] as String?,
-      domain: serialized['domain'] as int,
-      mediaSessionParent: serialized['media_session_parent'] as String?,
-      autoplay: serialized['autoplay'] as int,
-      studio: serialized['studio'] as String?,
-      studioAdRef: serialized['studio_ad_ref'] as String?,
-      mediaID: serialized['media_id'] as int,
-      hash: serialized['hash'] as String?,
-      title: serialized['title'] as String?,
-      subtitle: serialized['subtitle'] as String?,
-      teaser: serialized['teaser'] as String?,
-      description: serialized['description'] as String?,
-      channel: serialized['channel'] as String?,
-      uploaded: serialized['uploaded'] as int,
-      created: serialized['created'] as int,
-      orderHint: serialized['order_hint'] as String?,
-      isPresentation: serialized['is_presentation'] as int,
-      currentCaptionLanguage: serialized['current_caption_language'] as String?,
-      currentAudioLanguage: serialized['current_audio_language'] as String?,
-      channelAdRef: serialized['channel_ad_ref'] as String?,
-      channelId: serialized['channel_id'] as int,
-      thumb: serialized['thumb'] as String?,
-      thumbABT: serialized['thumb_ABT'] as String?,
-      streamType: serialized['stream_type'] as String?,
-      runtime: serialized['runtime'] as String?,
-      licenseBy: serialized['license_by'] as int,
-      currentPlaybackSpeed: serialized['current_playback_speed'] as double,
-      isBumper: serialized['is_bumper'] as int,
-      isStitched: serialized['is_stitched'] as int,
-      orientation: serialized['orientation'] as String?,
-      hasAudio: serialized['has_audio'] as int,
-      globalID: serialized['global_id'] as int,
-      chosenAbVersion: serialized['chosen_ab_version'] as int,
-      playbackMode: serialized['playback_mode'] as String?,
-      isRemoteMedia: serialized['is_remote_media'] as int,
-      remoteReference: serialized['remote_reference'] as String?,
-      isStory: serialized['is_story'] as int,
-      isSceneSplit: serialized['is_scene_split'] as int,
-      currentTime: serialized['current_time'] as double,
-      currentDuration: serialized['current_duration'] as double,
-      mediaSession: serialized['media_session'] as String?,
-      formatId: serialized['format_id'] as int,
-      format: serialized['format'] as String?,
-    );
-  }
+  static MediaData _deserializeCaptions(Map serialized) => MediaData(
+        remoteReference: serialized['remote_reference'] as String?,
+        id: serialized['id'] as int,
+        gid: serialized['global_id'] as int,
+        hash: serialized['hash'] as String?,
+        title: serialized['title'] as String?,
+        subtitle: serialized['subtitle'] as String?,
+        channel: serialized['channel'] as int,
+        uploaded: serialized['uploaded'] as int,
+        created: serialized['created'] as int,
+        orderHint: serialized['order_hint'] as String?,
+        studio: serialized['studio'] as int,
+        thumb: serialized['thumb'] as String?,
+        streamtype: serialized['stream_type'] as String?,
+        licenseBy: serialized['license_by'] as int,
+        originalDomain: serialized['original_domain'] as int,
+        persons: serialized['persons'] as String?,
+        format: serialized['format'] as int,
+        customAttributes:
+            serialized['custom_attributes'] as Map<String, Object>?,
+        episodeOfSeries: serialized['episode_of_series'] as int,
+        isRemoteMedia: serialized['is_remote_media'] as bool,
+        isUGC: serialized['is_ugc'] as bool,
+        isReLive: serialized['is_re_live'] as bool,
+      );
 }
 
 class _NexxPlayPlaybackConfiguration {

@@ -28,7 +28,7 @@ public class NexxPlayPlatformViewDispatchTable {
         DISPATCH_TABLE.set("swapToGlobalID", SwapToGlobalIDCommand.create());
         DISPATCH_TABLE.set("swapToRemoteMedia", SwapToRemoteMediaCommand.create());
         DISPATCH_TABLE.set("getCaptionData", GetCaptionDataCommand.create());
-        DISPATCH_TABLE.set("getMediaData", GetMediaDataCommand.create());
+        DISPATCH_TABLE.set("getCurrentMedia", GetCurrentMediaCommand.create());
         DISPATCH_TABLE.set("getCaptionLanguages", GetCaptionLanguagesCommand.create());
         DISPATCH_TABLE.set("getAudioLanguages", GetAudioLanguagesCommand.create());
         DISPATCH_TABLE.set("getCurrentTime", GetCurrentTimeCommand.create());

@@ -94,222 +94,116 @@ class CaptionData {
 
 @immutable
 class MediaData {
-  final String? playReason;
-  final int isPlayingAd;
-  final String? persons;
-  final int domain;
-  final String? mediaSessionParent;
-  final int autoplay;
-  final String? studio;
-  final String? studioAdRef;
-  final int mediaID;
+  final String? remoteReference;
+  final int id;
+  final int gid;
   final String? hash;
   final String? title;
   final String? subtitle;
-  final String? teaser;
-  final String? description;
-  final String? channel;
+  final int channel;
   final int uploaded;
   final int created;
   final String? orderHint;
-  final int isPresentation;
-  final String? currentCaptionLanguage;
-  final String? currentAudioLanguage;
-  final String? channelAdRef;
-  final int channelId;
+  final int studio;
   final String? thumb;
-  final String? thumbABT;
-  final String? streamType;
-  final String? runtime;
+  final String? streamtype;
   final int licenseBy;
-  final double currentPlaybackSpeed;
-  final int isBumper;
-  final int isStitched;
-  final String? orientation;
-  final int hasAudio;
-  final int globalID;
-  final int chosenAbVersion;
-  final String? playbackMode;
-  final int isRemoteMedia;
-  final String? remoteReference;
-  final int isStory;
-  final int isSceneSplit;
-  final double currentTime;
-  final double currentDuration;
-  final String? mediaSession;
-  final int formatId;
-  final String? format;
+  final int originalDomain;
+  final String? persons;
+  final int format;
+  final Map<String, Object>? customAttributes;
+  final int episodeOfSeries;
+  final bool isRemoteMedia;
+  final bool isUGC;
+  final bool isReLive;
 
   const MediaData({
-    required this.playReason,
-    required this.isPlayingAd,
-    required this.persons,
-    required this.domain,
-    required this.mediaSessionParent,
-    required this.autoplay,
-    required this.studio,
-    required this.studioAdRef,
-    required this.mediaID,
+    required this.remoteReference,
+    required this.id,
+    required this.gid,
     required this.hash,
     required this.title,
     required this.subtitle,
-    required this.teaser,
-    required this.description,
     required this.channel,
     required this.uploaded,
     required this.created,
     required this.orderHint,
-    required this.isPresentation,
-    required this.currentCaptionLanguage,
-    required this.currentAudioLanguage,
-    required this.channelAdRef,
-    required this.channelId,
+    required this.studio,
     required this.thumb,
-    required this.thumbABT,
-    required this.streamType,
-    required this.runtime,
+    required this.streamtype,
     required this.licenseBy,
-    required this.currentPlaybackSpeed,
-    required this.isBumper,
-    required this.isStitched,
-    required this.orientation,
-    required this.hasAudio,
-    required this.globalID,
-    required this.chosenAbVersion,
-    required this.playbackMode,
-    required this.isRemoteMedia,
-    required this.remoteReference,
-    required this.isStory,
-    required this.isSceneSplit,
-    required this.currentTime,
-    required this.currentDuration,
-    required this.mediaSession,
-    required this.formatId,
+    required this.originalDomain,
+    required this.persons,
     required this.format,
+    required this.customAttributes,
+    required this.episodeOfSeries,
+    required this.isRemoteMedia,
+    required this.isUGC,
+    required this.isReLive,
   });
 
   @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    return other is MediaData &&
-        other.playReason == playReason &&
-        other.isPlayingAd == isPlayingAd &&
-        other.persons == persons &&
-        other.domain == domain &&
-        other.mediaSessionParent == mediaSessionParent &&
-        other.autoplay == autoplay &&
-        other.studio == studio &&
-        other.studioAdRef == studioAdRef &&
-        other.mediaID == mediaID &&
-        other.hash == hash &&
-        other.title == title &&
-        other.subtitle == subtitle &&
-        other.teaser == teaser &&
-        other.description == description &&
-        other.channel == channel &&
-        other.uploaded == uploaded &&
-        other.created == created &&
-        other.orderHint == orderHint &&
-        other.isPresentation == isPresentation &&
-        other.currentCaptionLanguage == currentCaptionLanguage &&
-        other.currentAudioLanguage == currentAudioLanguage &&
-        other.channelAdRef == channelAdRef &&
-        other.channelId == channelId &&
-        other.thumb == thumb &&
-        other.thumbABT == thumbABT &&
-        other.streamType == streamType &&
-        other.runtime == runtime &&
-        other.licenseBy == licenseBy &&
-        other.currentPlaybackSpeed == currentPlaybackSpeed &&
-        other.isBumper == isBumper &&
-        other.isStitched == isStitched &&
-        other.orientation == orientation &&
-        other.hasAudio == hasAudio &&
-        other.globalID == globalID &&
-        other.chosenAbVersion == chosenAbVersion &&
-        other.playbackMode == playbackMode &&
-        other.isRemoteMedia == isRemoteMedia &&
-        other.remoteReference == remoteReference &&
-        other.isStory == isStory &&
-        other.isSceneSplit == isSceneSplit &&
-        other.currentTime == currentTime &&
-        other.currentDuration == currentDuration &&
-        other.mediaSession == mediaSession &&
-        other.formatId == formatId &&
-        other.format == format;
-  }
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MediaData &&
+          runtimeType == other.runtimeType &&
+          remoteReference == other.remoteReference &&
+          id == other.id &&
+          gid == other.gid &&
+          hash == other.hash &&
+          title == other.title &&
+          subtitle == other.subtitle &&
+          channel == other.channel &&
+          uploaded == other.uploaded &&
+          created == other.created &&
+          orderHint == other.orderHint &&
+          studio == other.studio &&
+          thumb == other.thumb &&
+          streamtype == other.streamtype &&
+          licenseBy == other.licenseBy &&
+          originalDomain == other.originalDomain &&
+          persons == other.persons &&
+          format == other.format &&
+          customAttributes == other.customAttributes &&
+          episodeOfSeries == other.episodeOfSeries &&
+          isRemoteMedia == other.isRemoteMedia &&
+          isUGC == other.isUGC &&
+          isReLive == other.isReLive;
 
   @override
-  int get hashCode {
-    return playReason.hashCode ^
-        isPlayingAd.hashCode ^
-        persons.hashCode ^
-        domain.hashCode ^
-        mediaSessionParent.hashCode ^
-        autoplay.hashCode ^
-        studio.hashCode ^
-        studioAdRef.hashCode ^
-        mediaID.hashCode ^
-        hash.hashCode ^
-        title.hashCode ^
-        subtitle.hashCode ^
-        teaser.hashCode ^
-        description.hashCode ^
-        channel.hashCode ^
-        uploaded.hashCode ^
-        created.hashCode ^
-        orderHint.hashCode ^
-        isPresentation.hashCode ^
-        currentCaptionLanguage.hashCode ^
-        currentAudioLanguage.hashCode ^
-        channelAdRef.hashCode ^
-        channelId.hashCode ^
-        thumb.hashCode ^
-        thumbABT.hashCode ^
-        streamType.hashCode ^
-        runtime.hashCode ^
-        licenseBy.hashCode ^
-        currentPlaybackSpeed.hashCode ^
-        isBumper.hashCode ^
-        isStitched.hashCode ^
-        orientation.hashCode ^
-        hasAudio.hashCode ^
-        globalID.hashCode ^
-        chosenAbVersion.hashCode ^
-        playbackMode.hashCode ^
-        isRemoteMedia.hashCode ^
-        remoteReference.hashCode ^
-        isStory.hashCode ^
-        isSceneSplit.hashCode ^
-        currentTime.hashCode ^
-        currentDuration.hashCode ^
-        mediaSession.hashCode ^
-        formatId.hashCode ^
-        format.hashCode;
-  }
+  int get hashCode =>
+      remoteReference.hashCode ^
+      id.hashCode ^
+      gid.hashCode ^
+      hash.hashCode ^
+      title.hashCode ^
+      subtitle.hashCode ^
+      channel.hashCode ^
+      uploaded.hashCode ^
+      created.hashCode ^
+      orderHint.hashCode ^
+      studio.hashCode ^
+      thumb.hashCode ^
+      streamtype.hashCode ^
+      licenseBy.hashCode ^
+      originalDomain.hashCode ^
+      persons.hashCode ^
+      format.hashCode ^
+      customAttributes.hashCode ^
+      episodeOfSeries.hashCode ^
+      isRemoteMedia.hashCode ^
+      isUGC.hashCode ^
+      isReLive.hashCode;
 
   @override
-  String toString() => 'MediaData(playReason: $playReason, '
-      'isPlayingAd: $isPlayingAd, persons: $persons, domain: $domain, '
-      'mediaSessionParent: $mediaSessionParent, autoplay: $autoplay, '
-      'studio: $studio, studioAdRef: $studioAdRef, mediaID: $mediaID, '
-      'hash: $hash, title: $title, subtitle: $subtitle, teaser: $teaser, '
-      'description: $description, channel: $channel, uploaded: $uploaded, '
-      'created: $created, orderHint: $orderHint, '
-      'isPresentation: $isPresentation, '
-      'currentCaptionLanguage: $currentCaptionLanguage, '
-      'currentAudioLanguage: $currentAudioLanguage, '
-      'channelAdRef: $channelAdRef, '
-      'channelId: $channelId, thumb: $thumb, thumbABT: $thumbABT, streamType: '
-      '$streamType, runtime: $runtime, licenseBy: $licenseBy, '
-      'currentPlaybackSpeed: $currentPlaybackSpeed, isBumper: $isBumper, '
-      'isStitched: $isStitched, orientation: $orientation, hasAudio: '
-      '$hasAudio, globalID: $globalID, chosenAbVersion: $chosenAbVersion, '
-      'playbackMode: $playbackMode, isRemoteMedia: $isRemoteMedia, '
-      'remoteReference: $remoteReference, isStory: $isStory, isSceneSplit: '
-      '$isSceneSplit, currentTime: $currentTime, currentDuration: '
-      '$currentDuration, mediaSession: $mediaSession, formatId: $formatId, '
-      'format: $format)';
+  String toString() => 'MediaData{remoteReference: $remoteReference, id: $id, '
+      'gid: $gid, hash: $hash, title: $title, subtitle: $subtitle, '
+      'channel: $channel, uploaded: $uploaded, created: $created, '
+      'orderHint: $orderHint, studio: $studio, thumb: $thumb, '
+      'streamtype: $streamtype, licenseBy: $licenseBy, '
+      'originalDomain: $originalDomain, persons: $persons, format: $format, '
+      'customAttributes: $customAttributes, episodeOfSeries: $episodeOfSeries, '
+      'isRemoteMedia: $isRemoteMedia, isUGC: $isUGC, isReLive: $isReLive}';
 }
 
 @immutable
@@ -317,8 +211,6 @@ class MediaGeneral {
   final int created;
   final String? hash;
   final int id;
-  final int parentID;
-  final String? parentHash;
   final String? streamType;
   final int gid;
   final int isPicked;
@@ -353,8 +245,6 @@ class MediaGeneral {
     required this.created,
     required this.hash,
     required this.id,
-    required this.parentID,
-    required this.parentHash,
     required this.streamType,
     required this.gid,
     required this.isPicked,
@@ -394,8 +284,6 @@ class MediaGeneral {
           created == other.created &&
           hash == other.hash &&
           id == other.id &&
-          parentID == other.parentID &&
-          parentHash == other.parentHash &&
           streamType == other.streamType &&
           gid == other.gid &&
           isPicked == other.isPicked &&
@@ -431,8 +319,6 @@ class MediaGeneral {
       created.hashCode ^
       hash.hashCode ^
       id.hashCode ^
-      parentID.hashCode ^
-      parentHash.hashCode ^
       streamType.hashCode ^
       gid.hashCode ^
       isPicked.hashCode ^
@@ -465,9 +351,8 @@ class MediaGeneral {
 
   @override
   String toString() => 'MediaGeneral{created: $created, hash: $hash, id: $id, '
-      'parentID: $parentID, parentHash: $parentHash, streamtype: $streamType, '
-      'gid: $gid, isPicked: $isPicked, isUGC: $isUGC, isPay: $isPay, '
-      'episode: $episode, season: $season, language: $language, '
+      'streamtype: $streamType, gid: $gid, isPicked: $isPicked, isUGC: $isUGC, '
+      'isPay: $isPay, episode: $episode, season: $season, language: $language, '
       'channel: $channel, licenseby: $licenseBy, releasedate: $releaseDate, '
       'orderhint: $orderHint, type: $type, runtime: $runtime, '
       'subtitle: $subtitle, title: $title, teaser: $teaser, '
@@ -493,8 +378,6 @@ class OfflineMediaResult extends MediaGeneral {
     required int created,
     required String? hash,
     required int id,
-    required int parentID,
-    required String? parentHash,
     required String? streamType,
     required int gid,
     required int isPicked,
@@ -528,8 +411,6 @@ class OfflineMediaResult extends MediaGeneral {
           created: created,
           hash: hash,
           id: id,
-          parentID: parentID,
-          parentHash: parentHash,
           streamType: streamType,
           gid: gid,
           isPicked: isPicked,

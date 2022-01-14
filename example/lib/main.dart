@@ -225,8 +225,8 @@ class _NexxPlayPageState extends State<_NexxPlayPage> with AdHocVisitor<void> {
     'Seek To 7.5 sec': (s) => s._controller?.seekTo(7500),
     'Seek By 5 sec': (s) => s._controller?.seekBy(5),
     'Swap to position 1': (s) => s._controller?.swapToPosition(1),
-    'Get Media Data': (s) async {
-      final data = await s._controller?.getMediaData();
+    'Get Current Media': (s) async {
+      final data = await s._controller?.getCurrentMedia();
       debugPrint("Media Data: $data");
     },
     'Get Captions': (s) async {

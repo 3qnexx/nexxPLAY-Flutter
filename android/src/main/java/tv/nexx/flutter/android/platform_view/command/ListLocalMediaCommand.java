@@ -5,9 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import tv.nexx.android.play.Caption;
-import tv.nexx.android.play.NexxPLAY;
-import tv.nexx.android.play.logic.CaptionData;
 import tv.nexx.android.play.offline.OfflineMediaResult;
 import tv.nexx.flutter.android.estd.virtual_dispatch.DispatchTableMethod;
 import tv.nexx.flutter.android.platform_view.NexxPlayDispatchPayload;
@@ -50,8 +47,6 @@ class ListLocalMediaCommand implements DispatchTableMethod<NexxPlayPlatformView,
         serialized.put("created", media.getCreated());
         serialized.put("hash", media.getHash());
         serialized.put("id", media.getID());
-        serialized.put("parent_id", media.parentID);
-        serialized.put("parent_hash", media.parentHash);
         serialized.put("stream_type", media.streamtype);
         serialized.put("gid", media.getGID());
         serialized.put("is_picked", media.getIsPicked());
