@@ -6,13 +6,11 @@ import tv.nexx.flutter.android.platform_view.NexxPlayMethodResult;
 import tv.nexx.flutter.android.platform_view.NexxPlayPlatformView;
 
 class IsMutedCommand implements DispatchTableMethod<NexxPlayPlatformView, NexxPlayDispatchPayload> {
-    private static final IsMutedCommand INSTANCE = new IsMutedCommand();
-
     private IsMutedCommand() {
     }
 
     public static IsMutedCommand create() {
-        return INSTANCE;
+        return new IsMutedCommand();
     }
 
     @Override

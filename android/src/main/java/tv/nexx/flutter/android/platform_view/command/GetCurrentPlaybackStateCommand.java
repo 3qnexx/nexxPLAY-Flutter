@@ -10,13 +10,11 @@ import tv.nexx.flutter.android.platform_view.NexxPlayMethodResult;
 import tv.nexx.flutter.android.platform_view.NexxPlayPlatformView;
 
 class GetCurrentPlaybackStateCommand implements DispatchTableMethod<NexxPlayPlatformView, NexxPlayDispatchPayload> {
-    private static final GetCurrentPlaybackStateCommand INSTANCE = new GetCurrentPlaybackStateCommand();
-
     private GetCurrentPlaybackStateCommand() {
     }
 
     public static GetCurrentPlaybackStateCommand create() {
-        return INSTANCE;
+        return new GetCurrentPlaybackStateCommand();
     }
 
     @Override

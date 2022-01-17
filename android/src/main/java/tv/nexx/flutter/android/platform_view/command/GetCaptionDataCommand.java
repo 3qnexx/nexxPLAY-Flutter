@@ -14,13 +14,11 @@ import tv.nexx.flutter.android.platform_view.NexxPlayMethodResult;
 import tv.nexx.flutter.android.platform_view.NexxPlayPlatformView;
 
 class GetCaptionDataCommand implements DispatchTableMethod<NexxPlayPlatformView, NexxPlayDispatchPayload> {
-    private static final GetCaptionDataCommand INSTANCE = new GetCaptionDataCommand();
-
     private GetCaptionDataCommand() {
     }
 
     public static GetCaptionDataCommand create() {
-        return INSTANCE;
+        return new GetCaptionDataCommand();
     }
 
     @Override

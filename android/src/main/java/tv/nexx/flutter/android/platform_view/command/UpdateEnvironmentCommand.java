@@ -6,13 +6,11 @@ import tv.nexx.flutter.android.platform_view.NexxPlayMethodResult;
 import tv.nexx.flutter.android.platform_view.NexxPlayPlatformView;
 
 class UpdateEnvironmentCommand implements DispatchTableMethod<NexxPlayPlatformView, NexxPlayDispatchPayload> {
-    private static final UpdateEnvironmentCommand INSTANCE = new UpdateEnvironmentCommand();
-
     private UpdateEnvironmentCommand() {
     }
 
     public static UpdateEnvironmentCommand create() {
-        return INSTANCE;
+        return new UpdateEnvironmentCommand();
     }
 
     @Override

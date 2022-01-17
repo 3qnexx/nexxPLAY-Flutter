@@ -6,13 +6,11 @@ import tv.nexx.flutter.android.platform_view.NexxPlayMethodResult;
 import tv.nexx.flutter.android.platform_view.NexxPlayPlatformView;
 
 class IsPlayingCommand implements DispatchTableMethod<NexxPlayPlatformView, NexxPlayDispatchPayload> {
-    private static final IsPlayingCommand INSTANCE = new IsPlayingCommand();
-
     private IsPlayingCommand() {
     }
 
     public static IsPlayingCommand create() {
-        return INSTANCE;
+        return new IsPlayingCommand();
     }
 
     @Override

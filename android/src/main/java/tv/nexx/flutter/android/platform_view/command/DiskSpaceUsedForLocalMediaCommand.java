@@ -6,13 +6,11 @@ import tv.nexx.flutter.android.platform_view.NexxPlayMethodResult;
 import tv.nexx.flutter.android.platform_view.NexxPlayPlatformView;
 
 class DiskSpaceUsedForLocalMediaCommand implements DispatchTableMethod<NexxPlayPlatformView, NexxPlayDispatchPayload> {
-    private static final DiskSpaceUsedForLocalMediaCommand INSTANCE = new DiskSpaceUsedForLocalMediaCommand();
-
     private DiskSpaceUsedForLocalMediaCommand() {
     }
 
     public static DiskSpaceUsedForLocalMediaCommand create() {
-        return INSTANCE;
+        return new DiskSpaceUsedForLocalMediaCommand();
     }
 
     @Override

@@ -9,13 +9,11 @@ import tv.nexx.flutter.android.platform_view.NexxPlayMethodResult;
 import tv.nexx.flutter.android.platform_view.NexxPlayPlatformView;
 
 class SwapToRemoteMediaCommand implements DispatchTableMethod<NexxPlayPlatformView, NexxPlayDispatchPayload> {
-    private static final SwapToRemoteMediaCommand INSTANCE = new SwapToRemoteMediaCommand();
-
     private SwapToRemoteMediaCommand() {
     }
 
     public static SwapToRemoteMediaCommand create() {
-        return INSTANCE;
+        return new SwapToRemoteMediaCommand();
     }
 
     @Override

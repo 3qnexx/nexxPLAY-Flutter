@@ -6,13 +6,11 @@ import tv.nexx.flutter.android.platform_view.NexxPlayMethodResult;
 import tv.nexx.flutter.android.platform_view.NexxPlayPlatformView;
 
 class ToggleCommand implements DispatchTableMethod<NexxPlayPlatformView, NexxPlayDispatchPayload> {
-    private static final ToggleCommand INSTANCE = new ToggleCommand();
-
     private ToggleCommand() {
     }
 
     public static ToggleCommand create() {
-        return INSTANCE;
+        return new ToggleCommand();
     }
 
     @Override

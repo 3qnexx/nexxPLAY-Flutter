@@ -9,13 +9,11 @@ import tv.nexx.flutter.android.platform_view.NexxPlayMethodResult;
 import tv.nexx.flutter.android.platform_view.NexxPlayPlatformView;
 
 class HasDownloadOfLocalMediaCommand implements DispatchTableMethod<NexxPlayPlatformView, NexxPlayDispatchPayload> {
-    private static final HasDownloadOfLocalMediaCommand INSTANCE = new HasDownloadOfLocalMediaCommand();
-
     private HasDownloadOfLocalMediaCommand() {
     }
 
     public static HasDownloadOfLocalMediaCommand create() {
-        return INSTANCE;
+        return new HasDownloadOfLocalMediaCommand();
     }
 
     @Override

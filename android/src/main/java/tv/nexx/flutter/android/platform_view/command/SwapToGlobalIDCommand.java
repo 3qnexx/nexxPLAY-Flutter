@@ -9,13 +9,11 @@ import tv.nexx.flutter.android.platform_view.NexxPlayMethodResult;
 import tv.nexx.flutter.android.platform_view.NexxPlayPlatformView;
 
 class SwapToGlobalIDCommand implements DispatchTableMethod<NexxPlayPlatformView, NexxPlayDispatchPayload> {
-    private static final SwapToGlobalIDCommand INSTANCE = new SwapToGlobalIDCommand();
-
     private SwapToGlobalIDCommand() {
     }
 
     public static SwapToGlobalIDCommand create() {
-        return INSTANCE;
+        return new SwapToGlobalIDCommand();
     }
 
     @Override

@@ -12,13 +12,11 @@ import tv.nexx.flutter.android.platform_view.NexxPlayMethodResult;
 import tv.nexx.flutter.android.platform_view.NexxPlayPlatformView;
 
 class ListLocalMediaCommand implements DispatchTableMethod<NexxPlayPlatformView, NexxPlayDispatchPayload> {
-    private static final ListLocalMediaCommand INSTANCE = new ListLocalMediaCommand();
-
     private ListLocalMediaCommand() {
     }
 
     public static ListLocalMediaCommand create() {
-        return INSTANCE;
+        return new ListLocalMediaCommand();
     }
 
     @Override

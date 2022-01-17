@@ -6,13 +6,11 @@ import tv.nexx.flutter.android.platform_view.NexxPlayMethodResult;
 import tv.nexx.flutter.android.platform_view.NexxPlayPlatformView;
 
 class NextCommand implements DispatchTableMethod<NexxPlayPlatformView, NexxPlayDispatchPayload> {
-    private static final NextCommand INSTANCE = new NextCommand();
-
     private NextCommand() {
     }
 
     public static NextCommand create() {
-        return INSTANCE;
+        return new NextCommand();
     }
 
     @Override

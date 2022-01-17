@@ -6,13 +6,11 @@ import tv.nexx.flutter.android.platform_view.NexxPlayMethodResult;
 import tv.nexx.flutter.android.platform_view.NexxPlayPlatformView;
 
 class ClearCacheCommand implements DispatchTableMethod<NexxPlayPlatformView, NexxPlayDispatchPayload> {
-    private static final ClearCacheCommand INSTANCE = new ClearCacheCommand();
-
     private ClearCacheCommand() {
     }
 
     public static ClearCacheCommand create() {
-        return INSTANCE;
+        return new ClearCacheCommand();
     }
 
     @Override

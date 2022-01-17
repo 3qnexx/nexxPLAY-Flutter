@@ -6,13 +6,11 @@ import tv.nexx.flutter.android.platform_view.NexxPlayMethodResult;
 import tv.nexx.flutter.android.platform_view.NexxPlayPlatformView;
 
 class MuteCommand implements DispatchTableMethod<NexxPlayPlatformView, NexxPlayDispatchPayload> {
-    private static final MuteCommand INSTANCE = new MuteCommand();
-
     private MuteCommand() {
     }
 
     public static MuteCommand create() {
-        return INSTANCE;
+        return new MuteCommand();
     }
 
     @Override

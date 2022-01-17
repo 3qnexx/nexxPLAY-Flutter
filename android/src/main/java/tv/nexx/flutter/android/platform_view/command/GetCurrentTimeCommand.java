@@ -6,13 +6,11 @@ import tv.nexx.flutter.android.platform_view.NexxPlayMethodResult;
 import tv.nexx.flutter.android.platform_view.NexxPlayPlatformView;
 
 class GetCurrentTimeCommand implements DispatchTableMethod<NexxPlayPlatformView, NexxPlayDispatchPayload> {
-    private static final GetCurrentTimeCommand INSTANCE = new GetCurrentTimeCommand();
-
     private GetCurrentTimeCommand() {
     }
 
     public static GetCurrentTimeCommand create() {
-        return INSTANCE;
+        return new GetCurrentTimeCommand();
     }
 
     @Override

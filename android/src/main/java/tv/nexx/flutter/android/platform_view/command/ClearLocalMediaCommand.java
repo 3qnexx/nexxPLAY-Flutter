@@ -6,13 +6,11 @@ import tv.nexx.flutter.android.platform_view.NexxPlayMethodResult;
 import tv.nexx.flutter.android.platform_view.NexxPlayPlatformView;
 
 class ClearLocalMediaCommand implements DispatchTableMethod<NexxPlayPlatformView, NexxPlayDispatchPayload> {
-    private static final ClearLocalMediaCommand INSTANCE = new ClearLocalMediaCommand();
-
     private ClearLocalMediaCommand() {
     }
 
     public static ClearLocalMediaCommand create() {
-        return INSTANCE;
+        return new ClearLocalMediaCommand();
     }
 
     @Override

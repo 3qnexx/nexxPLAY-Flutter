@@ -6,13 +6,11 @@ import tv.nexx.flutter.android.platform_view.NexxPlayMethodResult;
 import tv.nexx.flutter.android.platform_view.NexxPlayPlatformView;
 
 class PauseCommand implements DispatchTableMethod<NexxPlayPlatformView, NexxPlayDispatchPayload> {
-    private static final PauseCommand INSTANCE = new PauseCommand();
-
     private PauseCommand() {
     }
 
     public static PauseCommand create() {
-        return INSTANCE;
+        return new PauseCommand();
     }
 
     @Override
