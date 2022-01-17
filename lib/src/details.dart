@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 
+/// Structure, descriping a caption set.
 @immutable
 class Caption {
   final String? id;
@@ -56,6 +57,7 @@ class Caption {
   }
 }
 
+/// Structure, descriping a caption part.
 @immutable
 class CaptionData {
   final int id;
@@ -92,6 +94,7 @@ class CaptionData {
   }
 }
 
+/// Structure, descriping a media entity.
 @immutable
 class MediaData {
   final String? remoteReference;
@@ -206,6 +209,7 @@ class MediaData {
       'isRemoteMedia: $isRemoteMedia, isUGC: $isUGC, isReLive: $isReLive}';
 }
 
+/// Structure, descriping media properties for inheritors.
 @immutable
 class MediaGeneral {
   final int created;
@@ -363,6 +367,7 @@ class MediaGeneral {
       'podcastURL: $podcastURL}';
 }
 
+/// Structure, descriping an instance of offline media.
 @immutable
 class OfflineMediaResult extends MediaGeneral {
   final String? downloadState;
@@ -467,6 +472,7 @@ class OfflineMediaResult extends MediaGeneral {
       'operationId: $operationId, `super`: ${super.toString()}}';
 }
 
+/// Structure, descriping nexxPLAY's playback state.
 @immutable
 class PlaybackState {
   final String? captionLanguage;

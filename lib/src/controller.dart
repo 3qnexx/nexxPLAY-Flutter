@@ -2,9 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:nexxplay/src/configuration.dart';
-import 'package:nexxplay/src/details.dart';
-import 'package:nexxplay/src/event.dart';
+import 'package:nexxplay/nexxplay.dart';
 
 abstract class NexxPlayControllerFactory {
   factory NexxPlayControllerFactory() = _MethodChannelNexxPlayControllerFactory;
@@ -12,6 +10,13 @@ abstract class NexxPlayControllerFactory {
   NexxPlayController create(String type, int id);
 }
 
+/// Mirror to the native Android nexxPLAY methods.
+///
+/// An object of this type is
+/// created for all corresponding widgets, getting passed via a consumer
+/// callback serving as [NexxPlay] initialization argument. Full methods
+/// documentation can be found [here](https://play.docs.nexx.cloud/native-players/nexxplay-for-android#public-methods).
+/// Events are supported and available via the `events` stream.
 abstract class NexxPlayController {
   Stream<PlayerEvent> events();
 

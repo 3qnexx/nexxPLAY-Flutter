@@ -1,5 +1,5 @@
 name: nexxplay
-description: Plugin for Android native nexxPLAY
+description: Wrapper for native Android nexxPLAY, which enables usage of the player inside Flutter UI and provides access to native methods.
 version: 1.1.0
 homepage: https://play.docs.nexx.cloud/
 

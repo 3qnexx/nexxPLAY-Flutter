@@ -3,9 +3,12 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:nexxplay/src/configuration.dart';
-import 'package:nexxplay/src/controller.dart';
+import 'package:nexxplay/nexxplay.dart';
 
+/// Widget, encapsulating native Android nexxPLAY instance.
+///
+/// Callers get a [NexxPlayController] instance which can be used to interact
+/// with the player via [onControllerCreated] callback.
 class NexxPlay extends StatefulWidget {
   final NexxPlayEnvironment environment;
   final NexxPlayConfiguration configuration;
