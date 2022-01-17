@@ -5,3 +5,9 @@
 .pub/
 
 build/
+
+.idea/vcs.xml
+.idea/libraries/Flutter_Plugins.xml
+.idea/workspace.xml
+
+/pubspec.lock

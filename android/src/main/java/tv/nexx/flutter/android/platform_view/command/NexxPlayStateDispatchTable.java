@@ -1,7 +1,7 @@
 package tv.nexx.flutter.android.platform_view.command;
 
 import tv.nexx.android.play.INexxPLAY;
-import tv.nexx.android.play.MediaSourceType;
+import tv.nexx.android.play.enums.MediaSourceType;
 import tv.nexx.flutter.android.estd.virtual_dispatch.DispatchTable;
 
 class NexxPlayStateDispatchTable {

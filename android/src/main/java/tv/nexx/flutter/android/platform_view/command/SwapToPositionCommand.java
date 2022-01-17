@@ -8,13 +8,11 @@ import tv.nexx.flutter.android.platform_view.NexxPlayMethodResult;
 import tv.nexx.flutter.android.platform_view.NexxPlayPlatformView;
 
 class SwapToPositionCommand implements DispatchTableMethod<NexxPlayPlatformView, NexxPlayDispatchPayload> {
-    private static final SwapToPositionCommand INSTANCE = new SwapToPositionCommand();
-
     private SwapToPositionCommand() {
     }
 
     public static SwapToPositionCommand create() {
-        return INSTANCE;
+        return new SwapToPositionCommand();
     }
 
     @Override

@@ -6,13 +6,11 @@ import tv.nexx.flutter.android.platform_view.NexxPlayMethodResult;
 import tv.nexx.flutter.android.platform_view.NexxPlayPlatformView;
 
 class UpdateConfigurationCommand implements DispatchTableMethod<NexxPlayPlatformView, NexxPlayDispatchPayload> {
-    private static final UpdateConfigurationCommand INSTANCE = new UpdateConfigurationCommand();
-
     private UpdateConfigurationCommand() {
     }
 
     public static UpdateConfigurationCommand create() {
-        return INSTANCE;
+        return new UpdateConfigurationCommand();
     }
 
     @Override

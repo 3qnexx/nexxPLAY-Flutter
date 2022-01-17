@@ -5,19 +5,18 @@ import tv.nexx.flutter.android.platform_view.NexxPlayDispatchPayload;
 import tv.nexx.flutter.android.platform_view.NexxPlayMethodResult;
 import tv.nexx.flutter.android.platform_view.NexxPlayPlatformView;
 
-class UpdateEnvironmentCommand implements DispatchTableMethod<NexxPlayPlatformView, NexxPlayDispatchPayload> {
-    private UpdateEnvironmentCommand() {
+class ClearLocalMediaCommand implements DispatchTableMethod<NexxPlayPlatformView, NexxPlayDispatchPayload> {
+    private ClearLocalMediaCommand() {
     }
 
-    public static UpdateEnvironmentCommand create() {
-        return new UpdateEnvironmentCommand();
+    public static ClearLocalMediaCommand create() {
+        return new ClearLocalMediaCommand();
     }
 
     @Override
     public void dispatch(NexxPlayPlatformView receiver, NexxPlayDispatchPayload payload) {
-        final String key = payload.call().argument("key");
-        final Object value = payload.call().argument("value");
-        receiver.state().player().updateConfiguration(key, value);
+        final String provider = payload.call().argument("provider");
+        receiver.state().player().clearLocalMedia(provider);
         payload.result().success(NexxPlayMethodResult.from(receiver.state().id().numeric()).asMap());
     }
 }

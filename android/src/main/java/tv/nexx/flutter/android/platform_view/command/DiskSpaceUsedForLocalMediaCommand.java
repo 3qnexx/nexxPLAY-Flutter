@@ -5,19 +5,19 @@ import tv.nexx.flutter.android.platform_view.NexxPlayDispatchPayload;
 import tv.nexx.flutter.android.platform_view.NexxPlayMethodResult;
 import tv.nexx.flutter.android.platform_view.NexxPlayPlatformView;
 
-class IsMutedCommand implements DispatchTableMethod<NexxPlayPlatformView, NexxPlayDispatchPayload> {
-    private IsMutedCommand() {
+class DiskSpaceUsedForLocalMediaCommand implements DispatchTableMethod<NexxPlayPlatformView, NexxPlayDispatchPayload> {
+    private DiskSpaceUsedForLocalMediaCommand() {
     }
 
-    public static IsMutedCommand create() {
-        return new IsMutedCommand();
+    public static DiskSpaceUsedForLocalMediaCommand create() {
+        return new DiskSpaceUsedForLocalMediaCommand();
     }
 
     @Override
     public void dispatch(NexxPlayPlatformView receiver, NexxPlayDispatchPayload payload) {
-        final boolean isMuted = receiver.state().player().isMuted();
+        final long space = receiver.state().player().diskSpaceUsedForLocalMedia();
         final int id = receiver.state().id().numeric();
-        final NexxPlayMethodResult result = NexxPlayMethodResult.from(id).put("result", isMuted);
+        final NexxPlayMethodResult result = NexxPlayMethodResult.from(id).put("result", space);
         payload.result().success(result.asMap());
     }
 

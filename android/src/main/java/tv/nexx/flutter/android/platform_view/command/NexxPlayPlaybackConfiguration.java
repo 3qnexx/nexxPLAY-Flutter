@@ -3,7 +3,7 @@ package tv.nexx.flutter.android.platform_view.command;
 import java.util.Map;
 import java.util.Objects;
 
-import tv.nexx.android.play.MediaSourceType;
+import tv.nexx.android.play.enums.MediaSourceType;
 import tv.nexx.flutter.android.platform_view.DynamicArguments;
 
 class NexxPlayPlaybackConfiguration {

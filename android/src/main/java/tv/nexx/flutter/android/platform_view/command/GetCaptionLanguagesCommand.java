@@ -9,13 +9,11 @@ import tv.nexx.flutter.android.platform_view.NexxPlayMethodResult;
 import tv.nexx.flutter.android.platform_view.NexxPlayPlatformView;
 
 class GetCaptionLanguagesCommand implements DispatchTableMethod<NexxPlayPlatformView, NexxPlayDispatchPayload> {
-    private static final GetCaptionLanguagesCommand INSTANCE = new GetCaptionLanguagesCommand();
-
     private GetCaptionLanguagesCommand() {
     }
 
     public static GetCaptionLanguagesCommand create() {
-        return INSTANCE;
+        return new GetCaptionLanguagesCommand();
     }
 
     @Override

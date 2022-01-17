@@ -6,13 +6,11 @@ import tv.nexx.flutter.android.platform_view.NexxPlayMethodResult;
 import tv.nexx.flutter.android.platform_view.NexxPlayPlatformView;
 
 class UnmuteCommand implements DispatchTableMethod<NexxPlayPlatformView, NexxPlayDispatchPayload> {
-    private static final UnmuteCommand INSTANCE = new UnmuteCommand();
-
     private UnmuteCommand() {
     }
 
     public static UnmuteCommand create() {
-        return INSTANCE;
+        return new UnmuteCommand();
     }
 
     @Override
