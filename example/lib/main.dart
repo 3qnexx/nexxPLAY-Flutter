@@ -225,9 +225,13 @@ class _NexxPlayPageState extends State<_NexxPlayPage> with AdHocVisitor<void> {
     'Seek To 7.5 sec': (s) => s._controller?.seekTo(7500),
     'Seek By 5 sec': (s) => s._controller?.seekBy(5),
     'Swap to position 1': (s) => s._controller?.swapToPosition(1),
-    'Get Media Data': (s) async {
-      final data = await s._controller?.getMediaData();
-      debugPrint("Media Data: $data");
+    'Get Current Media': (s) async {
+      final data = await s._controller?.getCurrentMedia();
+      debugPrint("Current Media: $data");
+    },
+    'Get Current Playback State': (s) async {
+      final data = await s._controller?.getCurrentPlaybackState();
+      debugPrint("Current Playback State: $data");
     },
     'Get Captions': (s) async {
       final data = await s._controller?.getCaptionData();
@@ -265,6 +269,53 @@ class _NexxPlayPageState extends State<_NexxPlayPage> with AdHocVisitor<void> {
       final data = await s._controller?.isInPiP();
       debugPrint("Is In PiP?: $data");
     },
+    'Is Casting?': (s) async {
+      final data = await s._controller?.isCasting();
+      debugPrint("Is Casting?: $data");
+    },
+    'List Local Media': (s) async {
+      // final media = await s._controller?.listLocalMedia('#TODO');
+      final media = await s._controller?.listLocalMedia();
+      debugPrint(media?.isEmpty ?? true
+          ? 'Local Media: No media'
+          : 'Local Media: ${media!.join(", ")}');
+    },
+    'Clear Local Media': (s) {
+      // s._controller?.clearLocalMedia('#TODO');
+      s._controller?.clearLocalMedia();
+    },
+    'Disk Space Used For Local Media': (s) async {
+      final space = await s._controller?.diskSpaceUsedForLocalMedia();
+      debugPrint(space == null ? 'Space Used: Unknown' : 'Space used: $space');
+    }
+    // 'Update Configuration': (s) {
+    //   s._controller?.updateConfiguration(key: '#TODO', value: '#TODO');
+    // },
+    // 'Update Environment': (s) {
+    //   s._controller?.updateEnvironment(key: '#TODO', value: '#TODO');
+    // },
+    // 'Swap To Media Item': (s) {
+    //   s._controller?.swapToMediaItem(
+    //       mediaID: '#TODO', streamType: '#TODO', startPosition: 1, delay: 1);
+    // },
+    // 'Swap To Global ID': (s) {
+    //   s._controller
+    //       ?.swapToGlobalID(globalID: '#TODO', startPosition: 1, delay: 1);
+    // },
+    // 'Swap To Remote Media': (s) {
+    //   s._controller
+    //       ?.swapToRemoteMedia(reference: '#TODO', provider: '#TODO',
+    //        delay: 1);
+    // },
+    // 'Start Downloading Local Media': (s) {
+    //   s._controller?.startDownloadingLocalMedia(
+    //       mediaID: '#TODO', streamType: '#TODO', provider: '#TODO');
+    // },
+    // 'Has Download Of Local Media': (s) async {
+    //   final bool result = await s._controller?.hasDownloadOfLocalMedia(
+    //       mediaID: '#TODO', streamType: '#TODO', provider: '#TODO') ?? false;
+    //   debugPrint('Has Download of Local Media? $result');
+    // },
   };
 
   static final _modeTransformation =

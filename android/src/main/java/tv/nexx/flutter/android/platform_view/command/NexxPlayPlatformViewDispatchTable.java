@@ -28,7 +28,8 @@ public class NexxPlayPlatformViewDispatchTable {
         DISPATCH_TABLE.set("swapToGlobalID", SwapToGlobalIDCommand.create());
         DISPATCH_TABLE.set("swapToRemoteMedia", SwapToRemoteMediaCommand.create());
         DISPATCH_TABLE.set("getCaptionData", GetCaptionDataCommand.create());
-        DISPATCH_TABLE.set("getMediaData", GetMediaDataCommand.create());
+        DISPATCH_TABLE.set("getCurrentMedia", GetCurrentMediaCommand.create());
+        DISPATCH_TABLE.set("getCurrentPlaybackState", GetCurrentPlaybackStateCommand.create());
         DISPATCH_TABLE.set("getCaptionLanguages", GetCaptionLanguagesCommand.create());
         DISPATCH_TABLE.set("getAudioLanguages", GetAudioLanguagesCommand.create());
         DISPATCH_TABLE.set("getCurrentTime", GetCurrentTimeCommand.create());
@@ -36,6 +37,12 @@ public class NexxPlayPlatformViewDispatchTable {
         DISPATCH_TABLE.set("isPlayingAd", IsPlayingAdCommand.create());
         DISPATCH_TABLE.set("isMuted", IsMutedCommand.create());
         DISPATCH_TABLE.set("isInPiP", IsInPIPCommand.create());
+        DISPATCH_TABLE.set("isCasting", IsCastingCommand.create());
+        DISPATCH_TABLE.set("startDownloadingLocalMedia", StartDownloadingLocalMediaCommand.create());
+        DISPATCH_TABLE.set("listLocalMedia", ListLocalMediaCommand.create());
+        DISPATCH_TABLE.set("hasDownloadOfLocalMedia", HasDownloadOfLocalMediaCommand.create());
+        DISPATCH_TABLE.set("clearLocalMedia", ClearLocalMediaCommand.create());
+        DISPATCH_TABLE.set("diskSpaceUsedForLocalMedia", DiskSpaceUsedForLocalMediaCommand.create());
     }
 
     private NexxPlayPlatformViewDispatchTable() {

@@ -9,13 +9,11 @@ import tv.nexx.flutter.android.platform_view.NexxPlayMethodResult;
 import tv.nexx.flutter.android.platform_view.NexxPlayPlatformView;
 
 class GetAudioLanguagesCommand implements DispatchTableMethod<NexxPlayPlatformView, NexxPlayDispatchPayload> {
-    private static final GetAudioLanguagesCommand INSTANCE = new GetAudioLanguagesCommand();
-
     private GetAudioLanguagesCommand() {
     }
 
     public static GetAudioLanguagesCommand create() {
-        return INSTANCE;
+        return new GetAudioLanguagesCommand();
     }
 
     @Override

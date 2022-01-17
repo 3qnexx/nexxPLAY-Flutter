@@ -10,14 +10,13 @@ import tv.nexx.flutter.android.platform_view.NexxPlayPlatformView;
 import tv.nexx.flutter.android.platform_view.NexxPlayPlatformViewState;
 
 class StartPlayerCommand implements DispatchTableMethod<NexxPlayPlatformView, NexxPlayDispatchPayload> {
-    private static final StartPlayerCommand INSTANCE = new StartPlayerCommand();
     private static final NexxPlayStateDispatchTable PLAYER_DISPATCH_TABLE = NexxPlayStateDispatchTable.get();
 
     private StartPlayerCommand() {
     }
 
     public static StartPlayerCommand create() {
-        return INSTANCE;
+        return new StartPlayerCommand();
     }
 
     @SuppressWarnings({"ConstantConditions"})
@@ -30,4 +29,5 @@ class StartPlayerCommand implements DispatchTableMethod<NexxPlayPlatformView, Ne
         PLAYER_DISPATCH_TABLE.dispatch(playback.mediaSourceType(), state.player(), dispatchPayload);
         payload.result().success(NexxPlayMethodResult.from(state.id().numeric()).asMap());
     }
+
 }

@@ -8,13 +8,11 @@ import tv.nexx.flutter.android.platform_view.NexxPlayMethodResult;
 import tv.nexx.flutter.android.platform_view.NexxPlayPlatformView;
 
 class SeekByCommand implements DispatchTableMethod<NexxPlayPlatformView, NexxPlayDispatchPayload> {
-    private static final SeekByCommand INSTANCE = new SeekByCommand();
-
     private SeekByCommand() {
     }
 
     public static SeekByCommand create() {
-        return INSTANCE;
+        return new SeekByCommand();
     }
 
     @SuppressWarnings("ConstantConditions")
