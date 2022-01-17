@@ -72,12 +72,16 @@ abstract class NexxPlayController {
     String? streamType,
     int startPosition = 0,
     double delay = 0,
+    String reason = "",
+    bool showReturnButton = false,
   });
 
   Future<void> swapToGlobalID({
     required String globalID,
     int startPosition = 0,
     double delay = 0,
+    String reason = "",
+    bool showReturnButton = false,
   });
 
   Future<void> swapToRemoteMedia({
@@ -85,6 +89,8 @@ abstract class NexxPlayController {
     required String provider,
     String? streamType,
     double delay = 0,
+    String reason = "",
+    bool showReturnButton = false,
   });
 
   Future<void> startDownloadingLocalMedia({
