@@ -336,7 +336,7 @@ class _NexxPlayPageState extends State<_NexxPlayPage> with AdHocVisitor<void> {
     'exitMode': 'load',
     'streamingFilter': '',
     'adType': 'IMA',
-    'autoplay': 0,
+    'autoPlay': 0,
     'autoNext': 1,
     'disableAds': 1,
     'hidePrevNext': 0,
