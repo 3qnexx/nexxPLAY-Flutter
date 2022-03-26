@@ -29,7 +29,6 @@ class GetCurrentPlaybackStateCommand implements DispatchTableMethod<NexxPlayPlat
     private Map<String, Object> serialize(PlaybackState playbackState) {
         final Map<String, Object> result = new HashMap<>();
         result.put("media_session", playbackState.getMediaSession());
-        result.put("caption_language", playbackState.getCaptionLanguage());
         result.put("audio_language", playbackState.getAudioLanguage());
         result.put("play_reason", playbackState.getPlayReason());
         result.put("ab_test_version", playbackState.getAbTestVersion());

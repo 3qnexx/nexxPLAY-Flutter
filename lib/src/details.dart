@@ -1,97 +1,97 @@
 import 'package:flutter/foundation.dart';
 
-/// Structure, descriping a caption set.
+/// Description of an audio track.
 @immutable
-class Caption {
-  final String? id;
-  final String? title;
-  final String? hash;
-  final String? langauge;
-  final String? assetRoot;
-  final String? flagUrl;
+class AudioTrack {
+  final String? language;
   final int isAudioDescription;
-  final List<CaptionData>? data;
 
-  const Caption({
-    required this.id,
-    required this.title,
-    required this.hash,
-    required this.langauge,
-    required this.assetRoot,
-    required this.flagUrl,
+  const AudioTrack({
+    required this.language,
     required this.isAudioDescription,
-    required this.data,
   });
 
   @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    return other is Caption &&
-        other.id == id &&
-        other.title == title &&
-        other.hash == hash &&
-        other.langauge == langauge &&
-        other.assetRoot == assetRoot &&
-        other.flagUrl == flagUrl &&
-        other.isAudioDescription == isAudioDescription &&
-        listEquals(other.data, data);
-  }
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is AudioTrack &&
+          runtimeType == other.runtimeType &&
+          language == other.language &&
+          isAudioDescription == other.isAudioDescription;
 
   @override
-  int get hashCode {
-    return id.hashCode ^
-        title.hashCode ^
-        hash.hashCode ^
-        langauge.hashCode ^
-        assetRoot.hashCode ^
-        flagUrl.hashCode ^
-        isAudioDescription.hashCode ^
-        data.hashCode;
-  }
+  int get hashCode => language.hashCode ^ isAudioDescription.hashCode;
 
   @override
-  String toString() {
-    return 'Caption(id: $id, title: $title, hash: $hash, langauge: $langauge, '
-        'assetRoot: $assetRoot, flagUrl: $flagUrl, isAudioDescription: '
-        '$isAudioDescription, data: $data)';
-  }
+  String toString() => 'AudioTrack{language: $language, '
+      'isAudioDescription: $isAudioDescription}';
 }
 
-/// Structure, descriping a caption part.
 @immutable
-class CaptionData {
-  final int id;
-  final String? caption;
-  final int fromms;
-  final int toms;
+class ConnectedFile {
+  final int? id;
+  final int? gid;
+  final String? hash;
+  final String? title;
+  final int? channel;
+  final int? format;
+  final String? extension;
+  final String? fileFormat;
+  final String? mimeType;
+  final int? fileSize;
+  final String? url;
 
-  const CaptionData({
+  const ConnectedFile({
     required this.id,
-    required this.caption,
-    required this.fromms,
-    required this.toms,
+    required this.gid,
+    required this.hash,
+    required this.title,
+    required this.channel,
+    required this.format,
+    required this.extension,
+    required this.fileFormat,
+    required this.mimeType,
+    required this.fileSize,
+    required this.url,
   });
 
   @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    return other is CaptionData &&
-        other.id == id &&
-        other.caption == caption &&
-        other.fromms == fromms &&
-        other.toms == toms;
-  }
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ConnectedFile &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          gid == other.gid &&
+          hash == other.hash &&
+          title == other.title &&
+          channel == other.channel &&
+          format == other.format &&
+          extension == other.extension &&
+          fileFormat == other.fileFormat &&
+          mimeType == other.mimeType &&
+          fileSize == other.fileSize &&
+          url == other.url;
 
   @override
-  int get hashCode {
-    return id.hashCode ^ caption.hashCode ^ fromms.hashCode ^ toms.hashCode;
-  }
+  int get hashCode =>
+      id.hashCode ^
+      gid.hashCode ^
+      hash.hashCode ^
+      title.hashCode ^
+      channel.hashCode ^
+      format.hashCode ^
+      extension.hashCode ^
+      fileFormat.hashCode ^
+      mimeType.hashCode ^
+      fileSize.hashCode ^
+      url.hashCode;
 
   @override
-  String toString() {
-    return 'CaptionData(id: $id, caption: $caption, fromms: $fromms, '
-        'toms: $toms)';
-  }
+  String toString() => 'ConnectedFile{id: $id, gid: $gid, '
+      'hash: $hash, title: $title, channel: $channel, channel: $channel, '
+      'channel: $channel, format: $format, extension: $extension, '
+      'fileFormat: $fileFormat, mimeType: $mimeType, fileSize: $fileSize, '
+      'url: $url}';
 }
 
 /// Structure, descriping a media entity.
@@ -209,6 +209,69 @@ class MediaData {
       'isRemoteMedia: $isRemoteMedia, isUGC: $isUGC, isReLive: $isReLive}';
 }
 
+/// Structure, descriping a media entity parent.
+@immutable
+class MediaParentData {
+  final int id;
+  final int gid;
+  final String? hash;
+  final String? title;
+  final String? subtitle;
+  final int created;
+  final String? orderHint;
+  final String? thumb;
+  final String? streamtype;
+  final int originalDomain;
+
+  const MediaParentData({
+    required this.id,
+    required this.gid,
+    required this.hash,
+    required this.title,
+    required this.subtitle,
+    required this.created,
+    required this.orderHint,
+    required this.thumb,
+    required this.streamtype,
+    required this.originalDomain,
+  });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MediaData &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          gid == other.gid &&
+          hash == other.hash &&
+          title == other.title &&
+          subtitle == other.subtitle &&
+          created == other.created &&
+          orderHint == other.orderHint &&
+          thumb == other.thumb &&
+          streamtype == other.streamtype &&
+          originalDomain == other.originalDomain;
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      gid.hashCode ^
+      hash.hashCode ^
+      title.hashCode ^
+      subtitle.hashCode ^
+      created.hashCode ^
+      orderHint.hashCode ^
+      thumb.hashCode ^
+      streamtype.hashCode ^
+      originalDomain.hashCode;
+
+  @override
+  String toString() => 'MediaData{id: $id, gid: $gid, hash: $hash, '
+      'title: $title, subtitle: $subtitle, created: $created, '
+      'orderHint: $orderHint, thumb: $thumb, streamtype: $streamtype, '
+      'originalDomain: $originalDomain}';
+}
+
 /// Structure, descriping media properties for inheritors.
 @immutable
 class MediaGeneral {
@@ -240,7 +303,6 @@ class MediaGeneral {
   final int formatRaw;
   final int fileVersion;
   final int occurance;
-  final String? languageRaw;
   final int uploaded;
   final String? videoType;
   final String? podcastURL;
@@ -274,7 +336,6 @@ class MediaGeneral {
     required this.formatRaw,
     required this.fileVersion,
     required this.occurance,
-    required this.languageRaw,
     required this.uploaded,
     required this.videoType,
     required this.podcastURL,
@@ -313,7 +374,6 @@ class MediaGeneral {
           formatRaw == other.formatRaw &&
           fileVersion == other.fileVersion &&
           occurance == other.occurance &&
-          languageRaw == other.languageRaw &&
           uploaded == other.uploaded &&
           videoType == other.videoType &&
           podcastURL == other.podcastURL;
@@ -348,7 +408,6 @@ class MediaGeneral {
       formatRaw.hashCode ^
       fileVersion.hashCode ^
       occurance.hashCode ^
-      languageRaw.hashCode ^
       uploaded.hashCode ^
       videoType.hashCode ^
       podcastURL.hashCode;
@@ -363,8 +422,7 @@ class MediaGeneral {
       'description: $description, purpose: $purpose, slug: $slug, '
       'format: $format, contentModerationAspects: $contentModerationAspects, '
       'formatRaw: $formatRaw, fileversion: $fileVersion, occurance: $occurance,'
-      ' languageRaw: $languageRaw, uploaded: $uploaded, videotype: $videoType, '
-      'podcastURL: $podcastURL}';
+      ' uploaded: $uploaded, videotype: $videoType, podcastURL: $podcastURL}';
 }
 
 /// Structure, descriping an instance of offline media.
@@ -408,7 +466,6 @@ class OfflineMediaResult extends MediaGeneral {
     required int formatRaw,
     required int fileVersion,
     required int occurance,
-    required String? languageRaw,
     required int uploaded,
     required String? videoType,
     required String? podcastURL,
@@ -441,7 +498,6 @@ class OfflineMediaResult extends MediaGeneral {
           formatRaw: formatRaw,
           fileVersion: fileVersion,
           occurance: occurance,
-          languageRaw: languageRaw,
           uploaded: uploaded,
           videoType: videoType,
           podcastURL: podcastURL,
@@ -475,7 +531,6 @@ class OfflineMediaResult extends MediaGeneral {
 /// Structure, descriping nexxPLAY's playback state.
 @immutable
 class PlaybackState {
-  final String? captionLanguage;
   final String? audioLanguage;
   final String? mediaSession;
   final double elapsedTime;
@@ -502,7 +557,6 @@ class PlaybackState {
   final bool isInPopOut;
 
   const PlaybackState({
-    required this.captionLanguage,
     required this.audioLanguage,
     required this.mediaSession,
     required this.elapsedTime,
@@ -534,7 +588,6 @@ class PlaybackState {
       identical(this, other) ||
       other is PlaybackState &&
           runtimeType == other.runtimeType &&
-          captionLanguage == other.captionLanguage &&
           audioLanguage == other.audioLanguage &&
           mediaSession == other.mediaSession &&
           elapsedTime == other.elapsedTime &&
@@ -562,7 +615,6 @@ class PlaybackState {
 
   @override
   int get hashCode =>
-      captionLanguage.hashCode ^
       audioLanguage.hashCode ^
       mediaSession.hashCode ^
       elapsedTime.hashCode ^
@@ -589,8 +641,8 @@ class PlaybackState {
       isInPopOut.hashCode;
 
   @override
-  String toString() => 'PlaybackState{captionLanguage: $captionLanguage, '
-      'audioLanguage: $audioLanguage, mediaSession: $mediaSession, '
+  String toString() => 'PlaybackState{audioLanguage: $audioLanguage, '
+      'mediaSession: $mediaSession, '
       'elapsedTime: $elapsedTime, currentTime: $currentTime, '
       'abTestVersion: $abTestVersion, duration: $duration, '
       'playReason: $playReason, liveStatus: $liveStatus, '

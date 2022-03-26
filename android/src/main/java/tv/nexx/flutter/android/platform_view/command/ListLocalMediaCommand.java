@@ -70,7 +70,6 @@ class ListLocalMediaCommand implements DispatchTableMethod<NexxPlayPlatformView,
         serialized.put("format_raw", media.getFormat_raw());
         serialized.put("file_version", media.getFileversion());
         serialized.put("occurance", media.getOccurance());
-        serialized.put("language_raw", media.getLanguage_raw());
         serialized.put("uploaded", media.getUploaded());
         serialized.put("video_type", media.getVideoType());
         serialized.put("podcast_url", media.getPodcastURL());

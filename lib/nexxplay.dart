@@ -12,9 +12,10 @@ export 'src/configuration.dart' show NexxPlayConfiguration, NexxPlayEnvironment;
 export 'src/controller.dart' show NexxPlayController, NexxPlayControllerFactory;
 export 'src/details.dart'
     show
-        Caption,
-        CaptionData,
+        AudioTrack,
+        ConnectedFile,
         MediaData,
+        MediaParentData,
         PlaybackState,
         MediaGeneral,
         OfflineMediaResult;

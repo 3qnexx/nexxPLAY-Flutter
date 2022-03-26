@@ -229,25 +229,21 @@ class _NexxPlayPageState extends State<_NexxPlayPage> with AdHocVisitor<void> {
       final data = await s._controller?.getCurrentMedia();
       debugPrint("Current Media: $data");
     },
+    'Get Current Media Parent': (s) async {
+      final data = await s._controller?.getCurrentMediaParent();
+      debugPrint("Get Current Media Parent: $data");
+    },
+    'Get Audio Tracks': (s) async {
+      final data = await s._controller?.getAudioTracks();
+      debugPrint("Get Audio Tracks: $data");
+    },
+    'Get Connected Files': (s) async {
+      final data = await s._controller?.getConnectedFiles();
+      debugPrint("Get Connected Files: $data");
+    },
     'Get Current Playback State': (s) async {
       final data = await s._controller?.getCurrentPlaybackState();
       debugPrint("Current Playback State: $data");
-    },
-    'Get Captions': (s) async {
-      final data = await s._controller?.getCaptionData();
-      debugPrint('Caption data for no specific language: $data');
-    },
-    'Get Captions (Eng)': (s) async {
-      final data = await s._controller?.getCaptionData('en');
-      debugPrint("Caption data for 'en': $data");
-    },
-    'Get Caption Languages': (s) async {
-      final data = await s._controller?.getCaptionLanguages();
-      debugPrint("Caption Languages: $data");
-    },
-    'Get Audio Languages': (s) async {
-      final data = await s._controller?.getAudioLanguages();
-      debugPrint("Audio Languages: $data");
     },
     'Get Current Time': (s) async {
       final data = await s._controller?.getCurrentTime();
