@@ -122,15 +122,15 @@ abstract class NexxPlayController {
 
   Future<int> diskSpaceUsedForLocalMedia();
 
+  Future<List<AudioTrack>?> getAudioTracks();
+
   Future<MediaData> getCurrentMedia();
+
+  Future<MediaParentData?> getCurrentMediaParent();
 
   Future<PlaybackState> getCurrentPlaybackState();
 
-  Future<List<Caption>> getCaptionData([String? language]);
-
-  Future<List<String>> getCaptionLanguages();
-
-  Future<List<String>> getAudioLanguages();
+  Future<List<ConnectedFile>?> getConnectedFiles();
 
   Future<double> getCurrentTime();
 
@@ -394,11 +394,10 @@ class _MethodChannelNexxPlayController implements NexxPlayController {
   }
 
   @override
-  Future<List<Caption>> getCaptionData([String? language]) async {
-    final arguments = language == null ? null : {'language': language};
-    final result = await _invokeMapMapMethod('getCaptionData', arguments);
-    return _GetCaptionsDataResult.from(_MethodChannelMapResult(result))
-        .captions;
+  Future<List<AudioTrack>?> getAudioTracks() async {
+    final result = await _invokeMapMapMethod('getAudioTracks');
+    return _GetAudioTracksResult.from(_MethodChannelMapResult(result))
+        .audioTracks;
   }
 
   @override
@@ -409,22 +408,24 @@ class _MethodChannelNexxPlayController implements NexxPlayController {
   }
 
   @override
+  Future<MediaParentData?> getCurrentMediaParent() async {
+    final result = await _invokeMapMapMethod('getCurrentMediaParent');
+    return _GetCurrentMediaParentResult.from(_MethodChannelMapResult(result))
+        .mediaParentData;
+  }
+
+  @override
+  Future<List<ConnectedFile>?> getConnectedFiles() async {
+    final result = await _invokeMapMapMethod('getConnectedFiles');
+    return _GetConnectedFiles.from(_MethodChannelMapResult(result))
+        .connectedFiles;
+  }
+
+  @override
   Future<PlaybackState> getCurrentPlaybackState() async {
     final result = await _invokeMapMapMethod('getCurrentPlaybackState');
     return _GetCurrentPlaybackStateResult.from(_MethodChannelMapResult(result))
         .playbackState;
-  }
-
-  @override
-  Future<List<String>> getCaptionLanguages() async {
-    final result = await _invokeMapMapMethod('getCaptionLanguages');
-    return _GetLanguagesResult.from(_MethodChannelMapResult(result)).languages;
-  }
-
-  @override
-  Future<List<String>> getAudioLanguages() async {
-    final result = await _invokeMapMapMethod('getAudioLanguages');
-    return _GetLanguagesResult.from(_MethodChannelMapResult(result)).languages;
   }
 
   @override
@@ -517,52 +518,6 @@ class _MethodChannelMapResult {
   String toString() => '_MethodChannelMapResult(_raw: $_raw)';
 }
 
-class _GetCaptionsDataResult {
-  final List<Caption> captions;
-
-  _GetCaptionsDataResult._(this.captions);
-
-  factory _GetCaptionsDataResult.from(_MethodChannelMapResult result) {
-    final captionData = result.get<List>('caption_data');
-    if (captionData == null) throw ArgumentError.notNull('caption_data');
-    return _GetCaptionsDataResult._(_deserializeCaptions(captionData));
-  }
-
-  static List<Caption> _deserializeCaptions(List serialized) => serialized
-      .where((Object? e) => e != null)
-      .map((Object? e) => _deserializeCaption(e as Map))
-      .toList();
-
-  static Caption _deserializeCaption(Map serialized) {
-    final data = serialized['data'] as List?;
-    return Caption(
-      id: serialized['id'] as String?,
-      hash: serialized['hash'] as String?,
-      title: serialized['title'] as String?,
-      langauge: serialized['language'] as String?,
-      assetRoot: serialized['asset_root'] as String?,
-      flagUrl: serialized['flag_url'] as String?,
-      isAudioDescription: serialized['is_audio_description'] as int,
-      data: data == null ? null : _deserializeCaptionDataList(data),
-    );
-  }
-
-  static List<CaptionData> _deserializeCaptionDataList(List serialized) =>
-      serialized
-          .where((Object? e) => e != null)
-          .map((Object? e) => _deserializeCaptionData(e as Map))
-          .toList();
-
-  static CaptionData _deserializeCaptionData(Map serialized) {
-    return CaptionData(
-      id: serialized['id'] as int,
-      caption: serialized['caption'] as String?,
-      fromms: serialized['fromms'] as int,
-      toms: serialized['toms'] as int,
-    );
-  }
-}
-
 class _ListLocalMediaResult {
   final List<OfflineMediaResult> media;
 
@@ -615,27 +570,11 @@ class _ListLocalMediaResult {
       formatRaw: serialized['format_raw'] as int,
       fileVersion: serialized['file_version'] as int,
       occurance: serialized['occurance'] as int,
-      languageRaw: serialized['language_raw'] as String?,
       uploaded: serialized['uploaded'] as int,
       videoType: serialized['video_type'] as String?,
       podcastURL: serialized['podcast_url'] as String?,
     );
   }
-}
-
-class _GetLanguagesResult {
-  final List<String> languages;
-
-  _GetLanguagesResult._(this.languages);
-
-  factory _GetLanguagesResult.from(_MethodChannelMapResult result) {
-    final captionData = result.get<List>('languages');
-    if (captionData == null) throw ArgumentError.notNull('languages');
-    return _GetLanguagesResult._(_deserialize(captionData));
-  }
-
-  static List<String> _deserialize(List serialized) =>
-      serialized.where((Object? e) => e != null).cast<String>().toList();
 }
 
 class _GetCurrentTimeResult {
@@ -662,15 +601,62 @@ class _PrimitiveResult<T> {
   }
 }
 
+class _GetAudioTracksResult {
+  final List<AudioTrack>? audioTracks;
+
+  _GetAudioTracksResult._(this.audioTracks);
+
+  factory _GetAudioTracksResult.from(_MethodChannelMapResult result) {
+    final data = result.get<List?>('audio_tracks');
+    return _GetAudioTracksResult._(data == null ? null : _deserialize(data));
+  }
+
+  static List<AudioTrack> _deserialize(List serialized) =>
+      serialized.map((dynamic e) => _deserializeTrack(e as Map)).toList();
+
+  static AudioTrack _deserializeTrack(Map serialized) => AudioTrack(
+        language: serialized['language'] as String?,
+        isAudioDescription: serialized['is_audio_description'] as int,
+      );
+}
+
+class _GetConnectedFiles {
+  final List<ConnectedFile>? connectedFiles;
+
+  _GetConnectedFiles._(this.connectedFiles);
+
+  factory _GetConnectedFiles.from(_MethodChannelMapResult result) {
+    final data = result.get<List?>('connected_files');
+    return _GetConnectedFiles._(data == null ? null : _deserialize(data));
+  }
+
+  static List<ConnectedFile> _deserialize(List serialized) =>
+      serialized.map((dynamic e) => _deserializeTrack(e as Map)).toList();
+
+  static ConnectedFile _deserializeTrack(Map serialized) => ConnectedFile(
+        id: serialized["id"] as int?,
+        gid: serialized["global_id"] as int?,
+        hash: serialized["hash"] as String?,
+        title: serialized["title"] as String?,
+        channel: serialized["channel"] as int?,
+        format: serialized["format"] as int?,
+        extension: serialized["extension"] as String?,
+        fileFormat: serialized["file_format"] as String?,
+        mimeType: serialized["mime_type"] as String?,
+        fileSize: serialized["file_size"] as int?,
+        url: serialized["url"] as String?,
+      );
+}
+
 class _GetCurrentMediaResult {
   final MediaData mediaData;
 
   _GetCurrentMediaResult._(this.mediaData);
 
   factory _GetCurrentMediaResult.from(_MethodChannelMapResult result) {
-    final captionData = result.get<Map>('media_data');
-    if (captionData == null) throw ArgumentError.notNull('media_data');
-    return _GetCurrentMediaResult._(_deserialize(captionData));
+    final data = result.get<Map>('media_data');
+    if (data == null) throw ArgumentError.notNull('media_data');
+    return _GetCurrentMediaResult._(_deserialize(data));
   }
 
   static MediaData _deserialize(Map serialized) => MediaData(
@@ -700,6 +686,31 @@ class _GetCurrentMediaResult {
       );
 }
 
+class _GetCurrentMediaParentResult {
+  final MediaParentData? mediaParentData;
+
+  _GetCurrentMediaParentResult._(this.mediaParentData);
+
+  factory _GetCurrentMediaParentResult.from(_MethodChannelMapResult result) {
+    final data = result.get<Map>('media_parent_data');
+    return _GetCurrentMediaParentResult._(
+        data == null ? null : _deserialize(data));
+  }
+
+  static MediaParentData _deserialize(Map serialized) => MediaParentData(
+        id: serialized['id'] as int,
+        gid: serialized['global_id'] as int,
+        hash: serialized['hash'] as String?,
+        title: serialized['title'] as String?,
+        subtitle: serialized['subtitle'] as String?,
+        created: serialized['created'] as int,
+        orderHint: serialized['order_hint'] as String?,
+        thumb: serialized['thumb'] as String?,
+        streamtype: serialized['stream_type'] as String?,
+        originalDomain: serialized['original_domain'] as int,
+      );
+}
+
 class _GetCurrentPlaybackStateResult {
   final PlaybackState playbackState;
 
@@ -712,34 +723,32 @@ class _GetCurrentPlaybackStateResult {
   }
 
   static PlaybackState _deserialize(Map serialized) => PlaybackState(
-      captionLanguage: serialized["caption_language"] as String?,
-      audioLanguage: serialized["audio_language"] as String?,
-      mediaSession: serialized["media_session"] as String?,
-      elapsedTime: serialized["elapsed_time"] as double,
-      currentTime: serialized["current_time"] as double,
-      abTestVersion: serialized["ab_test_version"] as int,
-      duration: serialized["duration"] as double,
-      playReason: serialized["play_reason"] as String?,
-      liveStatus: serialized["live_status"] as String?,
-      isAutoPlay: serialized["is_auto_play"] as bool,
-      isPlayingAd: serialized["is_playing_ad"] as bool,
-      isPlayingBumper: serialized["is_playing_bumper"] as bool,
-      isMuted: serialized["is_muted"] as bool,
-      isLocalMedia: serialized["is_local_media"] as bool,
-      isInPiP: serialized["is_in_pip"] as bool,
-      isCasting: serialized["is_casting"] as bool,
-      canBeCommented: serialized["can_be_commented"] as bool,
-      isInFullscreen: serialized["is_in_fullscreen"] as bool,
-      isInStoryMode: serialized["is_in_story_mode"] as bool,
-      isStitched: serialized["is_stitched"] as bool,
-      isPresentationMode: serialized["is_presentation_mode"] as bool,
-      isStoryMode: serialized["is_story_mode"] as bool,
-      isSceneSplitMode: serialized["is_scene_split_mode"] as bool,
-      isLightsOut: serialized["is_lights_out"] as bool,
-      isInPopOut: serialized["is_in_pop_out"] as bool,
-  );
+        audioLanguage: serialized["audio_language"] as String?,
+        mediaSession: serialized["media_session"] as String?,
+        elapsedTime: serialized["elapsed_time"] as double,
+        currentTime: serialized["current_time"] as double,
+        abTestVersion: serialized["ab_test_version"] as int,
+        duration: serialized["duration"] as double,
+        playReason: serialized["play_reason"] as String?,
+        liveStatus: serialized["live_status"] as String?,
+        isAutoPlay: serialized["is_auto_play"] as bool,
+        isPlayingAd: serialized["is_playing_ad"] as bool,
+        isPlayingBumper: serialized["is_playing_bumper"] as bool,
+        isMuted: serialized["is_muted"] as bool,
+        isLocalMedia: serialized["is_local_media"] as bool,
+        isInPiP: serialized["is_in_pip"] as bool,
+        isCasting: serialized["is_casting"] as bool,
+        canBeCommented: serialized["can_be_commented"] as bool,
+        isInFullscreen: serialized["is_in_fullscreen"] as bool,
+        isInStoryMode: serialized["is_in_story_mode"] as bool,
+        isStitched: serialized["is_stitched"] as bool,
+        isPresentationMode: serialized["is_presentation_mode"] as bool,
+        isStoryMode: serialized["is_story_mode"] as bool,
+        isSceneSplitMode: serialized["is_scene_split_mode"] as bool,
+        isLightsOut: serialized["is_lights_out"] as bool,
+        isInPopOut: serialized["is_in_pop_out"] as bool,
+      );
 }
-
 
 class _NexxPlayPlaybackConfiguration {
   final String _mediaSourceType;
