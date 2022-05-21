@@ -32,7 +32,7 @@ android {
 }
 
 dependencies {
-    implementation("tv.nexx.android:play:6.2.01") {
+    implementation("tv.nexx.android:play:6.2.10") {
         exclude group: 'com.android.support', module: 'support-v4'
     }
 }
