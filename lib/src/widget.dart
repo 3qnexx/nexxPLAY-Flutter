@@ -49,7 +49,7 @@ class NexxPlayState extends State<NexxPlay> {
         );
       },
       onCreatePlatformView: (PlatformViewCreationParams params) {
-        return PlatformViewsService.initSurfaceAndroidView(
+        return PlatformViewsService.initExpensiveAndroidView(
           id: params.id,
           viewType: _viewType,
           layoutDirection: TextDirection.ltr,
