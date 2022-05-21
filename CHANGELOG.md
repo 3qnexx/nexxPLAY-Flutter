@@ -1,9 +1,20 @@
+## [1.3.0] 21.05.2022
+
+* Fixed support for Flutter 3.
+* nexxPLAY Android SDK dependency version is set to 6.2.10.
+* `com.google.android.gms.version` property should not be removed
+  from `AndroidManifest.xml` anymore.
+
 ## [1.2.0] 23.04.2022
 
-* `getCaptionData`, `getCaptionLanguages` and `getAudioLanguages` methods were removed.
-* `getAudioTracks`, `getCurrentMediaParent` and `getConnectedFiles` methods were added.
-* `listLocalMedia` method's result does not contain the `language_raw` property anymore.
-* `getCurrentPlaybackState` method's result does not contain the `caption_language` property
+* `getCaptionData`, `getCaptionLanguages` and `getAudioLanguages` methods were
+  removed.
+* `getAudioTracks`, `getCurrentMediaParent` and `getConnectedFiles` methods were
+  added.
+* `listLocalMedia` method's result does not contain the `language_raw` property
+  anymore.
+* `getCurrentPlaybackState` method's result does not contain
+  the `caption_language` property
   anymore.
 * nexxPLAY Android SDK dependency version is set to 6.2.01.
 
@@ -17,7 +28,8 @@
   `showReturnButton` parameters.
 * Android's theme is now required to be extended from AndroidX
   `Theme.AppCompat` inheritor (README contains more specifics).
-* Several bugfixes intrinsic to native Android nexxPLAY were applied, changelog can be found
+* Several bugfixes intrinsic to native Android nexxPLAY were applied, changelog
+  can be found
   [here](https://github.com/3qnexx/nexxPLAY-android/blob/master/readme.md).
 
 ## [1.0.2] 24.11.2021.
