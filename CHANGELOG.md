@@ -1,3 +1,6 @@
+## [1.4.0] 05.07.2022
+* nexxPLAY Android SDK dependency version is set to 6.2.22.
+
 ## [1.3.0] 21.05.2022
 
 * Fixed support for Flutter 3.
