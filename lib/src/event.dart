@@ -40,10 +40,9 @@ mixin AdHocVisitor<T> implements PlayerEventVisitor<T?> {
 /// Event depicting player's state change.
 @immutable
 class PlayerStateChangeEvent implements PlayerEvent {
-  final bool playWhenReady;
   final PlayerState state;
 
-  const PlayerStateChangeEvent(this.state, {required this.playWhenReady});
+  const PlayerStateChangeEvent(this.state);
 
   @override
   T visit<T>(PlayerEventVisitor<T> visitor) =>
@@ -52,17 +51,14 @@ class PlayerStateChangeEvent implements PlayerEvent {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    return other is PlayerStateChangeEvent &&
-        other.playWhenReady == playWhenReady &&
-        other.state == state;
+    return other is PlayerStateChangeEvent && other.state == state;
   }
 
   @override
-  int get hashCode => playWhenReady.hashCode ^ state.hashCode;
+  int get hashCode => state.hashCode;
 
   @override
-  String toString() =>
-      'PlayerStateChangeEvent(playWhenReady: $playWhenReady, state: $state)';
+  String toString() => 'PlayerStateChangeEvent(state: $state)';
 }
 
 /// Event containing arbitrary information emitted by the player.

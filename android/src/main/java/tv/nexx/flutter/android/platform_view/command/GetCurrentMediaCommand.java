@@ -36,19 +36,19 @@ class GetCurrentMediaCommand implements DispatchTableMethod<NexxPlayPlatformView
         result.put("title", mediaData.getTitle());
         result.put("subtitle", mediaData.getSubtitle());
         result.put("channel", mediaData.getChannel());
-        result.put("uploaded", mediaData.getUploaded());
-        result.put("created", mediaData.getCreated());
-        result.put("order_hint", mediaData.getOrderHint());
-        result.put("persons", mediaData.getPersons());
-        result.put("episode_of_series", mediaData.getEpisodeOfSeries());
         result.put("thumb", mediaData.getThumb());
         result.put("stream_type", mediaData.getStreamtype());
         result.put("license_by", mediaData.getLicenseBy());
         result.put("format", mediaData.getFormat());
         result.put("remote_reference", mediaData.getRemoteReference());
         result.put("is_ugc", mediaData.getIsUGC());
-        result.put("is_remote_media", mediaData.getIsRemoteMedia());
-        result.put("is_re_live", mediaData.getIsReLive());
+        result.put("release_date", mediaData.getReleaseDate());
+        result.put("remote_provider", mediaData.getRemoteProvider());
+        result.put("is_for_kids", mediaData.getIsForKids());
+        result.put("is_panorama", mediaData.getIsPanorama());
+        result.put("is_hdr", mediaData.getIsHDR());
+        result.put("is_pay", mediaData.getIsPay());
+        result.put("is_picked", mediaData.getIsPicked());
         result.put("custom_attributes", mediaData.getCustomAttributes());
         return result;
     }

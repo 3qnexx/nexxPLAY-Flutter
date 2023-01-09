@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import tv.nexx.android.play.apiv3.responses.impls.media_result.AudioTrack;
+import tv.nexx.android.play.AudioTrack;
 import tv.nexx.flutter.android.estd.virtual_dispatch.DispatchTableMethod;
 import tv.nexx.flutter.android.platform_view.NexxPlayDispatchPayload;
 import tv.nexx.flutter.android.platform_view.NexxPlayMethodResult;
@@ -33,7 +33,7 @@ class GetAudioTracksCommand implements DispatchTableMethod<NexxPlayPlatformView,
         for (final AudioTrack track : data) {
             final Map<String, Object> object = new HashMap<>();
             object.put("language", track.getLanguage());
-            object.put("is_audio_description", track.isAudioDescription());
+            object.put("role", track.getRole());
             result.add(object);
         }
         return result;

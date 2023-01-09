@@ -44,21 +44,25 @@ public final class NexxPlayPlatformView implements PlatformView, MethodChannel.M
 
     @Override
     public void onListen(Object arguments, EventChannel.EventSink events) {
-        if (state.isDisposed()) return;
+        if (state.isDisposed()) {
+            return;
+        }
         state.sink(events);
         state.player().addPlaystateListener(this);
     }
 
     @Override
     public void onCancel(Object arguments) {
-        if (state.isDisposed()) return;
+        if (state.isDisposed()) {
+            return;
+        }
         state.player().removePlaystateListener(this);
         state.sink(null);
     }
 
     @Override
-    public void onPlayerStateChanged(boolean pwr, IPlayer.State current) {
-        state.sink().success(PlayerStateChangeEvent.of(state.id(), pwr, current).asMap());
+    public void onPlayerStateChanged(IPlayer.State current) {
+        state.sink().success(PlayerStateChangeEvent.of(state.id(), current).asMap());
     }
 
     @Override

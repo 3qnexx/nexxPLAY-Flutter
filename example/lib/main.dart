@@ -222,7 +222,7 @@ class _NexxPlayPageState extends State<_NexxPlayPage> with AdHocVisitor<void> {
     'Unmute': (s) => s._controller?.unmute(),
     'Next': (s) => s._controller?.next(),
     'Previous': (s) => s._controller?.previous(),
-    'Seek To 7.5 sec': (s) => s._controller?.seekTo(7500),
+    'Seek To 7.5 sec': (s) => s._controller?.seekTo(7.5),
     'Seek By 5 sec': (s) => s._controller?.seekBy(5),
     'Swap to position 1': (s) => s._controller?.swapToPosition(1),
     'Get Current Media': (s) async {
@@ -402,8 +402,7 @@ class _PlayerStateEventWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: const Text('Player State Change'),
-      subtitle:
-          Text('playWhenReady: ${event.playWhenReady}\nstate: ${event.state}'),
+      subtitle: Text('State: ${event.state}'),
     );
   }
 

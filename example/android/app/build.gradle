@@ -25,12 +25,12 @@ apply plugin: 'com.android.application'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    compileSdkVersion 32
+    compileSdkVersion 33
 
     defaultConfig {
         applicationId "tv.nexx.flutter.android_example"
         minSdkVersion 22
-        targetSdkVersion 32
+        targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -48,6 +48,7 @@ android {
             excludes += ['META-INF/ASL2.0', 'META-INF/LICENSE', 'META-INF/LICENSE.txt', 'LICENSE.txt', 'META-INF/license.txt', 'META-INF/NOTICE', 'META-INF/DEPENDENCIES', 'META-INF/NOTICE.txt', 'META-INF/notice.txt']
         }
     }
+    namespace 'tv.nexx.flutter.android_example'
 
     // [INTEGRATION GUIDE] Copy this to your app/build.gradle
     // TODO: This comes from nexxPLAY as well. Needs some attention.
@@ -59,5 +60,5 @@ flutter {
 
 // [INTEGRATION GUIDE]: Add an AndroidX AppCompat dependency if you don't have one.
 dependencies {
-    implementation "androidx.appcompat:appcompat:1.4.1"
+    implementation "androidx.appcompat:appcompat:1.5.1"
 }

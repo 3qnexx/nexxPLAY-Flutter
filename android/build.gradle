@@ -24,7 +24,7 @@ rootProject.allprojects {
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 32
+    compileSdkVersion 33
 
     defaultConfig {
         minSdkVersion 22
@@ -32,7 +32,8 @@ android {
 }
 
 dependencies {
-    implementation("tv.nexx.android:play:6.2.22") {
+    implementation("tv.nexx.android:play:6.3.01") {
         exclude group: 'com.android.support', module: 'support-v4'
     }
+    implementation "tv.nexx.android:admanager:1.0.00"
 }

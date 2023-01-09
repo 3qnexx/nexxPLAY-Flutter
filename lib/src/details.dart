@@ -4,11 +4,11 @@ import 'package:flutter/foundation.dart';
 @immutable
 class AudioTrack {
   final String? language;
-  final int isAudioDescription;
+  final String? role;
 
   const AudioTrack({
     required this.language,
-    required this.isAudioDescription,
+    required this.role,
   });
 
   @override
@@ -17,14 +17,13 @@ class AudioTrack {
       other is AudioTrack &&
           runtimeType == other.runtimeType &&
           language == other.language &&
-          isAudioDescription == other.isAudioDescription;
+          role == other.role;
 
   @override
-  int get hashCode => language.hashCode ^ isAudioDescription.hashCode;
+  int get hashCode => language.hashCode ^ role.hashCode;
 
   @override
-  String toString() => 'AudioTrack{language: $language, '
-      'isAudioDescription: $isAudioDescription}';
+  String toString() => 'AudioTrack{language: $language, role: $role}';
 }
 
 @immutable
@@ -104,21 +103,21 @@ class MediaData {
   final String? title;
   final String? subtitle;
   final int channel;
-  final int uploaded;
-  final int created;
-  final String? orderHint;
   final int studio;
   final String? thumb;
   final String? streamtype;
   final int licenseBy;
   final int originalDomain;
-  final String? persons;
   final int format;
-  final Map<String, Object>? customAttributes;
-  final int episodeOfSeries;
-  final bool isRemoteMedia;
+  final Map<dynamic, dynamic>? customAttributes;
   final bool isUGC;
-  final bool isReLive;
+  final int releaseDate;
+  final String? remoteProvider;
+  final bool isForKids;
+  final bool isPanorama;
+  final bool isHDR;
+  final bool isPay;
+  final bool isPicked;
 
   const MediaData({
     required this.remoteReference,
@@ -128,21 +127,21 @@ class MediaData {
     required this.title,
     required this.subtitle,
     required this.channel,
-    required this.uploaded,
-    required this.created,
-    required this.orderHint,
     required this.studio,
     required this.thumb,
     required this.streamtype,
     required this.licenseBy,
     required this.originalDomain,
-    required this.persons,
     required this.format,
-    required this.customAttributes,
-    required this.episodeOfSeries,
-    required this.isRemoteMedia,
     required this.isUGC,
-    required this.isReLive,
+    required this.releaseDate,
+    required this.remoteProvider,
+    required this.isForKids,
+    required this.isPanorama,
+    required this.isHDR,
+    required this.isPay,
+    required this.isPicked,
+    required this.customAttributes,
   });
 
   @override
@@ -157,21 +156,21 @@ class MediaData {
           title == other.title &&
           subtitle == other.subtitle &&
           channel == other.channel &&
-          uploaded == other.uploaded &&
-          created == other.created &&
-          orderHint == other.orderHint &&
           studio == other.studio &&
           thumb == other.thumb &&
           streamtype == other.streamtype &&
           licenseBy == other.licenseBy &&
           originalDomain == other.originalDomain &&
-          persons == other.persons &&
           format == other.format &&
           customAttributes == other.customAttributes &&
-          episodeOfSeries == other.episodeOfSeries &&
-          isRemoteMedia == other.isRemoteMedia &&
           isUGC == other.isUGC &&
-          isReLive == other.isReLive;
+          releaseDate == other.releaseDate &&
+          remoteProvider == other.remoteProvider &&
+          isForKids == other.isForKids &&
+          isPanorama == other.isPanorama &&
+          isHDR == other.isHDR &&
+          isPay == other.isPay &&
+          isPicked == other.isPicked;
 
   @override
   int get hashCode =>
@@ -182,31 +181,32 @@ class MediaData {
       title.hashCode ^
       subtitle.hashCode ^
       channel.hashCode ^
-      uploaded.hashCode ^
-      created.hashCode ^
-      orderHint.hashCode ^
       studio.hashCode ^
       thumb.hashCode ^
       streamtype.hashCode ^
       licenseBy.hashCode ^
       originalDomain.hashCode ^
-      persons.hashCode ^
       format.hashCode ^
       customAttributes.hashCode ^
-      episodeOfSeries.hashCode ^
-      isRemoteMedia.hashCode ^
       isUGC.hashCode ^
-      isReLive.hashCode;
+      releaseDate.hashCode ^
+      remoteProvider.hashCode ^
+      isForKids.hashCode ^
+      isPanorama.hashCode ^
+      isHDR.hashCode ^
+      isPay.hashCode ^
+      isPicked.hashCode;
 
   @override
   String toString() => 'MediaData{remoteReference: $remoteReference, id: $id, '
       'gid: $gid, hash: $hash, title: $title, subtitle: $subtitle, '
-      'channel: $channel, uploaded: $uploaded, created: $created, '
-      'orderHint: $orderHint, studio: $studio, thumb: $thumb, '
+      'channel: $channel, studio: $studio, thumb: $thumb, '
       'streamtype: $streamtype, licenseBy: $licenseBy, '
-      'originalDomain: $originalDomain, persons: $persons, format: $format, '
-      'customAttributes: $customAttributes, episodeOfSeries: $episodeOfSeries, '
-      'isRemoteMedia: $isRemoteMedia, isUGC: $isUGC, isReLive: $isReLive}';
+      'originalDomain: $originalDomain, format: $format, '
+      'customAttributes: $customAttributes, isUGC: $isUGC, '
+      'releaseDate: $releaseDate, remoteProvider: $remoteProvider, '
+      'isForKids: $isForKids, isPanorama: $isPanorama, isHDR: $isHDR, '
+      'isPay: $isPay, isPicked: $isPicked}';
 }
 
 /// Structure, descriping a media entity parent.
@@ -217,11 +217,14 @@ class MediaParentData {
   final String? hash;
   final String? title;
   final String? subtitle;
-  final int created;
-  final String? orderHint;
   final String? thumb;
   final String? streamtype;
   final int originalDomain;
+  final int releaseDate;
+  final int licenseBy;
+  final int channel;
+  final int format;
+  final Map<dynamic, dynamic>? customAttributes;
 
   const MediaParentData({
     required this.id,
@@ -229,28 +232,34 @@ class MediaParentData {
     required this.hash,
     required this.title,
     required this.subtitle,
-    required this.created,
-    required this.orderHint,
     required this.thumb,
     required this.streamtype,
     required this.originalDomain,
+    required this.releaseDate,
+    required this.licenseBy,
+    required this.channel,
+    required this.format,
+    required this.customAttributes,
   });
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is MediaData &&
+      other is MediaParentData &&
           runtimeType == other.runtimeType &&
           id == other.id &&
           gid == other.gid &&
           hash == other.hash &&
           title == other.title &&
           subtitle == other.subtitle &&
-          created == other.created &&
-          orderHint == other.orderHint &&
           thumb == other.thumb &&
           streamtype == other.streamtype &&
-          originalDomain == other.originalDomain;
+          originalDomain == other.originalDomain &&
+          releaseDate == other.releaseDate &&
+          licenseBy == other.licenseBy &&
+          channel == other.channel &&
+          format == other.format &&
+          customAttributes == other.customAttributes;
 
   @override
   int get hashCode =>
@@ -259,17 +268,21 @@ class MediaParentData {
       hash.hashCode ^
       title.hashCode ^
       subtitle.hashCode ^
-      created.hashCode ^
-      orderHint.hashCode ^
       thumb.hashCode ^
       streamtype.hashCode ^
-      originalDomain.hashCode;
+      originalDomain.hashCode ^
+      releaseDate.hashCode ^
+      licenseBy.hashCode ^
+      channel.hashCode ^
+      format.hashCode ^
+      customAttributes.hashCode;
 
   @override
   String toString() => 'MediaData{id: $id, gid: $gid, hash: $hash, '
-      'title: $title, subtitle: $subtitle, created: $created, '
-      'orderHint: $orderHint, thumb: $thumb, streamtype: $streamtype, '
-      'originalDomain: $originalDomain}';
+      'title: $title, subtitle: $subtitle, thumb: $thumb, '
+      'streamtype: $streamtype, originalDomain: $originalDomain, '
+      'releaseDate: $releaseDate, licenseBy: $licenseBy, channel: $channel, '
+      'format: $format, customAttributes: $customAttributes}';
 }
 
 /// Structure, descriping media properties for inheritors.
@@ -289,7 +302,6 @@ class MediaGeneral {
   final int channel;
   final int licenseBy;
   final int releaseDate;
-  final String? orderHint;
   final String? type;
   final String? runtime;
   final String? subtitle;
@@ -304,8 +316,11 @@ class MediaGeneral {
   final int fileVersion;
   final int occurance;
   final int uploaded;
+  final int forKids;
   final String? videoType;
   final String? podcastURL;
+  final String? containerPurpose;
+  final String? audioType;
 
   const MediaGeneral({
     required this.created,
@@ -322,7 +337,6 @@ class MediaGeneral {
     required this.channel,
     required this.licenseBy,
     required this.releaseDate,
-    required this.orderHint,
     required this.type,
     required this.runtime,
     required this.subtitle,
@@ -337,8 +351,11 @@ class MediaGeneral {
     required this.fileVersion,
     required this.occurance,
     required this.uploaded,
+    required this.forKids,
     required this.videoType,
     required this.podcastURL,
+    required this.containerPurpose,
+    required this.audioType,
   });
 
   @override
@@ -360,7 +377,6 @@ class MediaGeneral {
           channel == other.channel &&
           licenseBy == other.licenseBy &&
           releaseDate == other.releaseDate &&
-          orderHint == other.orderHint &&
           type == other.type &&
           runtime == other.runtime &&
           subtitle == other.subtitle &&
@@ -375,8 +391,11 @@ class MediaGeneral {
           fileVersion == other.fileVersion &&
           occurance == other.occurance &&
           uploaded == other.uploaded &&
+          forKids == other.forKids &&
           videoType == other.videoType &&
-          podcastURL == other.podcastURL;
+          podcastURL == other.podcastURL &&
+          containerPurpose == other.containerPurpose &&
+          audioType == other.audioType;
 
   @override
   int get hashCode =>
@@ -394,7 +413,6 @@ class MediaGeneral {
       channel.hashCode ^
       licenseBy.hashCode ^
       releaseDate.hashCode ^
-      orderHint.hashCode ^
       type.hashCode ^
       runtime.hashCode ^
       subtitle.hashCode ^
@@ -409,20 +427,24 @@ class MediaGeneral {
       fileVersion.hashCode ^
       occurance.hashCode ^
       uploaded.hashCode ^
+      forKids.hashCode ^
       videoType.hashCode ^
-      podcastURL.hashCode;
+      podcastURL.hashCode ^
+      containerPurpose.hashCode ^
+      audioType.hashCode;
 
   @override
   String toString() => 'MediaGeneral{created: $created, hash: $hash, id: $id, '
       'streamtype: $streamType, gid: $gid, isPicked: $isPicked, isUGC: $isUGC, '
       'isPay: $isPay, episode: $episode, season: $season, language: $language, '
       'channel: $channel, licenseby: $licenseBy, releasedate: $releaseDate, '
-      'orderhint: $orderHint, type: $type, runtime: $runtime, '
-      'subtitle: $subtitle, title: $title, teaser: $teaser, '
-      'description: $description, purpose: $purpose, slug: $slug, '
-      'format: $format, contentModerationAspects: $contentModerationAspects, '
+      'type: $type, runtime: $runtime, subtitle: $subtitle, title: $title, '
+      'teaser: $teaser, description: $description, purpose: $purpose, '
+      'slug: $slug, format: $format, forKids: $forKids'
+      'contentModerationAspects: $contentModerationAspects, '
       'formatRaw: $formatRaw, fileversion: $fileVersion, occurance: $occurance,'
-      ' uploaded: $uploaded, videotype: $videoType, podcastURL: $podcastURL}';
+      ' uploaded: $uploaded, videotype: $videoType, podcastURL: $podcastURL, '
+      'containerPurpose: $containerPurpose, audioType: $audioType}';
 }
 
 /// Structure, descriping an instance of offline media.
@@ -452,7 +474,6 @@ class OfflineMediaResult extends MediaGeneral {
     required int channel,
     required int licenseBy,
     required int releaseDate,
-    required String? orderHint,
     required String? type,
     required String? runtime,
     required String? subtitle,
@@ -469,6 +490,9 @@ class OfflineMediaResult extends MediaGeneral {
     required int uploaded,
     required String? videoType,
     required String? podcastURL,
+    required int forKids,
+    required String? containerPurpose,
+    required String? audioType,
   }) : super(
           created: created,
           hash: hash,
@@ -484,7 +508,6 @@ class OfflineMediaResult extends MediaGeneral {
           channel: channel,
           licenseBy: licenseBy,
           releaseDate: releaseDate,
-          orderHint: orderHint,
           type: type,
           runtime: runtime,
           subtitle: subtitle,
@@ -501,6 +524,9 @@ class OfflineMediaResult extends MediaGeneral {
           uploaded: uploaded,
           videoType: videoType,
           podcastURL: podcastURL,
+          forKids: forKids,
+          containerPurpose: containerPurpose,
+          audioType: audioType,
         );
 
   @override
@@ -530,7 +556,7 @@ class OfflineMediaResult extends MediaGeneral {
 
 /// Structure, descriping nexxPLAY's playback state.
 @immutable
-class PlaybackState {
+class CurrentPlaybackState {
   final String? audioLanguage;
   final String? mediaSession;
   final double elapsedTime;
@@ -538,25 +564,29 @@ class PlaybackState {
   final int abTestVersion;
   final double duration;
   final String? playReason;
-  final String? liveStatus;
   final bool isAutoPlay;
   final bool isPlayingAd;
-  final bool isPlayingBumper;
   final bool isMuted;
   final bool isLocalMedia;
   final bool isInPiP;
   final bool isCasting;
   final bool canBeCommented;
   final bool isInFullscreen;
-  final bool isInStoryMode;
   final bool isStitched;
-  final bool isPresentationMode;
-  final bool isStoryMode;
-  final bool isSceneSplitMode;
-  final bool isLightsOut;
   final bool isInPopOut;
+  final String? textTrackLanguage;
+  final String? playbackMode;
+  final String? protection;
+  final String? steamingFilter;
+  final String? protocol;
+  final String? codec;
+  final bool isPlaying;
+  final bool isHDR;
+  final bool isWaitingForPremiere;
+  final bool isReLive;
+  final String? playbackState;
 
-  const PlaybackState({
+  const CurrentPlaybackState({
     required this.audioLanguage,
     required this.mediaSession,
     required this.elapsedTime,
@@ -564,29 +594,33 @@ class PlaybackState {
     required this.abTestVersion,
     required this.duration,
     required this.playReason,
-    required this.liveStatus,
     required this.isAutoPlay,
     required this.isPlayingAd,
-    required this.isPlayingBumper,
     required this.isMuted,
     required this.isLocalMedia,
     required this.isInPiP,
     required this.isCasting,
     required this.canBeCommented,
     required this.isInFullscreen,
-    required this.isInStoryMode,
     required this.isStitched,
-    required this.isPresentationMode,
-    required this.isStoryMode,
-    required this.isSceneSplitMode,
-    required this.isLightsOut,
     required this.isInPopOut,
+    required this.textTrackLanguage,
+    required this.playbackMode,
+    required this.protection,
+    required this.steamingFilter,
+    required this.protocol,
+    required this.codec,
+    required this.isPlaying,
+    required this.isHDR,
+    required this.isWaitingForPremiere,
+    required this.isReLive,
+    required this.playbackState,
   });
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PlaybackState &&
+      other is CurrentPlaybackState &&
           runtimeType == other.runtimeType &&
           audioLanguage == other.audioLanguage &&
           mediaSession == other.mediaSession &&
@@ -595,23 +629,27 @@ class PlaybackState {
           abTestVersion == other.abTestVersion &&
           duration == other.duration &&
           playReason == other.playReason &&
-          liveStatus == other.liveStatus &&
           isAutoPlay == other.isAutoPlay &&
           isPlayingAd == other.isPlayingAd &&
-          isPlayingBumper == other.isPlayingBumper &&
           isMuted == other.isMuted &&
           isLocalMedia == other.isLocalMedia &&
           isInPiP == other.isInPiP &&
           isCasting == other.isCasting &&
           canBeCommented == other.canBeCommented &&
           isInFullscreen == other.isInFullscreen &&
-          isInStoryMode == other.isInStoryMode &&
           isStitched == other.isStitched &&
-          isPresentationMode == other.isPresentationMode &&
-          isStoryMode == other.isStoryMode &&
-          isSceneSplitMode == other.isSceneSplitMode &&
-          isLightsOut == other.isLightsOut &&
-          isInPopOut == other.isInPopOut;
+          isInPopOut == other.isInPopOut &&
+          textTrackLanguage == other.textTrackLanguage &&
+          playbackMode == other.playbackMode &&
+          protection == other.protection &&
+          steamingFilter == other.steamingFilter &&
+          protocol == other.protocol &&
+          codec == other.codec &&
+          isPlaying == other.isPlaying &&
+          isHDR == other.isHDR &&
+          isWaitingForPremiere == other.isWaitingForPremiere &&
+          isReLive == other.isReLive &&
+          playbackState == other.playbackState;
 
   @override
   int get hashCode =>
@@ -622,36 +660,41 @@ class PlaybackState {
       abTestVersion.hashCode ^
       duration.hashCode ^
       playReason.hashCode ^
-      liveStatus.hashCode ^
       isAutoPlay.hashCode ^
       isPlayingAd.hashCode ^
-      isPlayingBumper.hashCode ^
       isMuted.hashCode ^
       isLocalMedia.hashCode ^
       isInPiP.hashCode ^
       isCasting.hashCode ^
       canBeCommented.hashCode ^
       isInFullscreen.hashCode ^
-      isInStoryMode.hashCode ^
       isStitched.hashCode ^
-      isPresentationMode.hashCode ^
-      isStoryMode.hashCode ^
-      isSceneSplitMode.hashCode ^
-      isLightsOut.hashCode ^
-      isInPopOut.hashCode;
+      isInPopOut.hashCode ^
+      textTrackLanguage.hashCode ^
+      playbackMode.hashCode ^
+      protection.hashCode ^
+      steamingFilter.hashCode ^
+      protocol.hashCode ^
+      codec.hashCode ^
+      isPlaying.hashCode ^
+      isHDR.hashCode ^
+      isWaitingForPremiere.hashCode ^
+      isReLive.hashCode ^
+      playbackState.hashCode;
 
   @override
   String toString() => 'PlaybackState{audioLanguage: $audioLanguage, '
-      'mediaSession: $mediaSession, '
-      'elapsedTime: $elapsedTime, currentTime: $currentTime, '
-      'abTestVersion: $abTestVersion, duration: $duration, '
-      'playReason: $playReason, liveStatus: $liveStatus, '
-      'isAutoPlay: $isAutoPlay, isPlayingAd: $isPlayingAd, '
-      'isPlayingBumper: $isPlayingBumper, isMuted: $isMuted, '
-      'isLocalMedia: $isLocalMedia, isInPiP: $isInPiP, isCasting: $isCasting, '
-      'canBeCommented: $canBeCommented, isInFullscreen: $isInFullscreen, '
-      'isInStoryMode: $isInStoryMode, isStitched: $isStitched, '
-      'isPresentationMode: $isPresentationMode, isStoryMode: $isStoryMode, '
-      'isSceneSplitMode: $isSceneSplitMode, isLightsOut: $isLightsOut, '
-      'isInPopOut: $isInPopOut}';
+      'mediaSession: $mediaSession, elapsedTime: $elapsedTime, '
+      'currentTime: $currentTime, abTestVersion: $abTestVersion, '
+      'duration: $duration, playReason: $playReason, isAutoPlay: $isAutoPlay, '
+      'isPlayingAd: $isPlayingAd, isMuted: $isMuted, '
+      'isLocalMedia: $isLocalMedia, isInPiP: $isInPiP, '
+      'isCasting: $isCasting, canBeCommented: $canBeCommented, '
+      'isInFullscreen: $isInFullscreen, isStitched: $isStitched, '
+      'isInPopOut: $isInPopOut, textTrackLanguage: $textTrackLanguage, '
+      'playbackMode: $playbackMode, protection: $protection, '
+      'steamingFilter: $steamingFilter, protocol: $protocol, codec: $codec, '
+      'isPlaying: $isPlaying, isHDR: $isHDR, '
+      'isWaitingForPremiere: $isWaitingForPremiere, isReLive: $isReLive, '
+      'playbackState: $playbackState}';
 }
