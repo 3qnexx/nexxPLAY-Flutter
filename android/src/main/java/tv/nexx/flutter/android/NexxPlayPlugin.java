@@ -6,7 +6,7 @@ import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.embedding.engine.plugins.activity.ActivityAware;
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 import io.flutter.embedding.engine.plugins.lifecycle.FlutterLifecycleAdapter;
-import tv.nexx.flutter.android.ads.AdManagerReference;
+import tv.nexx.flutter.android.ads.MediaSessionReference;
 import tv.nexx.flutter.android.android.event.AndroidEvent;
 import tv.nexx.flutter.android.estd.observer.Channel;
 import tv.nexx.flutter.android.estd.observer.MutableSubject;
@@ -23,13 +23,13 @@ public final class NexxPlayPlugin implements FlutterPlugin, ActivityAware {
     }
 
     private final LifecycleReference lifecycleReference = LifecycleReference.empty();
-    private final AdManagerReference adManagerReference = AdManagerReference.create();
+    private final MediaSessionReference mediaSessionReference = MediaSessionReference.create();
 
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
         final NexxPlayFactory factory = NexxPlayFactory.from(
                 flutterPluginBinding.getBinaryMessenger(),
-                adManagerReference,
+                mediaSessionReference,
                 NexxPlayInitializationArgumentsFactory.create(),
                 lifecycleReference,
                 EVENT_SUBJECT,

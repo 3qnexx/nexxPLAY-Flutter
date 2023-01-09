@@ -16,9 +16,10 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.StandardMessageCodec;
 import io.flutter.plugin.platform.PlatformView;
 import io.flutter.plugin.platform.PlatformViewFactory;
+import tv.nexx.android.admanager.NexxPlayAdManager;
 import tv.nexx.android.play.NexxPLAY;
 import tv.nexx.android.play.NexxPLAYEnvironment;
-import tv.nexx.flutter.android.ads.AdManagerReference;
+import tv.nexx.flutter.android.ads.MediaSessionReference;
 import tv.nexx.flutter.android.android.event.AndroidEvent;
 import tv.nexx.flutter.android.estd.functional.Supplier;
 import tv.nexx.flutter.android.estd.observer.Subject;
@@ -26,14 +27,14 @@ import tv.nexx.flutter.android.estd.observer.Subject;
 public final class NexxPlayFactory extends PlatformViewFactory {
 
     private final BinaryMessenger messenger;
-    private final AdManagerReference reference;
+    private final MediaSessionReference reference;
     private final NexxPlayInitializationArgumentsFactory factory;
     private final Supplier<Lifecycle> lifecycle;
     private final Subject<AndroidEvent> subject;
     private final String pluginId;
 
     private NexxPlayFactory(BinaryMessenger messenger,
-                            AdManagerReference reference,
+                            MediaSessionReference reference,
                             NexxPlayInitializationArgumentsFactory factory,
                             Supplier<Lifecycle> lifecycle,
                             Subject<AndroidEvent> subject,
@@ -48,7 +49,7 @@ public final class NexxPlayFactory extends PlatformViewFactory {
     }
 
     public static NexxPlayFactory from(BinaryMessenger messenger,
-                                       AdManagerReference reference,
+                                       MediaSessionReference reference,
                                        NexxPlayInitializationArgumentsFactory factory,
                                        Supplier<Lifecycle> lifecycleFactory,
                                        Subject<AndroidEvent> subject,
@@ -75,7 +76,7 @@ public final class NexxPlayFactory extends PlatformViewFactory {
     }
 
     private NexxPlayPlatformView createPlayer(BinaryMessenger messenger,
-                                              AdManagerReference reference,
+                                              MediaSessionReference reference,
                                               Supplier<Lifecycle> lifecycle,
                                               Subject<AndroidEvent> subject,
                                               Activity activity,
@@ -86,7 +87,8 @@ public final class NexxPlayFactory extends PlatformViewFactory {
         final MethodChannel methodChannel = new MethodChannel(messenger, id.methodChannel());
         final EventChannel eventChannel = new EventChannel(messenger, id.eventChannel());
         final Map<String, Object> contextAdditions = new HashMap<>();
-        contextAdditions.put(NexxPLAYEnvironment.adManager, reference.get(activity));
+        contextAdditions.put(NexxPLAYEnvironment.mediaSession, reference.get(activity));
+        contextAdditions.put(NexxPLAYEnvironment.adManager, new NexxPlayAdManager(activity));
         final NexxPLAYEnvironment env = arguments.environment(contextAdditions);
         final NexxPlayPlatformViewState state = new NexxPlayPlatformViewState(lifecycle, subject,
                 id, env, methodChannel, eventChannel, host.getRoot(), player);
