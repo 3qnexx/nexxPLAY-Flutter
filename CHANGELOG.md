@@ -1,3 +1,8 @@
+## [1.5.0] 10.01.2023
+* nexxPLAY Android SDK dependency version is set to 6.3.01 with the Dart API reflecting the underlying changes.
+* nexxPLAY AdManager dependency was introduced.
+* CastContext (Google Cast), MediaSessionCompat and NexxPlayAdManager are now part of the NexxPlayEnvironment.
+
 ## [1.4.0] 05.07.2022
 * nexxPLAY Android SDK dependency version is set to 6.2.22.
 
