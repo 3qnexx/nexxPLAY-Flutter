@@ -6,6 +6,8 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Lifecycle;
 
+import com.google.android.gms.cast.framework.CastContext;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -21,6 +23,7 @@ import tv.nexx.android.play.NexxPLAY;
 import tv.nexx.android.play.NexxPLAYEnvironment;
 import tv.nexx.flutter.android.ads.MediaSessionReference;
 import tv.nexx.flutter.android.android.event.AndroidEvent;
+import tv.nexx.flutter.android.estd.functional.Either;
 import tv.nexx.flutter.android.estd.functional.Supplier;
 import tv.nexx.flutter.android.estd.observer.Subject;
 
@@ -30,6 +33,7 @@ public final class NexxPlayFactory extends PlatformViewFactory {
     private final MediaSessionReference reference;
     private final NexxPlayInitializationArgumentsFactory factory;
     private final Supplier<Lifecycle> lifecycle;
+    private final Supplier<Either<Throwable, CastContext>> castContext;
     private final Subject<AndroidEvent> subject;
     private final String pluginId;
 
@@ -37,6 +41,7 @@ public final class NexxPlayFactory extends PlatformViewFactory {
                             MediaSessionReference reference,
                             NexxPlayInitializationArgumentsFactory factory,
                             Supplier<Lifecycle> lifecycle,
+                            Supplier<Either<Throwable, CastContext>> castContext,
                             Subject<AndroidEvent> subject,
                             String pluginId) {
         super(StandardMessageCodec.INSTANCE);
@@ -44,6 +49,7 @@ public final class NexxPlayFactory extends PlatformViewFactory {
         this.reference = Objects.requireNonNull(reference);
         this.factory = Objects.requireNonNull(factory);
         this.lifecycle = Objects.requireNonNull(lifecycle);
+        this.castContext = Objects.requireNonNull(castContext);
         this.subject = Objects.requireNonNull(subject);
         this.pluginId = pluginId;
     }
@@ -52,9 +58,10 @@ public final class NexxPlayFactory extends PlatformViewFactory {
                                        MediaSessionReference reference,
                                        NexxPlayInitializationArgumentsFactory factory,
                                        Supplier<Lifecycle> lifecycleFactory,
+                                       Supplier<Either<Throwable, CastContext>> castContextFactory,
                                        Subject<AndroidEvent> subject,
                                        String pluginId) {
-        return new NexxPlayFactory(messenger, reference, factory, lifecycleFactory, subject, pluginId);
+        return new NexxPlayFactory(messenger, reference, factory, lifecycleFactory, castContextFactory, subject, pluginId);
     }
 
     @NonNull
@@ -64,29 +71,26 @@ public final class NexxPlayFactory extends PlatformViewFactory {
             throw new NonActivityNexxPlayHostException();
         }
         final NexxPlayInitializationArguments arguments = Objects.requireNonNull(factory.fromFlutterArguments(args));
-        return createPlayer(
-                messenger,
-                reference,
-                lifecycle,
-                subject,
-                (Activity) context,
-                NexxPlayInstanceID.create(viewId, pluginId),
-                arguments
+        final Either<Throwable, CastContext> castContextResult = Objects.requireNonNull(castContext.get());
+        return castContextResult.fold(
+                throwable -> {
+                    throw new RuntimeException(throwable);
+                },
+                castContext -> createPlayer(castContext, (Activity) context, NexxPlayInstanceID.create(viewId, pluginId), arguments)
         );
     }
 
-    private NexxPlayPlatformView createPlayer(BinaryMessenger messenger,
-                                              MediaSessionReference reference,
-                                              Supplier<Lifecycle> lifecycle,
-                                              Subject<AndroidEvent> subject,
-                                              Activity activity,
-                                              NexxPlayInstanceID id,
-                                              NexxPlayInitializationArguments arguments) {
+    private NexxPlayPlatformView createPlayer(
+            CastContext castContext,
+            Activity activity,
+            NexxPlayInstanceID id,
+            NexxPlayInitializationArguments arguments) {
         final NexxPlayViewHost host = NexxPlayViewHost.create(activity);
         final NexxPLAY player = new NexxPLAY(activity, host.getPlayerArea(), activity.getWindow());
         final MethodChannel methodChannel = new MethodChannel(messenger, id.methodChannel());
         final EventChannel eventChannel = new EventChannel(messenger, id.eventChannel());
         final Map<String, Object> contextAdditions = new HashMap<>();
+        contextAdditions.put(NexxPLAYEnvironment.castContext, castContext);
         contextAdditions.put(NexxPLAYEnvironment.mediaSession, reference.get(activity));
         contextAdditions.put(NexxPLAYEnvironment.adManager, new NexxPlayAdManager(activity));
         final NexxPLAYEnvironment env = arguments.environment(contextAdditions);

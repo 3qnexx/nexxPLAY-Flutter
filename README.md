@@ -48,7 +48,14 @@ Please note that iOS is not supported by this plugin.
     Refer to `example/android/app/src/main/AndroidManifest.xml` for more details.
     2. In the Android app's main manifest file, add `android:resizeableActivity="true"` and  `android:supportsPictureInPicture="true"` to the tag of the Activity you are using.
     Refer to `example/android/app/src/main/AndroidManifest.xml` for more details.
-    3. In the Activity's code add (or extend) overrides for `onUserLeaveHint` and `onPictureInPictureModeChanged` methods like this:
+    3. In the Android app's main manifest file, add a meta-data entry for the Google Cast: 
+    ```xml
+    <meta-data
+            android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"
+            android:value="tv.nexx.android.play.cast.CastOptionsProvider" />
+    ```
+    Refer to `example/android/app/src/main/AndroidManifest.xml` for more details.
+    4. In the Activity's code add (or extend) overrides for `onUserLeaveHint` and `onPictureInPictureModeChanged` methods like this:
     ```
     public class MainActivity extends FlutterActivity {
         // ...
