@@ -139,6 +139,13 @@ Please note that iOS is not supported by this plugin.
 
 8. If it's needed to include Chromecast support, then:
     8.1. The next native integration guide items have to be ensured to reproduced: https://play.docs.nexx.cloud/native-players/nexxplay-for-android#chromecast
+        8.1.1. If the `strings.xml` file is absent, then the following backbone could be used for it's creation:
+        ```xml
+        <?xml version="1.0" encoding="utf-8"?>
+        <resources>
+        </resources>
+        ```
+        The `<string>...</string>` entry falls inside the `resources` block as it's member.
     8.2. When resolving the CastContext instance as described by the native integration guide, a modification has to be applied so the CastContext instance is be included into the plugin's configuration:
     ```java
     CastContext.getSharedInstance(this, Executors.newSingleThreadExecutor())
