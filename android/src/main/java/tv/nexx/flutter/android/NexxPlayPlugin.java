@@ -1,18 +1,17 @@
 package tv.nexx.flutter.android;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
-
-import com.google.android.gms.cast.framework.CastContext;
-
-import java.util.concurrent.Executors;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.embedding.engine.plugins.activity.ActivityAware;
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 import io.flutter.embedding.engine.plugins.lifecycle.FlutterLifecycleAdapter;
-import tv.nexx.flutter.android.ads.MediaSessionReference;
 import tv.nexx.flutter.android.android.event.AndroidEvent;
-import tv.nexx.flutter.android.estd.functional.Either;
+import tv.nexx.flutter.android.android.lifecycle.LifecycleReference;
+import tv.nexx.flutter.android.configuration.NexxPlayPluginEnvironmentConfiguration;
+import tv.nexx.flutter.android.estd.functional.Function;
 import tv.nexx.flutter.android.estd.observer.Channel;
 import tv.nexx.flutter.android.estd.observer.MutableSubject;
 import tv.nexx.flutter.android.platform_view.NexxPlayInitializationArgumentsFactory;
@@ -22,23 +21,29 @@ public final class NexxPlayPlugin implements FlutterPlugin, ActivityAware {
 
     private static final String PLUGIN_IDENTIFIER = "tv.nexx.flutter.android";
     private static final MutableSubject<AndroidEvent> EVENT_SUBJECT = Channel.threadConfined();
+    private static final NexxPlayPluginEnvironmentConfiguration CONFIGURATION = NexxPlayPluginEnvironmentConfiguration.create();
+
+    public static void addEnvironmentConfigurationEntry(Function<Context, NexxPlayPluginEnvironmentConfiguration.Entry> factory) {
+        CONFIGURATION.add(factory);
+    }
+
+    public static void addEnvironmentConfigurationEntry(NexxPlayPluginEnvironmentConfiguration.Entry entry) {
+        addEnvironmentConfigurationEntry(unused -> entry);
+    }
 
     public static void post(AndroidEvent event) {
         EVENT_SUBJECT.publish(event);
     }
 
     private final LifecycleReference lifecycleReference = LifecycleReference.empty();
-    private final MediaSessionReference mediaSessionReference = MediaSessionReference.create();
-    private final CastContextReference castContextReference = CastContextReference.empty();
 
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
         final NexxPlayFactory factory = NexxPlayFactory.from(
-                flutterPluginBinding.getBinaryMessenger(),
-                mediaSessionReference,
+                CONFIGURATION,
                 NexxPlayInitializationArgumentsFactory.create(),
+                flutterPluginBinding.getBinaryMessenger(),
                 lifecycleReference,
-                castContextReference,
                 EVENT_SUBJECT,
                 PLUGIN_IDENTIFIER
         );
@@ -49,9 +54,6 @@ public final class NexxPlayPlugin implements FlutterPlugin, ActivityAware {
     @Override
     public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
         lifecycleReference.accept(FlutterLifecycleAdapter.getActivityLifecycle(binding));
-        CastContext.getSharedInstance(binding.getActivity(), Executors.newSingleThreadExecutor())
-                .addOnSuccessListener(castContext -> castContextReference.accept(Either.right(castContext)))
-                .addOnFailureListener(throwable -> castContextReference.accept(Either.left(throwable)));
     }
 
     @Override
@@ -66,7 +68,6 @@ public final class NexxPlayPlugin implements FlutterPlugin, ActivityAware {
 
     @Override
     public void onDetachedFromActivity() {
-        castContextReference.accept(null);
         lifecycleReference.accept(null);
     }
 

@@ -33,7 +33,4 @@ android {
 
 dependencies {
     implementation "tv.nexx.android:play:6.3.01"
-    implementation "tv.nexx.android:admanager:1.0.00"
-    implementation "androidx.media:media:1.6.0"
-    implementation "com.google.android.gms:play-services-cast-framework:21.2.0"
 }
