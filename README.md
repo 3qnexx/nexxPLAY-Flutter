@@ -144,7 +144,9 @@ implementation "androidx.appcompat:appcompat:1.4.0"`). Refer to `example/android
 
     8.1. The next [native integration guide](https://play.docs.nexx.cloud/native-players/nexxplay-for-android#chromecast) items have to be ensured to reproduced.
 
-    8.2. When resolving the CastContext instance as described by the native integration guide, a modification has to be applied so the CastContext instance is be included into the plugin's configuration:
+    8.2. Application's activity should extend FlutterFragmentActivity or it's inheritor.
+
+    8.3. When resolving the CastContext instance as described by the native integration guide, a modification has to be applied so the CastContext instance is be included into the plugin's configuration:
     ```java
     CastContext.getSharedInstance(this, Executors.newSingleThreadExecutor())
         .addOnSuccessListener(castContext ->  NexxPlayPlugin.addEnvironmentConfigurationEntry(NexxPlayPlugin.KEY_CAST_CONTEXT, castContext))

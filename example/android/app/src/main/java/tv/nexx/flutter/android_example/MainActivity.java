@@ -11,13 +11,13 @@ import androidx.annotation.Nullable;
 
 //import java.util.concurrent.Executors;
 
-import io.flutter.embedding.android.FlutterActivity;
+import io.flutter.embedding.android.FlutterFragmentActivity;
 import tv.nexx.android.admanager.NexxPlayAdManager;
 import tv.nexx.flutter.android.NexxPlayPlugin;
 import tv.nexx.flutter.android.android.event.OnPIPModeChangedEvent;
 import tv.nexx.flutter.android.android.event.OnUserLeaveHintEvent;
 
-public class MainActivity extends FlutterActivity {
+public class MainActivity extends FlutterFragmentActivity {
 
     @SuppressWarnings("CommentedOutCode")
     @Override
