@@ -45,16 +45,10 @@ Please note that iOS is not supported by this plugin.
     Refer to `example/android/app/src/main/AndroidManifest.xml` for more details.
 
     3.2. In the Android app's main manifest file, add `android:resizeableActivity="true"` and `android:supportsPictureInPicture="true"` to the tag of the Activity you are using. Refer to `example/android/app/src/main/AndroidManifest.xml` for more details.
-
-    3.3. In the Android app's main manifest file, add a meta-data entry for the Google Cast:
-    ```xml
-    <meta-data
-        android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"
-        android:value="tv.nexx.android.play.cast.CastOptionsProvider"  />
     ```
     Refer to `example/android/app/src/main/AndroidManifest.xml` for more details.
 
-    3.4. In the Activity's code add (or extend) overrides for `onUserLeaveHint` and `onPictureInPictureModeChanged` methods like this:
+    3.3. In the Activity's code add (or extend) overrides for `onUserLeaveHint` and `onPictureInPictureModeChanged` methods like this:
     ```java
     public class MainActivity extends FlutterActivity {
         // ...
@@ -123,7 +117,7 @@ implementation "androidx.appcompat:appcompat:1.4.0"`). Refer to `example/android
 
 7. If it's needed to include ads support (as an intrinsic NexxPlayAdManager instance attached to each Android native player instance), then:
 
-    7.1. In the `build.gradle`'s `dependencies` block, the following line should be present: `implementation "tv.nexx.android:admanager:1.0.00"`. Refer to `example/android/app/build.gradle` for more details.
+    7.1. In the `build.gradle`'s `dependencies` block, the following line should be present: `implementation "tv.nexx.android:admanager:1.0.02"`. Refer to `example/android/app/build.gradle` for more details.
 
     7.2. In the host Activity class code, `protected void onCreate(@Nullable Bundle savedInstanceState)` method should be overriden (or, for Kotlin, `protected onCreate(@Nullable savedInstanceState: Bundle)`). Refer to `example/android/app/src/main/java/tv/nexx/flutter/android_example/MainActivity.java` for more details.
 

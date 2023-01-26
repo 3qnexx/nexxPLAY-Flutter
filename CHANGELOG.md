@@ -1,5 +1,8 @@
+## [1.5.1] 26.01.2023
+* Minor client documentation fixes
+
 ## [1.5.0] 10.01.2023
-* nexxPLAY Android SDK dependency version is set to 6.3.01 with the Dart API reflecting the underlying changes.
+* nexxPLAY Android SDK dependency version is set to 6.3.04 with the Dart API reflecting the underlying changes.
 * Handles for including ad manager, shared media session instance and shared chromecast context instance were added into the plugin with the usage documentation updated.
 
 ## [1.4.0] 05.07.2022
