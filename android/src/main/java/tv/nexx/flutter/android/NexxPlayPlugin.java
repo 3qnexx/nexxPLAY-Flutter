@@ -1,12 +1,18 @@
 package tv.nexx.flutter.android;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.embedding.engine.plugins.activity.ActivityAware;
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 import io.flutter.embedding.engine.plugins.lifecycle.FlutterLifecycleAdapter;
+import tv.nexx.android.play.NexxPLAYEnvironment;
 import tv.nexx.flutter.android.android.event.AndroidEvent;
+import tv.nexx.flutter.android.android.lifecycle.LifecycleReference;
+import tv.nexx.flutter.android.configuration.NexxPlayPluginEnvironmentConfiguration;
+import tv.nexx.flutter.android.estd.functional.Function;
 import tv.nexx.flutter.android.estd.observer.Channel;
 import tv.nexx.flutter.android.estd.observer.MutableSubject;
 import tv.nexx.flutter.android.platform_view.NexxPlayInitializationArgumentsFactory;
@@ -14,8 +20,20 @@ import tv.nexx.flutter.android.platform_view.NexxPlayFactory;
 
 public final class NexxPlayPlugin implements FlutterPlugin, ActivityAware {
 
+    public static final String KEY_MEDIA_SESSION = NexxPLAYEnvironment.mediaSession;
+    public static final String KEY_AD_MANAGER = NexxPLAYEnvironment.adManager;
+    public static final String KEY_CAST_CONTEXT = NexxPLAYEnvironment.castContext;
     private static final String PLUGIN_IDENTIFIER = "tv.nexx.flutter.android";
     private static final MutableSubject<AndroidEvent> EVENT_SUBJECT = Channel.threadConfined();
+    private static final NexxPlayPluginEnvironmentConfiguration CONFIGURATION = NexxPlayPluginEnvironmentConfiguration.create();
+
+    public static void addEnvironmentConfigurationEntry(String name, Object object) {
+        CONFIGURATION.add(unused -> new NexxPlayPluginEnvironmentConfiguration.Entry(name, object));
+    }
+
+    public static void addEnvironmentConfigurationEntry(String name, Function<Context, Object> factory) {
+        CONFIGURATION.add(context -> new NexxPlayPluginEnvironmentConfiguration.Entry(name, factory.apply(context)));
+    }
 
     public static void post(AndroidEvent event) {
         EVENT_SUBJECT.publish(event);
@@ -26,8 +44,9 @@ public final class NexxPlayPlugin implements FlutterPlugin, ActivityAware {
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
         final NexxPlayFactory factory = NexxPlayFactory.from(
-                flutterPluginBinding.getBinaryMessenger(),
+                CONFIGURATION,
                 NexxPlayInitializationArgumentsFactory.create(),
+                flutterPluginBinding.getBinaryMessenger(),
                 lifecycleReference,
                 EVENT_SUBJECT,
                 PLUGIN_IDENTIFIER

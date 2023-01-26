@@ -16,7 +16,7 @@ export 'src/details.dart'
         ConnectedFile,
         MediaData,
         MediaParentData,
-        PlaybackState,
+        CurrentPlaybackState,
         MediaGeneral,
         OfflineMediaResult;
 export 'src/event.dart'

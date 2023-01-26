@@ -1,4 +1,4 @@
-package tv.nexx.flutter.android;
+package tv.nexx.flutter.android.android.lifecycle;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Lifecycle;
@@ -6,7 +6,7 @@ import androidx.lifecycle.Lifecycle;
 import tv.nexx.flutter.android.estd.functional.Consumer;
 import tv.nexx.flutter.android.estd.functional.Supplier;
 
-final class LifecycleReference implements Supplier<Lifecycle>, Consumer<Lifecycle> {
+public final class LifecycleReference implements Supplier<Lifecycle>, Consumer<Lifecycle> {
     @Nullable
     private Lifecycle lifecycle;
 

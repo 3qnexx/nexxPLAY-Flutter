@@ -30,14 +30,17 @@ class GetCurrentMediaParentCommand implements DispatchTableMethod<NexxPlayPlatfo
         final Map<String, Object> result = new HashMap<>();
         result.put("id", data.getID());
         result.put("global_id", data.getGlobalID());
+        result.put("original_domain", data.getOriginalDomain());
         result.put("hash", data.getHash());
         result.put("title", data.getTitle());
         result.put("subtitle", data.getSubtitle());
-        result.put("created", data.getCreated());
-        result.put("order_hint", data.getOrderHint());
         result.put("thumb", data.getThumb());
         result.put("stream_type", data.getStreamtype());
-        result.put("original_domain", data.getOriginalDomain());
+        result.put("release_date", data.getReleaseDate());
+        result.put("license_by", data.getLicenseBy());
+        result.put("channel", data.getChannel());
+        result.put("format", data.getFormat());
+        result.put("custom_attributes", data.getCustomAttributes());
         return result;
     }
 }

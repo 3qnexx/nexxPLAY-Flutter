@@ -56,7 +56,6 @@ class ListLocalMediaCommand implements DispatchTableMethod<NexxPlayPlatformView,
         serialized.put("channel", media.getChannel());
         serialized.put("license_by", media.getLicenseby());
         serialized.put("release_date", media.getReleaseDate());
-        serialized.put("order_hint", media.getOrderHint());
         serialized.put("type", media.getType());
         serialized.put("runtime", media.getRuntime());
         serialized.put("subtitle", media.getSubtitle());
@@ -73,6 +72,9 @@ class ListLocalMediaCommand implements DispatchTableMethod<NexxPlayPlatformView,
         serialized.put("uploaded", media.getUploaded());
         serialized.put("video_type", media.getVideoType());
         serialized.put("podcast_url", media.getPodcastURL());
+        serialized.put("for_kids", media.getForKids());
+        serialized.put("container_purpose", media.getContainerPurpose());
+        serialized.put("audio_type", media.getAudioType());
         return serialized;
     }
 }

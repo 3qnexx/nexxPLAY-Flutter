@@ -19,9 +19,7 @@ public class NexxPlayInitializationArguments {
 
     public NexxPLAYEnvironment environment(Map<String, Object> additional) {
         final Map<String, Object> extendedProperties = new HashMap<>(environmentProperties);
-        for (Map.Entry<String, Object> entry : additional.entrySet()) {
-            extendedProperties.put(entry.getKey(), entry.getValue());
-        }
+        extendedProperties.putAll(additional);
         return new NexxPLAYEnvironment(extendedProperties);
     }
 

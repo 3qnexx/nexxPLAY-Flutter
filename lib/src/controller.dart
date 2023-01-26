@@ -128,7 +128,7 @@ abstract class NexxPlayController {
 
   Future<MediaParentData?> getCurrentMediaParent();
 
-  Future<PlaybackState> getCurrentPlaybackState();
+  Future<CurrentPlaybackState> getCurrentPlaybackState();
 
   Future<List<ConnectedFile>?> getConnectedFiles();
 
@@ -422,7 +422,7 @@ class _MethodChannelNexxPlayController implements NexxPlayController {
   }
 
   @override
-  Future<PlaybackState> getCurrentPlaybackState() async {
+  Future<CurrentPlaybackState> getCurrentPlaybackState() async {
     final result = await _invokeMapMapMethod('getCurrentPlaybackState');
     return _GetCurrentPlaybackStateResult.from(_MethodChannelMapResult(result))
         .playbackState;
@@ -555,7 +555,6 @@ class _ListLocalMediaResult {
       channel: serialized['channel'] as int,
       licenseBy: serialized['license_by'] as int,
       releaseDate: serialized['release_date'] as int,
-      orderHint: serialized['order_hint'] as String?,
       type: serialized['type'] as String?,
       runtime: serialized['runtime'] as String?,
       subtitle: serialized['subtitle'] as String?,
@@ -573,6 +572,9 @@ class _ListLocalMediaResult {
       uploaded: serialized['uploaded'] as int,
       videoType: serialized['video_type'] as String?,
       podcastURL: serialized['podcast_url'] as String?,
+      forKids: serialized['for_kids'] as int,
+      containerPurpose: serialized['container_purpose'] as String?,
+      audioType: serialized['audio_type'] as String?,
     );
   }
 }
@@ -616,7 +618,7 @@ class _GetAudioTracksResult {
 
   static AudioTrack _deserializeTrack(Map serialized) => AudioTrack(
         language: serialized['language'] as String?,
-        isAudioDescription: serialized['is_audio_description'] as int,
+        role: serialized['role'] as String?,
       );
 }
 
@@ -667,22 +669,22 @@ class _GetCurrentMediaResult {
         title: serialized['title'] as String?,
         subtitle: serialized['subtitle'] as String?,
         channel: serialized['channel'] as int,
-        uploaded: serialized['uploaded'] as int,
-        created: serialized['created'] as int,
-        orderHint: serialized['order_hint'] as String?,
         studio: serialized['studio'] as int,
         thumb: serialized['thumb'] as String?,
         streamtype: serialized['stream_type'] as String?,
         licenseBy: serialized['license_by'] as int,
         originalDomain: serialized['original_domain'] as int,
-        persons: serialized['persons'] as String?,
         format: serialized['format'] as int,
-        customAttributes:
-            serialized['custom_attributes'] as Map<String, Object>?,
-        episodeOfSeries: serialized['episode_of_series'] as int,
-        isRemoteMedia: serialized['is_remote_media'] as bool,
         isUGC: serialized['is_ugc'] as bool,
-        isReLive: serialized['is_re_live'] as bool,
+        releaseDate: serialized['release_date'] as int,
+        remoteProvider: serialized['remoteProvider'] as String?,
+        isForKids: serialized['is_for_kids'] as bool,
+        isPanorama: serialized['is_panorama'] as bool,
+        isHDR: serialized['is_hdr'] as bool,
+        isPay: serialized['is_pay'] as bool,
+        isPicked: serialized['is_picked'] as bool,
+        customAttributes:
+            serialized['custom_attributes'] as Map?,
       );
 }
 
@@ -703,16 +705,19 @@ class _GetCurrentMediaParentResult {
         hash: serialized['hash'] as String?,
         title: serialized['title'] as String?,
         subtitle: serialized['subtitle'] as String?,
-        created: serialized['created'] as int,
-        orderHint: serialized['order_hint'] as String?,
         thumb: serialized['thumb'] as String?,
         streamtype: serialized['stream_type'] as String?,
         originalDomain: serialized['original_domain'] as int,
+        releaseDate: serialized['release_date'] as int,
+        licenseBy: serialized['license_by'] as int,
+        channel: serialized['channel'] as int,
+        format: serialized['format'] as int,
+        customAttributes: serialized['custom_attributes'] as Map,
       );
 }
 
 class _GetCurrentPlaybackStateResult {
-  final PlaybackState playbackState;
+  final CurrentPlaybackState playbackState;
 
   _GetCurrentPlaybackStateResult._(this.playbackState);
 
@@ -722,7 +727,8 @@ class _GetCurrentPlaybackStateResult {
     return _GetCurrentPlaybackStateResult._(_deserialize(captionData));
   }
 
-  static PlaybackState _deserialize(Map serialized) => PlaybackState(
+  static CurrentPlaybackState _deserialize(Map serialized) =>
+      CurrentPlaybackState(
         audioLanguage: serialized["audio_language"] as String?,
         mediaSession: serialized["media_session"] as String?,
         elapsedTime: serialized["elapsed_time"] as double,
@@ -730,23 +736,27 @@ class _GetCurrentPlaybackStateResult {
         abTestVersion: serialized["ab_test_version"] as int,
         duration: serialized["duration"] as double,
         playReason: serialized["play_reason"] as String?,
-        liveStatus: serialized["live_status"] as String?,
         isAutoPlay: serialized["is_auto_play"] as bool,
         isPlayingAd: serialized["is_playing_ad"] as bool,
-        isPlayingBumper: serialized["is_playing_bumper"] as bool,
         isMuted: serialized["is_muted"] as bool,
         isLocalMedia: serialized["is_local_media"] as bool,
         isInPiP: serialized["is_in_pip"] as bool,
         isCasting: serialized["is_casting"] as bool,
         canBeCommented: serialized["can_be_commented"] as bool,
         isInFullscreen: serialized["is_in_fullscreen"] as bool,
-        isInStoryMode: serialized["is_in_story_mode"] as bool,
         isStitched: serialized["is_stitched"] as bool,
-        isPresentationMode: serialized["is_presentation_mode"] as bool,
-        isStoryMode: serialized["is_story_mode"] as bool,
-        isSceneSplitMode: serialized["is_scene_split_mode"] as bool,
-        isLightsOut: serialized["is_lights_out"] as bool,
         isInPopOut: serialized["is_in_pop_out"] as bool,
+        textTrackLanguage: serialized["text_track_language"] as String?,
+        playbackMode: serialized["playback_mode"] as String?,
+        protection: serialized["protection"] as String?,
+        steamingFilter: serialized["steaming_filter"] as String?,
+        protocol: serialized["protocol"] as String?,
+        codec: serialized["codec"] as String?,
+        playbackState: serialized["playback_state"] as String?,
+        isPlaying: serialized["is_playing"] as bool,
+        isHDR: serialized["is_hdr"] as bool,
+        isWaitingForPremiere: serialized["is_waiting_for_premiere"] as bool,
+        isReLive: serialized["is_re_live"] as bool,
       );
 }
 
@@ -803,10 +813,7 @@ class _PlayerEventFactory {
   }
 
   PlayerEvent _parseStateChangedEvent(Map<String, Object> event) {
-    return PlayerStateChangeEvent(
-      _stateMapping[event['state']!]!,
-      playWhenReady: event['play_when_ready'] as bool,
-    );
+    return PlayerStateChangeEvent(_stateMapping[event['state']!]!);
   }
 
   PlayerEvent _parsePlayerEvent(Map<String, Object> typed) {
