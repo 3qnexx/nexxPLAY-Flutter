@@ -524,18 +524,23 @@ class _ListLocalMediaResult {
   _ListLocalMediaResult._(this.media);
 
   factory _ListLocalMediaResult.from(_MethodChannelMapResult result) {
-    final localMedia = result.get<List>('local_media');
+    final localMedia = result.get<List<dynamic>>('local_media');
     if (localMedia == null) throw ArgumentError.notNull('local_media');
     return _ListLocalMediaResult._(_deserializeMediaList(localMedia));
   }
 
-  static List<OfflineMediaResult> _deserializeMediaList(List serialized) =>
-      serialized
-          .where((Object? e) => e != null)
-          .map((Object? e) => _deserializeMedia(e as Map))
-          .toList();
+  static List<OfflineMediaResult> _deserializeMediaList(
+    List<dynamic> serialized,
+  ) {
+    return serialized
+        .where((Object? e) => e != null)
+        .map((Object? e) => _deserializeMedia(e as Map))
+        .toList();
+  }
 
-  static OfflineMediaResult _deserializeMedia(Map serialized) {
+  static OfflineMediaResult _deserializeMedia(
+    Map<dynamic, dynamic> serialized,
+  ) {
     return OfflineMediaResult(
       downloadState: serialized['download_state'] as String?,
       localCover: serialized['local_cover'] as String?,
@@ -571,7 +576,6 @@ class _ListLocalMediaResult {
       occurance: serialized['occurance'] as int,
       uploaded: serialized['uploaded'] as int,
       videoType: serialized['video_type'] as String?,
-      podcastURL: serialized['podcast_url'] as String?,
       forKids: serialized['for_kids'] as int,
       containerPurpose: serialized['container_purpose'] as String?,
       audioType: serialized['audio_type'] as String?,
@@ -609,17 +613,19 @@ class _GetAudioTracksResult {
   _GetAudioTracksResult._(this.audioTracks);
 
   factory _GetAudioTracksResult.from(_MethodChannelMapResult result) {
-    final data = result.get<List?>('audio_tracks');
+    final data = result.get<List<dynamic>?>('audio_tracks');
     return _GetAudioTracksResult._(data == null ? null : _deserialize(data));
   }
 
-  static List<AudioTrack> _deserialize(List serialized) =>
+  static List<AudioTrack> _deserialize(List<dynamic> serialized) =>
       serialized.map((dynamic e) => _deserializeTrack(e as Map)).toList();
 
-  static AudioTrack _deserializeTrack(Map serialized) => AudioTrack(
-        language: serialized['language'] as String?,
-        role: serialized['role'] as String?,
-      );
+  static AudioTrack _deserializeTrack(Map<dynamic, dynamic> serialized) {
+    return AudioTrack(
+      language: serialized['language'] as String?,
+      role: serialized['role'] as String?,
+    );
+  }
 }
 
 class _GetConnectedFiles {
@@ -628,26 +634,28 @@ class _GetConnectedFiles {
   _GetConnectedFiles._(this.connectedFiles);
 
   factory _GetConnectedFiles.from(_MethodChannelMapResult result) {
-    final data = result.get<List?>('connected_files');
+    final data = result.get<List<dynamic>?>('connected_files');
     return _GetConnectedFiles._(data == null ? null : _deserialize(data));
   }
 
-  static List<ConnectedFile> _deserialize(List serialized) =>
+  static List<ConnectedFile> _deserialize(List<dynamic> serialized) =>
       serialized.map((dynamic e) => _deserializeTrack(e as Map)).toList();
 
-  static ConnectedFile _deserializeTrack(Map serialized) => ConnectedFile(
-        id: serialized["id"] as int?,
-        gid: serialized["global_id"] as int?,
-        hash: serialized["hash"] as String?,
-        title: serialized["title"] as String?,
-        channel: serialized["channel"] as int?,
-        format: serialized["format"] as int?,
-        extension: serialized["extension"] as String?,
-        fileFormat: serialized["file_format"] as String?,
-        mimeType: serialized["mime_type"] as String?,
-        fileSize: serialized["file_size"] as int?,
-        url: serialized["url"] as String?,
-      );
+  static ConnectedFile _deserializeTrack(Map<dynamic, dynamic> serialized) {
+    return ConnectedFile(
+      id: serialized["id"] as int?,
+      gid: serialized["global_id"] as int?,
+      hash: serialized["hash"] as String?,
+      title: serialized["title"] as String?,
+      channel: serialized["channel"] as int?,
+      format: serialized["format"] as int?,
+      extension: serialized["extension"] as String?,
+      fileFormat: serialized["file_format"] as String?,
+      mimeType: serialized["mime_type"] as String?,
+      fileSize: serialized["file_size"] as int?,
+      url: serialized["url"] as String?,
+    );
+  }
 }
 
 class _GetCurrentMediaResult {
@@ -656,12 +664,12 @@ class _GetCurrentMediaResult {
   _GetCurrentMediaResult._(this.mediaData);
 
   factory _GetCurrentMediaResult.from(_MethodChannelMapResult result) {
-    final data = result.get<Map>('media_data');
+    final data = result.get<Map<dynamic, dynamic>>('media_data');
     if (data == null) throw ArgumentError.notNull('media_data');
     return _GetCurrentMediaResult._(_deserialize(data));
   }
 
-  static MediaData _deserialize(Map serialized) => MediaData(
+  static MediaData _deserialize(Map<dynamic, dynamic> serialized) => MediaData(
         remoteReference: serialized['remote_reference'] as String?,
         id: serialized['id'] as int,
         gid: serialized['global_id'] as int,
@@ -683,8 +691,7 @@ class _GetCurrentMediaResult {
         isHDR: serialized['is_hdr'] as bool,
         isPay: serialized['is_pay'] as bool,
         isPicked: serialized['is_picked'] as bool,
-        customAttributes:
-            serialized['custom_attributes'] as Map?,
+        customAttributes: serialized['custom_attributes'] as Map?,
       );
 }
 
@@ -694,26 +701,28 @@ class _GetCurrentMediaParentResult {
   _GetCurrentMediaParentResult._(this.mediaParentData);
 
   factory _GetCurrentMediaParentResult.from(_MethodChannelMapResult result) {
-    final data = result.get<Map>('media_parent_data');
+    final data = result.get<Map<dynamic, dynamic>>('media_parent_data');
     return _GetCurrentMediaParentResult._(
         data == null ? null : _deserialize(data));
   }
 
-  static MediaParentData _deserialize(Map serialized) => MediaParentData(
-        id: serialized['id'] as int,
-        gid: serialized['global_id'] as int,
-        hash: serialized['hash'] as String?,
-        title: serialized['title'] as String?,
-        subtitle: serialized['subtitle'] as String?,
-        thumb: serialized['thumb'] as String?,
-        streamtype: serialized['stream_type'] as String?,
-        originalDomain: serialized['original_domain'] as int,
-        releaseDate: serialized['release_date'] as int,
-        licenseBy: serialized['license_by'] as int,
-        channel: serialized['channel'] as int,
-        format: serialized['format'] as int,
-        customAttributes: serialized['custom_attributes'] as Map,
-      );
+  static MediaParentData _deserialize(Map<dynamic, dynamic> serialized) {
+    return MediaParentData(
+      id: serialized['id'] as int,
+      gid: serialized['global_id'] as int,
+      hash: serialized['hash'] as String?,
+      title: serialized['title'] as String?,
+      subtitle: serialized['subtitle'] as String?,
+      thumb: serialized['thumb'] as String?,
+      streamtype: serialized['stream_type'] as String?,
+      originalDomain: serialized['original_domain'] as int,
+      releaseDate: serialized['release_date'] as int,
+      licenseBy: serialized['license_by'] as int,
+      channel: serialized['channel'] as int,
+      format: serialized['format'] as int,
+      customAttributes: serialized['custom_attributes'] as Map,
+    );
+  }
 }
 
 class _GetCurrentPlaybackStateResult {
@@ -722,42 +731,43 @@ class _GetCurrentPlaybackStateResult {
   _GetCurrentPlaybackStateResult._(this.playbackState);
 
   factory _GetCurrentPlaybackStateResult.from(_MethodChannelMapResult result) {
-    final captionData = result.get<Map>('playback_state');
+    final captionData = result.get<Map<dynamic, dynamic>>('playback_state');
     if (captionData == null) throw ArgumentError.notNull('playback_state');
     return _GetCurrentPlaybackStateResult._(_deserialize(captionData));
   }
 
-  static CurrentPlaybackState _deserialize(Map serialized) =>
-      CurrentPlaybackState(
-        audioLanguage: serialized["audio_language"] as String?,
-        mediaSession: serialized["media_session"] as String?,
-        elapsedTime: serialized["elapsed_time"] as double,
-        currentTime: serialized["current_time"] as double,
-        abTestVersion: serialized["ab_test_version"] as int,
-        duration: serialized["duration"] as double,
-        playReason: serialized["play_reason"] as String?,
-        isAutoPlay: serialized["is_auto_play"] as bool,
-        isPlayingAd: serialized["is_playing_ad"] as bool,
-        isMuted: serialized["is_muted"] as bool,
-        isLocalMedia: serialized["is_local_media"] as bool,
-        isInPiP: serialized["is_in_pip"] as bool,
-        isCasting: serialized["is_casting"] as bool,
-        canBeCommented: serialized["can_be_commented"] as bool,
-        isInFullscreen: serialized["is_in_fullscreen"] as bool,
-        isStitched: serialized["is_stitched"] as bool,
-        isInPopOut: serialized["is_in_pop_out"] as bool,
-        textTrackLanguage: serialized["text_track_language"] as String?,
-        playbackMode: serialized["playback_mode"] as String?,
-        protection: serialized["protection"] as String?,
-        steamingFilter: serialized["steaming_filter"] as String?,
-        protocol: serialized["protocol"] as String?,
-        codec: serialized["codec"] as String?,
-        playbackState: serialized["playback_state"] as String?,
-        isPlaying: serialized["is_playing"] as bool,
-        isHDR: serialized["is_hdr"] as bool,
-        isWaitingForPremiere: serialized["is_waiting_for_premiere"] as bool,
-        isReLive: serialized["is_re_live"] as bool,
-      );
+  static CurrentPlaybackState _deserialize(Map<dynamic, dynamic> serialized) {
+    return CurrentPlaybackState(
+      audioLanguage: serialized["audio_language"] as String?,
+      mediaSession: serialized["media_session"] as String?,
+      elapsedTime: serialized["elapsed_time"] as double,
+      currentTime: serialized["current_time"] as double,
+      abTestVersion: serialized["ab_test_version"] as int,
+      duration: serialized["duration"] as double,
+      playReason: serialized["play_reason"] as String?,
+      isAutoPlay: serialized["is_auto_play"] as bool,
+      isPlayingAd: serialized["is_playing_ad"] as bool,
+      isMuted: serialized["is_muted"] as bool,
+      isLocalMedia: serialized["is_local_media"] as bool,
+      isInPiP: serialized["is_in_pip"] as bool,
+      isCasting: serialized["is_casting"] as bool,
+      canBeCommented: serialized["can_be_commented"] as bool,
+      isInFullscreen: serialized["is_in_fullscreen"] as bool,
+      isStitched: serialized["is_stitched"] as bool,
+      isInPopOut: serialized["is_in_pop_out"] as bool,
+      textTrackLanguage: serialized["text_track_language"] as String?,
+      playbackMode: serialized["playback_mode"] as String?,
+      protection: serialized["protection"] as String?,
+      steamingFilter: serialized["steaming_filter"] as String?,
+      protocol: serialized["protocol"] as String?,
+      codec: serialized["codec"] as String?,
+      playbackState: serialized["playback_state"] as String?,
+      isPlaying: serialized["is_playing"] as bool,
+      isHDR: serialized["is_hdr"] as bool,
+      isWaitingForPremiere: serialized["is_waiting_for_premiere"] as bool,
+      isReLive: serialized["is_re_live"] as bool,
+    );
+  }
 }
 
 class _NexxPlayPlaybackConfiguration {

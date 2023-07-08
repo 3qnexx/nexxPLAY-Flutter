@@ -1,3 +1,9 @@
+## [1.6.0] 08.07.2023
+* nexxPLAY Android SDK dependency version is set to 6.3.07
+* Example's nexxPLAY Ad Manager dependency version is set to 1.0.05
+* [BREAKING CHANGE] `podcastURL` property was removed from both `MediaGeneral` and `OfflineMediaResult`
+* Dart version's upper constraint was set to 4.0.0
+
 ## [1.5.1] 26.01.2023
 * Minor client documentation fixes
 

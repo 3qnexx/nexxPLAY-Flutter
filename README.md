@@ -117,7 +117,7 @@ implementation "androidx.appcompat:appcompat:1.4.0"`). Refer to `example/android
 
 7. If it's needed to include ads support (as an intrinsic NexxPlayAdManager instance attached to each Android native player instance), then:
 
-    7.1. In the `build.gradle`'s `dependencies` block, the following line should be present: `implementation "tv.nexx.android:admanager:1.0.02"`. Refer to `example/android/app/build.gradle` for more details.
+    7.1. In the `build.gradle`'s `dependencies` block, the following line should be present: `implementation "tv.nexx.android:admanager:1.0.05"`. Refer to `example/android/app/build.gradle` for more details.
 
     7.2. In the host Activity class code, `protected void onCreate(@Nullable Bundle savedInstanceState)` method should be overriden (or, for Kotlin, `protected onCreate(@Nullable savedInstanceState: Bundle)`). Refer to `example/android/app/src/main/java/tv/nexx/flutter/android_example/MainActivity.java` for more details.
 

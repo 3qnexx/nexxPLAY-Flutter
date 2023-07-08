@@ -318,7 +318,6 @@ class MediaGeneral {
   final int uploaded;
   final int forKids;
   final String? videoType;
-  final String? podcastURL;
   final String? containerPurpose;
   final String? audioType;
 
@@ -353,7 +352,6 @@ class MediaGeneral {
     required this.uploaded,
     required this.forKids,
     required this.videoType,
-    required this.podcastURL,
     required this.containerPurpose,
     required this.audioType,
   });
@@ -393,7 +391,6 @@ class MediaGeneral {
           uploaded == other.uploaded &&
           forKids == other.forKids &&
           videoType == other.videoType &&
-          podcastURL == other.podcastURL &&
           containerPurpose == other.containerPurpose &&
           audioType == other.audioType;
 
@@ -429,7 +426,6 @@ class MediaGeneral {
       uploaded.hashCode ^
       forKids.hashCode ^
       videoType.hashCode ^
-      podcastURL.hashCode ^
       containerPurpose.hashCode ^
       audioType.hashCode;
 
@@ -443,7 +439,7 @@ class MediaGeneral {
       'slug: $slug, format: $format, forKids: $forKids'
       'contentModerationAspects: $contentModerationAspects, '
       'formatRaw: $formatRaw, fileversion: $fileVersion, occurance: $occurance,'
-      ' uploaded: $uploaded, videotype: $videoType, podcastURL: $podcastURL, '
+      ' uploaded: $uploaded, videotype: $videoType, '
       'containerPurpose: $containerPurpose, audioType: $audioType}';
 }
 
@@ -489,7 +485,6 @@ class OfflineMediaResult extends MediaGeneral {
     required int occurance,
     required int uploaded,
     required String? videoType,
-    required String? podcastURL,
     required int forKids,
     required String? containerPurpose,
     required String? audioType,
@@ -523,7 +518,6 @@ class OfflineMediaResult extends MediaGeneral {
           occurance: occurance,
           uploaded: uploaded,
           videoType: videoType,
-          podcastURL: podcastURL,
           forKids: forKids,
           containerPurpose: containerPurpose,
           audioType: audioType,

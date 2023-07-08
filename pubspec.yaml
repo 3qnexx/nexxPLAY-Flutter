@@ -1,10 +1,10 @@
 name: nexxplay
 description: Wrapper for native Android nexxPLAY, which enables usage of the player inside Flutter UI and provides access to native methods.
-version: 1.5.1
+version: 1.6.0
 homepage: https://play.docs.nexx.cloud/
 
 environment:
-  sdk: ">=2.14.0 <3.0.0"
+  sdk: ">=2.14.0 <4.0.0"
   flutter: ">=1.20.0"
 
 dependencies:
