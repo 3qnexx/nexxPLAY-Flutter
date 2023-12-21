@@ -24,13 +24,14 @@ rootProject.allprojects {
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 33
+    compileSdkVersion 34
 
     defaultConfig {
-        minSdkVersion 22
+        minSdkVersion 25
     }
+    namespace 'tv.nexx.flutter.android'
 }
 
 dependencies {
-    implementation "tv.nexx.android:play:6.3.07"
+    implementation "tv.nexx.android:play:6.3.11"
 }

@@ -25,12 +25,12 @@ apply plugin: 'com.android.application'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    compileSdkVersion 33
+    compileSdkVersion 34
 
     defaultConfig {
         applicationId "tv.nexx.flutter.android_example"
-        minSdkVersion 22
-        targetSdkVersion 33
+        minSdkVersion 25
+        targetSdkVersion 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -52,6 +52,11 @@ android {
 
     // [INTEGRATION GUIDE] Copy this to your app/build.gradle
     // TODO: This comes from nexxPLAY as well. Needs some attention.
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
 }
 
 flutter {
@@ -60,8 +65,8 @@ flutter {
 
 dependencies {
     // [INTEGRATION GUIDE]: Add an AndroidX AppCompat dependency if you don't have one.
-    implementation "androidx.appcompat:appcompat:1.5.1"
-    implementation "androidx.media:media:1.6.0"
-    implementation "tv.nexx.android:admanager:1.0.05"
-    implementation "com.google.android.gms:play-services-cast-framework:21.2.0"
+    implementation "androidx.appcompat:appcompat:1.6.1"
+    implementation "androidx.media:media:1.7.0"
+    implementation "tv.nexx.android:admanager:1.0.11"
+    implementation "com.google.android.gms:play-services-cast-framework:21.4.0"
 }
