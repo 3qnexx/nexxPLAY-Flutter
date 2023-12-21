@@ -1,3 +1,10 @@
+## [1.6.1] 21.12.2023
+* nexxPLAY Android SDK dependency version is set to 6.3.11
+* Example's nexxPLAY Ad Manager dependency version is set to 1.0.11
+* Compile and Target SDKs were set to 34
+* Min SDK was set fo 25
+* Project now requires the Java 17 compatibility (check the example's Gradle configuration for details)
+
 ## [1.6.0] 08.07.2023
 * nexxPLAY Android SDK dependency version is set to 6.3.07
 * Example's nexxPLAY Ad Manager dependency version is set to 1.0.05
