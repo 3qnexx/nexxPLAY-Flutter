@@ -4,6 +4,7 @@ import android.view.ViewGroup;
 
 import androidx.lifecycle.Lifecycle;
 
+import java.util.Map;
 import java.util.Objects;
 
 import io.flutter.plugin.common.EventChannel;
@@ -23,6 +24,7 @@ public class NexxPlayPlatformViewState {
     private final EventChannel eventChannel;
     private final Supplier<Lifecycle> lifecycle;
     private final NexxPLAYEnvironment environment;
+    private final Map<String, Object> configuration;
     private final Subject<AndroidEvent> subject;
     // Mutable (and nullable) due to the PlatformView#dispose contract
     @Nullable
@@ -40,6 +42,7 @@ public class NexxPlayPlatformViewState {
                               Subject<AndroidEvent> subject,
                               NexxPlayInstanceID id,
                               NexxPLAYEnvironment environment,
+                              Map<String, Object> configuration,
                               MethodChannel methodChannel,
                               EventChannel eventChannel,
                               ViewGroup host,
@@ -49,6 +52,7 @@ public class NexxPlayPlatformViewState {
         this.eventChannel = eventChannel;
         this.lifecycle = lifecycle;
         this.environment = environment;
+        this.configuration = configuration;
         this.subject = subject;
         this.host = host;
         this.player = player;
@@ -74,6 +78,10 @@ public class NexxPlayPlatformViewState {
 
     public NexxPLAYEnvironment environment() {
         return environment;
+    }
+
+    public Map<String, Object> configuration() {
+        return configuration;
     }
 
     @Nullable

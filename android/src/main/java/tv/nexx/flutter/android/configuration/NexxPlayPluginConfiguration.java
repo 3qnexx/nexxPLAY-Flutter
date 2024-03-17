@@ -9,22 +9,22 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import tv.nexx.flutter.android.estd.functional.Function;
 
-public class NexxPlayPluginEnvironmentConfiguration {
+public class NexxPlayPluginConfiguration {
     private final List<Function<Context, Entry>> factories;
 
-    private NexxPlayPluginEnvironmentConfiguration(List<Function<Context, Entry>> factories) {
+    private NexxPlayPluginConfiguration(List<Function<Context, Entry>> factories) {
         this.factories = factories;
     }
 
-    public static NexxPlayPluginEnvironmentConfiguration create() {
-        return new NexxPlayPluginEnvironmentConfiguration(new CopyOnWriteArrayList<>());
+    public static NexxPlayPluginConfiguration create() {
+        return new NexxPlayPluginConfiguration(new CopyOnWriteArrayList<>());
     }
 
     public void add(Function<Context, Entry> factory) {
         factories.add(factory);
     }
 
-    public Map<String, Object> getPlayerEnvironment(Context context) {
+    public Map<String, Object> intoMap(Context context) {
         final Map<String, Object> result = new HashMap<>();
         for (Function<Context, Entry> factory : factories) {
             final Entry entry = factory.apply(context);

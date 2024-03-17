@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.media.session.MediaSessionCompat;
 //import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 //import com.google.android.gms.cast.framework.CastContext;
@@ -29,6 +30,7 @@ public class MainActivity extends FlutterFragmentActivity {
 //        CastContext.getSharedInstance(this, Executors.newSingleThreadExecutor())
 //                .addOnSuccessListener(castContext -> NexxPlayPlugin.addEnvironmentConfigurationEntry(NexxPlayPlugin.KEY_CAST_CONTEXT, castContext))
 //                .addOnFailureListener(exception -> Log.e("nexxPLAY", "Could not resolve CastContext", exception));
+        NexxPlayPlugin.addNativeConfigurationEntry(NexxPlayPlugin.KEY_NOTIFICATION_ICON, R.drawable.widget_icon);
     }
 
     @Override
@@ -38,7 +40,7 @@ public class MainActivity extends FlutterFragmentActivity {
     }
 
     @Override
-    public void onPictureInPictureModeChanged(boolean isInPictureInPictureMode, Configuration newConfig) {
+    public void onPictureInPictureModeChanged(boolean isInPictureInPictureMode, @NonNull Configuration newConfig) {
         super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig);
         NexxPlayPlugin.post(OnPIPModeChangedEvent.create(isInPictureInPictureMode, newConfig));
     }

@@ -33,5 +33,5 @@ android {
 }
 
 dependencies {
-    implementation "tv.nexx.android:play:6.3.11"
+    implementation "tv.nexx.android:play:6.3.20"
 }

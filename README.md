@@ -93,7 +93,7 @@ implementation "androidx.appcompat:appcompat:1.4.0"`). Refer to `example/android
 
 5. Lastly, there is a set of things to be done from the Flutter PoV for proper fullscreen and PiP support. Example app's `main.dart` file contains all the documentation necessary for that. `INTEGRATION_GUIDE` markers were placed all over the documentation for navigation to make the integration process easier.
 
-6. If it's needed to share a Android's MediaSessionCompat instance for all the native nexxPLAY instances, then:
+6. [OPTIONAL] Sharing Android's MediaSessionCompat instance for all the native nexxPLAY instances.
 
     6.1. In the `build.gradle`'s `dependencies` block, the following line should be present: `implementation "androidx.media:media:1.6.0"`. Refer to `example/android/app/build.gradle` for more details.
 
@@ -115,7 +115,7 @@ implementation "androidx.appcompat:appcompat:1.4.0"`). Refer to `example/android
     ```
     For the Kotlin version, omit the ending semicolon.
 
-7. If it's needed to include ads support (as an intrinsic NexxPlayAdManager instance attached to each Android native player instance), then:
+7. [OPTIONAL] Advertisements support.
 
     7.1. In the `build.gradle`'s `dependencies` block, the following line should be present: `implementation "tv.nexx.android:admanager:1.0.05"`. Refer to `example/android/app/build.gradle` for more details.
 
@@ -134,7 +134,8 @@ implementation "androidx.appcompat:appcompat:1.4.0"`). Refer to `example/android
     import tv.nexx.android.admanager.NexxPlayAdManager;
     ```
     For the Kotlin version, omit the ending semicolon.
-8. If it's needed to include Chromecast support, then:
+
+8. [OPTIONAL] Chromecast support.
 
     8.1. The next [native integration guide](https://play.docs.nexx.cloud/native-players/nexxplay-for-android#chromecast) items have to be ensured to reproduced.
 
@@ -159,3 +160,28 @@ implementation "androidx.appcompat:appcompat:1.4.0"`). Refer to `example/android
     import android.util.Log;
     ```
     For the Kotlin version, omit the ending semicolons.
+
+9. [OPTIONAL] Custom notification icon.
+
+    9.1. Custom notification icon can be set to an Android's R.* resource via the native hook. First, the image resource has to be added to the Android's resources bundle. In case of PNGs or JPGs, it's sufficient to just put the file into `**/android/app/src/main/res/drawable` directory. Otherwise, official [documentation contains](https://developer.android.com/studio/write/add-resources) additional information.
+    
+    9.2. Then the image resource reference has to be used in the configuration. `NexxPlayPlugin` class includes the `addNativeConfigurationEntry` and a static "key" value `KEY_NOTIFICATION_ICON`; value to be passed is the image resource reference — Android framework creates those automatically using the file name itself as the corresponding variable name (e.g. if your image is called "my_image.png" and is placed into the `**/res/drawable` directory, then Android will generate the `R.drawable.my_image` variable). Regular place for it is the native Android application's MainActivity class, specifically the `onCreate` method override:
+
+    ```java
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // ... other configuration code
+        NexxPlayPlugin.addNativeConfigurationEntry(NexxPlayPlugin.KEY_NOTIFICATION_ICON, R.drawable.widget_icon);
+    }
+    ```
+    Or, for Kotlin:
+    ```kotlin
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        // ... other configuration code
+        NexxPlayPlugin.addNativeConfigurationEntry(NexxPlayPlugin.KEY_NOTIFICATION_ICON, R.drawable.widget_icon)
+    }
+    ```
+
+    9.3. Refer to the `example` project for complete integration sample.

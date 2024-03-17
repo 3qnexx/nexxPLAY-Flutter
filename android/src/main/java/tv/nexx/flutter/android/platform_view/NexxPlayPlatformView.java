@@ -16,12 +16,13 @@ import tv.nexx.flutter.android.platform_view.command.NexxPlayPlatformViewDispatc
 public final class NexxPlayPlatformView implements PlatformView, MethodChannel.MethodCallHandler,
         EventChannel.StreamHandler, NoOpNexxPlayListener {
 
-    private static final NexxPlayPlatformViewDispatchTable DISPATCH_TABLE = NexxPlayPlatformViewDispatchTable.get();
 
     private final NexxPlayPlatformViewState state;
+    private final NexxPlayPlatformViewDispatchTable table;
 
-    NexxPlayPlatformView(NexxPlayPlatformViewState state) {
+    NexxPlayPlatformView(NexxPlayPlatformViewState state, NexxPlayPlatformViewDispatchTable table) {
         this.state = state;
+        this.table = table;
     }
 
     void initialize() {
@@ -36,7 +37,7 @@ public final class NexxPlayPlatformView implements PlatformView, MethodChannel.M
     @Override
     public void onMethodCall(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
         try {
-            DISPATCH_TABLE.dispatch(call.method, this, new NexxPlayDispatchPayload(call, result));
+            table.dispatch(call.method, this, new NexxPlayDispatchPayload(call, result));
         } catch (UndefinedDispatchTableMethodException unused) {
             result.notImplemented();
         }

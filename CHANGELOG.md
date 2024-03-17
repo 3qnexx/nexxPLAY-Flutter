@@ -1,3 +1,9 @@
+## [1.7.0] 17.03.2024
+* nexxPLAY Android SDK dependency version is set to 6.3.20
+* Example's nexxPLAY Ad Manager dependency version is set to 1.0.20
+* NexxPlayPlugin (native Android plugin's class) now contains hooks for defining additional configuration entries which will be used for `startPlay*` methods as predefined values. This was introduced as a tool for passing native values to the resulting NexxPlayConfiguration object, such as R.* references.
+* Example and documentation were updated to showcase custom notification icon setup.
+
 ## [1.6.1] 21.12.2023
 * nexxPLAY Android SDK dependency version is set to 6.3.11
 * Example's nexxPLAY Ad Manager dependency version is set to 1.0.11

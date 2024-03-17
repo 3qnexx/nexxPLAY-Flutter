@@ -1,59 +1,57 @@
 package tv.nexx.flutter.android.platform_view.command;
 
+import java.util.Map;
+
 import tv.nexx.flutter.android.estd.virtual_dispatch.DispatchTable;
 import tv.nexx.flutter.android.platform_view.NexxPlayDispatchPayload;
 import tv.nexx.flutter.android.platform_view.NexxPlayPlatformView;
 
 public class NexxPlayPlatformViewDispatchTable {
 
-    private static final NexxPlayPlatformViewDispatchTable INSTANCE = new NexxPlayPlatformViewDispatchTable();
-    private static final DispatchTable<String, NexxPlayPlatformView, NexxPlayDispatchPayload> DISPATCH_TABLE = DispatchTable.threadConfined();
+    private final DispatchTable<String, NexxPlayPlatformView, NexxPlayDispatchPayload> table = DispatchTable.threadConfined();
 
-    static {
-        DISPATCH_TABLE.set("start", StartPlayerCommand.create());
-        DISPATCH_TABLE.set("clearCache", ClearCacheCommand.create());
-        DISPATCH_TABLE.set("updateConfiguration", UpdateConfigurationCommand.create());
-        DISPATCH_TABLE.set("updateEnvironment", UpdateEnvironmentCommand.create());
-        DISPATCH_TABLE.set("play", PlayCommand.create());
-        DISPATCH_TABLE.set("pause", PauseCommand.create());
-        DISPATCH_TABLE.set("toggle", ToggleCommand.create());
-        DISPATCH_TABLE.set("mute", MuteCommand.create());
-        DISPATCH_TABLE.set("unmute", UnmuteCommand.create());
-        DISPATCH_TABLE.set("next", NextCommand.create());
-        DISPATCH_TABLE.set("previous", PreviousCommand.create());
-        DISPATCH_TABLE.set("seekTo", SeekToCommand.create());
-        DISPATCH_TABLE.set("seekBy", SeekByCommand.create());
-        DISPATCH_TABLE.set("swapToPosition", SwapToPositionCommand.create());
-        DISPATCH_TABLE.set("swapToMediaItem", SwapToMediaItemCommand.create());
-        DISPATCH_TABLE.set("swapToGlobalID", SwapToGlobalIDCommand.create());
-        DISPATCH_TABLE.set("swapToRemoteMedia", SwapToRemoteMediaCommand.create());
-        DISPATCH_TABLE.set("getAudioTracks", GetAudioTracksCommand.create());
-        DISPATCH_TABLE.set("getCurrentMedia", GetCurrentMediaCommand.create());
-        DISPATCH_TABLE.set("getCurrentMediaParent", GetCurrentMediaParentCommand.create());
-        DISPATCH_TABLE.set("getCurrentPlaybackState", GetCurrentPlaybackStateCommand.create());
-        DISPATCH_TABLE.set("getCurrentTime", GetCurrentTimeCommand.create());
-        DISPATCH_TABLE.set("getConnectedFiles", GetConnectedFilesCommand.create());
-        DISPATCH_TABLE.set("isPlaying", IsPlayingCommand.create());
-        DISPATCH_TABLE.set("isPlayingAd", IsPlayingAdCommand.create());
-        DISPATCH_TABLE.set("isMuted", IsMutedCommand.create());
-        DISPATCH_TABLE.set("isInPiP", IsInPIPCommand.create());
-        DISPATCH_TABLE.set("isCasting", IsCastingCommand.create());
-        DISPATCH_TABLE.set("startDownloadingLocalMedia", StartDownloadingLocalMediaCommand.create());
-        DISPATCH_TABLE.set("listLocalMedia", ListLocalMediaCommand.create());
-        DISPATCH_TABLE.set("hasDownloadOfLocalMedia", HasDownloadOfLocalMediaCommand.create());
-        DISPATCH_TABLE.set("clearLocalMedia", ClearLocalMediaCommand.create());
-        DISPATCH_TABLE.set("diskSpaceUsedForLocalMedia", DiskSpaceUsedForLocalMediaCommand.create());
+    private NexxPlayPlatformViewDispatchTable(Map<String, Object> configuration) {
+        table.set("start", StartPlayerCommand.create(configuration));
+        table.set("clearCache", ClearCacheCommand.create());
+        table.set("updateConfiguration", UpdateConfigurationCommand.create());
+        table.set("updateEnvironment", UpdateEnvironmentCommand.create());
+        table.set("play", PlayCommand.create());
+        table.set("pause", PauseCommand.create());
+        table.set("toggle", ToggleCommand.create());
+        table.set("mute", MuteCommand.create());
+        table.set("unmute", UnmuteCommand.create());
+        table.set("next", NextCommand.create());
+        table.set("previous", PreviousCommand.create());
+        table.set("seekTo", SeekToCommand.create());
+        table.set("seekBy", SeekByCommand.create());
+        table.set("swapToPosition", SwapToPositionCommand.create());
+        table.set("swapToMediaItem", SwapToMediaItemCommand.create());
+        table.set("swapToGlobalID", SwapToGlobalIDCommand.create());
+        table.set("swapToRemoteMedia", SwapToRemoteMediaCommand.create());
+        table.set("getAudioTracks", GetAudioTracksCommand.create());
+        table.set("getCurrentMedia", GetCurrentMediaCommand.create());
+        table.set("getCurrentMediaParent", GetCurrentMediaParentCommand.create());
+        table.set("getCurrentPlaybackState", GetCurrentPlaybackStateCommand.create());
+        table.set("getCurrentTime", GetCurrentTimeCommand.create());
+        table.set("getConnectedFiles", GetConnectedFilesCommand.create());
+        table.set("isPlaying", IsPlayingCommand.create());
+        table.set("isPlayingAd", IsPlayingAdCommand.create());
+        table.set("isMuted", IsMutedCommand.create());
+        table.set("isInPiP", IsInPIPCommand.create());
+        table.set("isCasting", IsCastingCommand.create());
+        table.set("startDownloadingLocalMedia", StartDownloadingLocalMediaCommand.create());
+        table.set("listLocalMedia", ListLocalMediaCommand.create());
+        table.set("hasDownloadOfLocalMedia", HasDownloadOfLocalMediaCommand.create());
+        table.set("clearLocalMedia", ClearLocalMediaCommand.create());
+        table.set("diskSpaceUsedForLocalMedia", DiskSpaceUsedForLocalMediaCommand.create());
     }
 
-    private NexxPlayPlatformViewDispatchTable() {
-    }
-
-    public static NexxPlayPlatformViewDispatchTable get() {
-        return INSTANCE;
+    public static NexxPlayPlatformViewDispatchTable create(Map<String, Object> configuration) {
+        return new NexxPlayPlatformViewDispatchTable(configuration);
     }
 
     public void dispatch(String name, NexxPlayPlatformView view, NexxPlayDispatchPayload args) {
-        DISPATCH_TABLE.dispatch(name, view, args);
+        table.dispatch(name, view, args);
     }
 
 }
