@@ -91,15 +91,17 @@ Please note that iOS is not supported by this plugin.
 Ensure that you have the AndroidX AppCompat dependency, a transitive or a direct one (`
 implementation "androidx.appcompat:appcompat:1.4.0"`). Refer to `example/android/app/build.gradle`, `example/android/app/src/main/res/values/styles.xml` and `example/android/app/src/main/res/values-night/styles.xml` for more details.
 
-5. Lastly, there is a set of things to be done from the Flutter PoV for proper fullscreen and PiP support. Example app's `main.dart` file contains all the documentation necessary for that. `INTEGRATION_GUIDE` markers were placed all over the documentation for navigation to make the integration process easier.
+5. Kotlin Gradle Plugin (KGP) with the newer Android Gradle Plugin versions are including a set of the androidx.* dependencies necessary for the native library; the `example` project uses `1.9.20` for Kotlin and `8.5` for AGP, Gradle Wrapper's version being `8.7`. One of the exceptions hinting to the Gradle environment update is `Fatal Exception: java.lang.RuntimeException: Unable to get provider androidx.startup.InitializationProvider: java.lang.ClassNotFoundException: Didn't find class "androidx.startup.InitializationProvider"`.
 
-6. [OPTIONAL] Sharing Android's MediaSessionCompat instance for all the native nexxPLAY instances.
+6. Lastly, there is a set of things to be done from the Flutter PoV for proper fullscreen and PiP support. Example app's `main.dart` file contains all the documentation necessary for that. `INTEGRATION_GUIDE` markers were placed all over the documentation for navigation to make the integration process easier. 
 
-    6.1. In the `build.gradle`'s `dependencies` block, the following line should be present: `implementation "androidx.media:media:1.6.0"`. Refer to `example/android/app/build.gradle` for more details.
+7. [OPTIONAL] Sharing Android's MediaSessionCompat instance for all the native nexxPLAY instances.
 
-    6.2. In the host Activity class code, `protected void onCreate(@Nullable Bundle savedInstanceState)` method should be overriden (or, for Kotlin, `protected onCreate(@Nullable savedInstanceState: Bundle)`). Refer to `example/android/app/src/main/java/tv/nexx/flutter/android_example/MainActivity.java` for more details.
+    7.1. In the `build.gradle`'s `dependencies` block, the following line should be present: `implementation "androidx.media:media:1.6.0"`. Refer to `example/android/app/build.gradle` for more details.
 
-    6.3. Inside the `onCreate(Bundle)` method, the following lines should be present:
+    7.2. In the host Activity class code, `protected void onCreate(@Nullable Bundle savedInstanceState)` method should be overriden (or, for Kotlin, `protected onCreate(@Nullable savedInstanceState: Bundle)`). Refer to `example/android/app/src/main/java/tv/nexx/flutter/android_example/MainActivity.java` for more details.
+
+    7.3. Inside the `onCreate(Bundle)` method, the following lines should be present:
     ```java
     final MediaSessionCompat mediaSession = new MediaSessionCompat(getApplicationContext(), getPackageName());
     NexxPlayPlugin.addEnvironmentConfigurationEntry(NexxPlayPlugin.KEY_MEDIA_SESSION, mediaSession);
@@ -115,13 +117,13 @@ implementation "androidx.appcompat:appcompat:1.4.0"`). Refer to `example/android
     ```
     For the Kotlin version, omit the ending semicolon.
 
-7. [OPTIONAL] Advertisements support.
+8. [OPTIONAL] Advertisements support.
 
-    7.1. In the `build.gradle`'s `dependencies` block, the following line should be present: `implementation "tv.nexx.android:admanager:1.0.05"`. Refer to `example/android/app/build.gradle` for more details.
+    8.1. In the `build.gradle`'s `dependencies` block, the following line should be present: `implementation "tv.nexx.android:admanager:1.0.05"`. Refer to `example/android/app/build.gradle` for more details.
 
-    7.2. In the host Activity class code, `protected void onCreate(@Nullable Bundle savedInstanceState)` method should be overriden (or, for Kotlin, `protected onCreate(@Nullable savedInstanceState: Bundle)`). Refer to `example/android/app/src/main/java/tv/nexx/flutter/android_example/MainActivity.java` for more details.
+    8.2. In the host Activity class code, `protected void onCreate(@Nullable Bundle savedInstanceState)` method should be overriden (or, for Kotlin, `protected onCreate(@Nullable savedInstanceState: Bundle)`). Refer to `example/android/app/src/main/java/tv/nexx/flutter/android_example/MainActivity.java` for more details.
 
-    7.3. Inside the `onCreate(Bundle)` method, the following lines should be present:
+    8.3. Inside the `onCreate(Bundle)` method, the following lines should be present:
     ```java
     NexxPlayPlugin.addEnvironmentConfigurationEntry(NexxPlayPlugin.KEY_AD_MANAGER, NexxPlayAdManager::new);
     ```
@@ -135,13 +137,13 @@ implementation "androidx.appcompat:appcompat:1.4.0"`). Refer to `example/android
     ```
     For the Kotlin version, omit the ending semicolon.
 
-8. [OPTIONAL] Chromecast support.
+9. [OPTIONAL] Chromecast support.
 
-    8.1. The next [native integration guide](https://play.docs.nexx.cloud/native-players/nexxplay-for-android#chromecast) items have to be ensured to reproduced.
+    9.1. The next [native integration guide](https://play.docs.nexx.cloud/native-players/nexxplay-for-android#chromecast) items have to be ensured to reproduced.
 
-    8.2. Application's activity should extend FlutterFragmentActivity or it's inheritor.
+    9.2. Application's activity should extend FlutterFragmentActivity or it's inheritor.
 
-    8.3. When resolving the CastContext instance as described by the native integration guide, a modification has to be applied so the CastContext instance is be included into the plugin's configuration:
+    9.3. When resolving the CastContext instance as described by the native integration guide, a modification has to be applied so the CastContext instance is be included into the plugin's configuration:
     ```java
     CastContext.getSharedInstance(this, Executors.newSingleThreadExecutor())
         .addOnSuccessListener(castContext ->  NexxPlayPlugin.addEnvironmentConfigurationEntry(NexxPlayPlugin.KEY_CAST_CONTEXT, castContext))
@@ -161,11 +163,11 @@ implementation "androidx.appcompat:appcompat:1.4.0"`). Refer to `example/android
     ```
     For the Kotlin version, omit the ending semicolons.
 
-9. [OPTIONAL] Custom notification icon.
+10. [OPTIONAL] Custom notification icon.
 
-    9.1. Custom notification icon can be set to an Android's R.* resource via the native hook. First, the image resource has to be added to the Android's resources bundle. In case of PNGs or JPGs, it's sufficient to just put the file into `**/android/app/src/main/res/drawable` directory. Otherwise, official [documentation contains](https://developer.android.com/studio/write/add-resources) additional information.
+    10.1. Custom notification icon can be set to an Android's R.* resource via the native hook. First, the image resource has to be added to the Android's resources bundle. In case of PNGs or JPGs, it's sufficient to just put the file into `**/android/app/src/main/res/drawable` directory. Otherwise, official [documentation contains](https://developer.android.com/studio/write/add-resources) additional information.
     
-    9.2. Then the image resource reference has to be used in the configuration. `NexxPlayPlugin` class includes the `addNativeConfigurationEntry` and a static "key" value `KEY_NOTIFICATION_ICON`; value to be passed is the image resource reference — Android framework creates those automatically using the file name itself as the corresponding variable name (e.g. if your image is called "my_image.png" and is placed into the `**/res/drawable` directory, then Android will generate the `R.drawable.my_image` variable). Regular place for it is the native Android application's MainActivity class, specifically the `onCreate` method override:
+    10.2. Then the image resource reference has to be used in the configuration. `NexxPlayPlugin` class includes the `addNativeConfigurationEntry` and a static "key" value `KEY_NOTIFICATION_ICON`; value to be passed is the image resource reference — Android framework creates those automatically using the file name itself as the corresponding variable name (e.g. if your image is called "my_image.png" and is placed into the `**/res/drawable` directory, then Android will generate the `R.drawable.my_image` variable). Regular place for it is the native Android application's MainActivity class, specifically the `onCreate` method override:
 
     ```java
     @Override
@@ -184,4 +186,4 @@ implementation "androidx.appcompat:appcompat:1.4.0"`). Refer to `example/android
     }
     ```
 
-    9.3. Refer to the `example` project for complete integration sample.
+    10.3. Refer to the `example` project for complete integration sample.

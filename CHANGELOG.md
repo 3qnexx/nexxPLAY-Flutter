@@ -1,3 +1,8 @@
+## [1.8.0] 26.07.2024
+* nexxPLAY Android SDK dependency version is set to 6.3.21
+* Example's nexxPLAY Ad Manager dependency version is set to 1.0.21
+* KGP is now a part of the example project and the Gradle configuration is updated to the latest version: those are needed to include a set of dependencies otherwise missing in the final APK. README is updated with the information (item #5 in the integration guide).
+
 ## [1.7.0] 17.03.2024
 * nexxPLAY Android SDK dependency version is set to 6.3.20
 * Example's nexxPLAY Ad Manager dependency version is set to 1.0.20
